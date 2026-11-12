@@ -88,7 +88,12 @@ Cloudflare 控制台 → Workers & Pages → `swdtwhps` → Deployments → 选�
 - 窄屏（≤1200px）下 `#panel` 与 `#hud` 默认收起，靠底部两个 `.tab-btn` 唤出；两者互斥，点面板外遮罩或按 Esc 收起。这段逻辑在 `index.html` / `offline.html` 的内联 `<script>` 里，`src/ui/UI.js` 只负责填充内容，不控制显隐。
 - 窄屏面板从 `top: 58px` 起，是给顶部标题栏让位；标题栏 `z-index: 11` 高于面板，若把面板顶回 8px 会出现标题压住面板抬头。
 - `scrollbar-width` **不继承**，只写在 `html/body` 上无效，必须写在 `#panel`、`#hud` 的规则里。
-- 竖屏下 3D 画面左右会被裁（透视相机垂直 FOV 固定，竖屏时水平 FOV 收窄），属相机取景问题，与面板无关。
+- **触摸手势已按移动端习惯改写**：`SceneManager` 构造里 `controls.touches = { ONE: PAN, TWO: DOLLY_ROTATE }` —— 单指平移、双指拖动旋转、双指捏合仍为缩放；鼠标端行为不变（左键旋转、右键平移）。
+- 因为单指就是平移了，`App._bindPicking` 的点击抖动阈值对 touch 放宽到 12px（鼠标仍是 5px），否则轻触选不中厂房。
+- **竖屏取景**：`SceneManager.fitDistance(base, {fit, width})`，仅当 `aspect < 1.2` 生效，把 `width` 个世界单位铺满画面宽度；全景视角在 `PlantSceneSegment` 的 `view` 里声明 `fit: true, fitWidth: 135`，近景段（dist 20 左右）不声明即保持原距离。宽视口原样返回，桌面取景完全不变。**不要用 group 包围盒反算**：厂区 group 含远山与海面，会把镜头甩到天边。
+- 拉远取景后会看到海面平面的边界（画面下方的深色楔形），属场景范围边界，非渲染故障。
+- `offline.html` 由原工程 `node build-offline.mjs` 生成，骨架取原工程的 `index.html` —— 该文件已同步为本目录版本（含移动端 CSS / 按钮 / 开关脚本），改动时两边保持一致再构建。
+
 
 
 ## 发布边界（不要提交进仓库）
