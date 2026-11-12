@@ -1,4 +1,4 @@
-# 长缓存给不常变的库与图片；入口 html 与站点自有 JS 每次重新校验（发布即生效）
+# 长缓存给不常变的库与图片；入口 html 与站点自有 JS 每次必回源校验（发布即生效）
 /vendor/*
   Cache-Control: public, max-age=31536000, immutable
 
@@ -9,16 +9,17 @@
   Cache-Control: public, max-age=0, must-revalidate
   X-Content-Type-Options: nosniff
 
-# Cloudflare 对 .js 默认给 4 小时新鲜期（max-age=14400），实测 /*.js 通配不生效，
-# 改为显式目录规则；新增源码目录时记得同步加一行。
+# Cloudflare Pages 会强制给 .js 加 max-age=14400（覆盖无效、只会把我们的指令追加到原头后面），
+# 因此改用 no-cache：该指令存活后浏览器每次使用前都必须回源校验，等同于发布即生效。
+# 新增源码目录时记得同步加一行。
 /src/*
-  Cache-Control: public, max-age=0, must-revalidate
+  Cache-Control: no-cache
   X-Content-Type-Options: nosniff
 
 /utils/*
-  Cache-Control: public, max-age=0, must-revalidate
+  Cache-Control: no-cache
   X-Content-Type-Options: nosniff
 
 /*.js
-  Cache-Control: public, max-age=0, must-revalidate
+  Cache-Control: no-cache
   X-Content-Type-Options: nosniff
