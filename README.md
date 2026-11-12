@@ -82,8 +82,10 @@ Pages 检测到 `main` 变更后自动重建，通常 1-3 分钟。验证不要�
 |---|---|
 | 首页 | `https://swdtwhps.dpdns.org` 200，能看到 3D 厂区与底部「工艺段」「参数说明」两个按钮 |
 | 资源 | `vendor/three.module.js`、`assets/watermark.png`、`src/main.js` 均 200 |
-| 缓存头 | `index.html` 为 `max-age=0, must-revalidate`；`vendor/*` 为一年 `immutable` |
-| 控制台 | F12 无红色报错、无 404；水印是图片而非文字角标 |
+| 缓存头 | `index.html` 与 `src/**/*.js` 均为 `max-age=0, must-revalidate`；`vendor/*` 为一年 `immutable`；`assets/*` 7 天 |
+| 控制台 | F12 无红色报错、无 404；底部是「江河海 + 嘉元环境」两个 logo |
+
+> `*.js` 的 `must-revalidate` 是必需的：没有它浏览器按启发式缓存 JS，改了代码用户还看旧画面（2026-11-13 桌面端只显示单个 logo 就是这个原因）。改了代码看不到变化，先 Ctrl+F5 强刷，再看 Deployments 最新部署状态。
 
 ### 第 4 步：回滚（出错时）
 
@@ -114,9 +116,9 @@ Cloudflare 控制台 → Workers & Pages → `swdtwhps` → Deployments → 选�
 
 - 屏幕上的「江河海 / 嘉元环境」不是 HTML，是 `src/core/Watermark.js` 每帧画到覆盖层 canvas 的角标；导出（截图 / 录像 / glTF）走同一套绘制，所以改水印两边同时生效。
 - **`#wm-canvas` 必须显式 `width:100%; height:100%`**。canvas 是替换元素，只写 `inset:0` 不会把它的 CSS 尺寸拉到容器，高分屏上会按位图尺寸（如 2880×1800）铺开，水印整个跑到视口外——dpr≥2 的 Retina 与手机上一度完全看不见。
-- 画布坐标系是设备像素，`Watermark.dpr` 由 `App._syncWm` 按 `gl.width / innerWidth` 注入，角标尺寸、`margin`、窄屏 `bottomLift` 全部乘 dpr 换算，保证不同屏幕 CSS 尺寸一致。
-- 窄屏底部有「工艺段 / 参数说明」胶囊按钮，`bottomLift = 62`（CSS px）把角标抬到按钮上方，否则会被压住。
-- 副 logo 位置：`corner` 为 `bl`/`tl` 时画在主 logo 右侧，`br`/`tr` 时画在左侧；等高（`lh`）、按裁剪后宽高比定宽、间距 `lh*0.45`。
+- 画布坐标系是**设备像素**：角标尺寸按短边比例算，天然与 dpr 无关，**不要再乘 dpr**（乘了会大整整一倍，2026-11-13 踩过）。只有 `margin`、`bottomLift` 这类 CSS 像素量才乘 `Watermark.dpr`（由 `App._syncWm` 按 `gl.width / innerWidth` 注入）。
+- 窄屏（≤1200px）两个 logo **水平居中**（`centerH`），并 `bottomLift = 62`（CSS px）抬到底部「工艺段 / 参数说明」胶囊按钮上方；桌面端保持左下角。实现上两个 logo 作为一个整体 `pairW = lw + gap + w2` 参与定位，不再分别定位。
+- 副 logo 位置：`corner` 为 `bl`/`tl` 时画在主 logo 右侧，`br`/`tr` 时整组右对齐（副 logo 仍在主 logo 右侧）；等高（`lh`）、按裁剪后宽高比定宽、间距 `lh*0.45`。
 - 嘉元 logo 原图字色是深藏青 `#052F7F`，深色底上不可见，`_prepareExtra()` 把 `R<70 / G<100 / B>90` 的像素重着色成浅蓝白 `#CFE0F6`，绿色 ENV 块与白字保持原样；抗锯齿边缘靠原 alpha 自然过渡，不要改成整体反色（反色会把绿色块变品红）。
 
 

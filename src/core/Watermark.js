@@ -121,9 +121,9 @@ export class Watermark {
     const base = Math.min(w, h);
     const s = scaleOverride != null ? scaleOverride : this.opts.scale;
     const ar = this.loaded ? this._trimBox().ar : 3.2;
-    // 画布尺寸是设备像素，dpr>1 时若不加倍会显得又小又贴边，这里统一按 CSS 像素标定
-    const k = this.dpr || 1;
-    return { w: base * s * ar * k, h: base * s * k };
+    // 注意：w/h 已是设备像素，尺寸按短边比例算就天然与 dpr 无关，
+    // 不要再乘 dpr（乘了会大整整一倍）。只有 margin / bottomLift 这类 CSS 像素量才需要换算。
+    return { w: base * s * ar, h: base * s };
   }
 
   /** 把水印绘制到任意 2D 上下文（用于合成导出或实时覆盖层）
@@ -147,23 +147,20 @@ export class Watermark {
     const m = this.opts.margin * k;
     // bottomLift：窄屏下抬高距离（CSS 像素，由 App._syncWm 设置），让开底部胶囊按钮
     const lift = (this.bottomLift || 0) * k;
-    let x = w - lw - m, y = h - lh - m - lift;
-    if (this.opts.corner === 'tl') { x = m; y = m; }
-    else if (this.opts.corner === 'tr') { x = w - lw - m; y = m; }
-    else if (this.opts.corner === 'bl') { x = m; y = h - lh - m - lift; }
+    // 两个 logo 视为一个整体来定位：主 logo + 间距 + 副 logo
+    const gap = lh * 0.45;
+    const w2 = (this._tinted2 && this._trim2) ? lh * this._trim2.ar : 0;
+    const pairW = lw + (w2 ? gap + w2 : 0);
+    const c = this.opts.corner;
+    let x = w - pairW - m, y = h - lh - m - lift;
+    if (c === 'tl') { x = m; y = m; }
+    else if (c === 'tr') { x = w - pairW - m; y = m; }
+    else if (c === 'bl') { x = m; y = h - lh - m - lift; }
+    // centerH：窄屏水平居中（由 App._syncWm 设置），避开左右两侧的胶囊按钮
+    if (this.centerH) x = Math.max(m, (w - pairW) / 2);
     const t = this._trimBox();
     ctx.drawImage(this.img, t.sx, t.sy, t.sw, t.sh, x, y, lw, lh);
-    this._drawExtra(ctx, x, y, lw, lh);
-  }
-
-  /** 副 logo：与主 logo 等高，按裁剪后比例定宽，间距为主 logo 高度的 0.45 倍 */
-  _drawExtra(ctx, x, y, lw, lh) {
-    if (!this._tinted2 || !this._trim2) return;
-    const w2 = lh * this._trim2.ar;
-    const gap = lh * 0.45;
-    const onRight = this.opts.corner === 'bl' || this.opts.corner === 'tl';
-    const x2 = onRight ? x + lw + gap : x - w2 - gap;
-    ctx.drawImage(this._tinted2, x2, y, w2, lh);
+    if (w2) ctx.drawImage(this._tinted2, x + lw + gap, y, w2, lh);
   }
 
   _drawTiled(ctx, w, h) {

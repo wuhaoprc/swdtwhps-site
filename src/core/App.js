@@ -96,6 +96,8 @@ export class App {
     // 单位是 CSS 像素，Watermark 内部按 dpr 换算成设备像素。
     this.wm.dpr = (window.innerWidth > 0) ? (gl.width / window.innerWidth) : 1;
     this.wm.bottomLift = window.innerWidth <= 1200 ? 62 : 0;
+    // 窄屏把两个 logo 水平居中：底部左右各有一个胶囊按钮，靠左会被「工艺段」压住
+    this.wm.centerH = window.innerWidth <= 1200;
   }
 
   select(id) {
