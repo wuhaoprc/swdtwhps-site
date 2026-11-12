@@ -9,17 +9,20 @@
   Cache-Control: public, max-age=0, must-revalidate
   X-Content-Type-Options: nosniff
 
-# Cloudflare Pages 会强制给 .js 加 max-age=14400（覆盖无效、只会把我们的指令追加到原头后面），
-# 因此改用 no-cache：该指令存活后浏览器每次使用前都必须回源校验，等同于发布即生效。
+# Cloudflare Pages 默认给非 html 资源 max-age=14400，且会洗掉我们设的 no-cache。
+# 先用 ! 删除默认头，再写入 no-cache —— 否则指令会被丢掉。
 # 新增源码目录时记得同步加一行。
 /src/*
+  ! Cache-Control
   Cache-Control: no-cache
   X-Content-Type-Options: nosniff
 
 /utils/*
+  ! Cache-Control
   Cache-Control: no-cache
   X-Content-Type-Options: nosniff
 
 /*.js
+  ! Cache-Control
   Cache-Control: no-cache
   X-Content-Type-Options: nosniff
