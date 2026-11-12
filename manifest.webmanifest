@@ -1,0 +1,15 @@
+{
+  "name": "江河海 · 海水淡化全流程 3D 模拟系统",
+  "short_name": "海水淡化 3D",
+  "description": "江河海 SWRO 海水淡化全流程三维可视化：七段工艺逐段建模，支持截图/动画/3D 模型导出。",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0b1220",
+  "theme_color": "#0b1220",
+  "lang": "zh-CN",
+  "icons": [
+    { "src": "./assets/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "./assets/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

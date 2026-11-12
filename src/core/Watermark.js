@@ -16,6 +16,7 @@ export class Watermark {
       liveScale: undefined, // 实时覆盖层角标比例；未指定则取 scale*0.79
       margin: 14,           // 角标边距，与 #panel(left:14px) / #hint(bottom:14px) 外框对齐
       tile: false,          // 是否平铺
+      extraLogoSrc: null,   // 副 logo（嘉元环境）：与主 logo 并排，等高绘制
       text: '江河海 JIANGHEHAI' // logo 加载失败时的文字兜底（加载中不再显示，避免"文字闪一下"）
     }, opts);
     // 等比例适度缩小：裁掉留白后实时水印可见内容高度≈短边 4.2%、宽度≈短边 13.2%
@@ -31,25 +32,65 @@ export class Watermark {
     this.img.onerror = () => { this.failed = true; };
     this.img.src = logoSrc;
 
+    // 副 logo（嘉元环境）：并排绘制在主 logo 右侧（corner=br/tr 时绘制在左侧）。
+    // 源图字色是深藏青（#052f7f），直接放深色底上几乎看不见，
+    // 故加载后把藏青字重着色为浅蓝白（#cfe0f6），绿色 ENV 块与白字保持原样。
+    this.img2 = null;
+    this._trim2 = null;
+    this._tinted2 = null;
+    if (this.opts.extraLogoSrc) {
+      const img2 = new Image();
+      img2.crossOrigin = 'anonymous';
+      img2.onload = () => {
+        this.img2 = img2;
+        this._prepareExtra();
+      };
+      img2.onerror = () => { this.img2 = null; };
+      img2.src = this.opts.extraLogoSrc;
+    }
+
     this._trim = null;
     this._texture = null;
   }
 
-  /** 懒计算 logo 的 alpha 有效边界（降采样扫描，仅算一次），返回源图上的裁剪框 */
-  _trimBox() {
-    if (this._trim) return this._trim;
-    const w = this.img.naturalWidth || this.img.width;
-    const h = this.img.naturalHeight || this.img.height;
-    if (!w || !h) return (this._trim = { sx: 0, sy: 0, sw: 1, sh: 1, ar: 3.2 });
+  /** 副 logo 就绪：裁掉透明留白后重着色成浅色版，缓存成 canvas */
+  _prepareExtra() {
+    if (!this.img2 || !this.img2.naturalWidth) return;
+    const box = this._computeTrim(this.img2);
+    this._trim2 = box;
+    const c = document.createElement('canvas');
+    c.width = Math.max(1, Math.round(box.sw));
+    c.height = Math.max(1, Math.round(box.sh));
+    const cx = c.getContext('2d', { willReadFrequently: true });
+    cx.drawImage(this.img2, box.sx, box.sy, box.sw, box.sh, 0, 0, c.width, c.height);
+    try {
+      const id = cx.getImageData(0, 0, c.width, c.height);
+      const d = id.data;
+      for (let i = 0; i < d.length; i += 4) {
+        // 藏青色：R 很低、B 偏高的像素 → 换成浅蓝白，保留原 alpha（抗锯齿边缘自然）
+        if (d[i] < 70 && d[i + 1] < 100 && d[i + 2] > 90) {
+          d[i] = 207; d[i + 1] = 224; d[i + 2] = 246;
+        }
+      }
+      cx.putImageData(id, 0, 0);
+    } catch (e) { /* 读像素失败（跨域/污染）时保留原色 */ }
+    this._tinted2 = c;
+  }
+
+  /** 与主 logo 相同的一套测算法，供任意图片复用 */
+  _computeTrim(img) {
+    const w = img.naturalWidth || img.width;
+    const h = img.naturalHeight || img.height;
+    if (!w || !h) return { sx: 0, sy: 0, sw: 1, sh: 1, ar: 3.2 };
 
     const sw = Math.min(512, w), sh = Math.max(1, Math.round(h * sw / w));
     const c = document.createElement('canvas');
     c.width = sw; c.height = sh;
     const cx = c.getContext('2d', { willReadFrequently: true });
-    cx.drawImage(this.img, 0, 0, sw, sh);
+    cx.drawImage(img, 0, 0, sw, sh);
     let d;
     try { d = cx.getImageData(0, 0, sw, sh).data; }
-    catch (e) { return (this._trim = { sx: 0, sy: 0, sw: w, sh: h, ar: w / h }); }
+    catch (e) { return { sx: 0, sy: 0, sw: w, sh: h, ar: w / h }; }
 
     let x0 = sw, y0 = sh, x1 = -1, y1 = -1;
     for (let y = 0; y < sh; y++) {
@@ -68,14 +109,21 @@ export class Watermark {
       sw: (x1 - x0 + 1) / sw * w, sh: (y1 - y0 + 1) / sh * h
     };
     box.ar = box.sw / box.sh;
-    return (this._trim = box);
+    return box;
   }
 
+  /** 懒计算 logo 的 alpha 有效边界（降采样扫描，仅算一次），返回源图上的裁剪框 */
+  _trimBox() {
+    if (!this._trim) this._trim = this._computeTrim(this.img);
+    return this._trim;
+  }
   _logoSize(w, h, scaleOverride) {
     const base = Math.min(w, h);
     const s = scaleOverride != null ? scaleOverride : this.opts.scale;
     const ar = this.loaded ? this._trimBox().ar : 3.2;
-    return { w: base * s * ar, h: base * s };
+    // 画布尺寸是设备像素，dpr>1 时若不加倍会显得又小又贴边，这里统一按 CSS 像素标定
+    const k = this.dpr || 1;
+    return { w: base * s * ar * k, h: base * s * k };
   }
 
   /** 把水印绘制到任意 2D 上下文（用于合成导出或实时覆盖层）
@@ -95,13 +143,27 @@ export class Watermark {
 
   _drawCorner(ctx, w, h, scaleOverride) {
     const { w: lw, h: lh } = this._logoSize(w, h, scaleOverride);
-    const m = this.opts.margin;
-    let x = w - lw - m, y = h - lh - m;
+    const k = this.dpr || 1;
+    const m = this.opts.margin * k;
+    // bottomLift：窄屏下抬高距离（CSS 像素，由 App._syncWm 设置），让开底部胶囊按钮
+    const lift = (this.bottomLift || 0) * k;
+    let x = w - lw - m, y = h - lh - m - lift;
     if (this.opts.corner === 'tl') { x = m; y = m; }
     else if (this.opts.corner === 'tr') { x = w - lw - m; y = m; }
-    else if (this.opts.corner === 'bl') { x = m; y = h - lh - m; }
+    else if (this.opts.corner === 'bl') { x = m; y = h - lh - m - lift; }
     const t = this._trimBox();
     ctx.drawImage(this.img, t.sx, t.sy, t.sw, t.sh, x, y, lw, lh);
+    this._drawExtra(ctx, x, y, lw, lh);
+  }
+
+  /** 副 logo：与主 logo 等高，按裁剪后比例定宽，间距为主 logo 高度的 0.45 倍 */
+  _drawExtra(ctx, x, y, lw, lh) {
+    if (!this._tinted2 || !this._trim2) return;
+    const w2 = lh * this._trim2.ar;
+    const gap = lh * 0.45;
+    const onRight = this.opts.corner === 'bl' || this.opts.corner === 'tl';
+    const x2 = onRight ? x + lw + gap : x - w2 - gap;
+    ctx.drawImage(this._tinted2, x2, y, w2, lh);
   }
 
   _drawTiled(ctx, w, h) {

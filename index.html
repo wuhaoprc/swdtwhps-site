@@ -4,7 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>江河海 · 海水淡化全流程 3D 模拟系统</title>
+  <meta name="description" content="江河海 SWRO 海水淡化全流程三维可视化：取水、预处理、超滤、高压与能量回收、反渗透、后处理、浓水排放七段工艺逐段建模，支持截图、动画与 3D 模型导出。" />
+  <meta name="theme-color" content="#0b1220" />
   <link rel="icon" type="image/png" href="./assets/favicon.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="江河海 · 海水淡化全流程 3D 模拟系统" />
+  <meta property="og:title" content="江河海 · 海水淡化全流程 3D 模拟系统" />
+  <meta property="og:description" content="七段工艺三维可视化模拟，可截图、录屏与导出 3D 模型。" />
+  <meta property="og:url" content="https://swdtwhps.dpdns.org/" />
+  <meta name="twitter:card" content="summary" />
   <!-- 离线本地化 three.js：所有 js 由 ./vendor 提供，无需联网，且不依赖 Import Maps，
        用相对路径直接解析，兼容性更强（旧版 WebView 也能运行）。 -->
   <style>
@@ -31,8 +41,11 @@
     ::-webkit-scrollbar-corner { background: transparent; }
     #stage { position: fixed; inset: 0; }
     #stage canvas { display: block; }
-    /* 水印覆盖层：实时叠加在 3D 画面之上 */
-    #wm-canvas { position: absolute; inset: 0; pointer-events: none; }
+    /* 水印覆盖层：实时叠加在 3D 画面之上。
+       canvas 是替换元素，只写 inset:0 不会把 CSS 尺寸拉到容器宽度，
+       在高分屏（dpr≥2）上会按位图尺寸（如 2880×1800）铺开，导致水印跑到视口外，
+       必须显式给 width/height 100%。 */
+    #wm-canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 
     #panel {
       position: fixed; top: 14px; left: 14px; width: 264px; max-height: calc(100vh - 28px);

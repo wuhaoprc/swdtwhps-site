@@ -30,7 +30,10 @@ export class App {
       this.wmCanvas = root.querySelector('#wm-canvas');
       // 水印参数统一在 Watermark.js 内配置（角标尺寸/边距/对齐），此处不再传参覆盖，
       // 避免出现"改了默认参数却不生效"的双份配置问题。
-      this.wm = new Watermark('./assets/watermark.png');
+      this.wm = new Watermark('./assets/watermark.png', {
+        // 副 logo：嘉元环境（并排绘制在「江河海」右侧，等高；深藏青字自动浅色化）
+        extraLogoSrc: './assets/jiayuan_env.png'
+      });
       this.exporter = new Exporter(this.sm, this.wm);
 
       // 二 构建 UI（工艺段按钮 + 导出按钮 + HUD）
@@ -88,6 +91,11 @@ export class App {
       this.wmCanvas.width = gl.width;
       this.wmCanvas.height = gl.height;
     }
+    // 窄屏底部有「工艺段」「参数说明」胶囊按钮（高约 40px + 12px 安全边距），
+    // 水印默认贴底会被压住，故在窄屏把角标整体抬高到按钮上方。
+    // 单位是 CSS 像素，Watermark 内部按 dpr 换算成设备像素。
+    this.wm.dpr = (window.innerWidth > 0) ? (gl.width / window.innerWidth) : 1;
+    this.wm.bottomLift = window.innerWidth <= 1200 ? 62 : 0;
   }
 
   select(id) {

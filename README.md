@@ -17,7 +17,23 @@ assets/           # watermark.png（实时水印源图）、favicon.png
 offline.html      # 免服务单文件版（1.4 MB，双击即可看；线上作为备用入口）
 ```
 
-`src/core/App.js` 第 33 行固定读取 `./assets/watermark.png`，删了水印会退化成文字角标。
+资产说明：`assets/watermark.png`（江河海主水印源图）、`assets/jiayuan_env.png`（嘉元环境副水印）、`favicon.png`、`apple-touch-icon.png`、`icon-192.png`、`icon-512.png`。
+
+`src/core/App.js` 第 33 行固定读取 `./assets/watermark.png`，删了水印会退化成文字角标；副 logo 由同一处传入 `extraLogoSrc: './assets/jiayuan_env.png'`，缺图时只画主 logo，不报错。
+
+## 站点元信息（浏览器标签页 / 收藏 / 主屏图标）
+
+| 位置 | 取值 | 用在哪 |
+|---|---|---|
+| `<title>` | 江河海 · 海水淡化全流程 3D 模拟系统 | 浏览器标签页、收藏夹默认名 |
+| `description` | 七段工艺逐段建模、可导出 | 搜索结果摘要、分享预览 |
+| `og:*` | 同名标题 + 简介 + `og:url` | 微信/飞书等平台分享卡片 |
+| `theme-color` | `#0b1220` | 手机浏览器地址栏配色 |
+| `manifest.webmanifest` | `name` / `short_name`「海水淡化 3D」 | 「添加到主屏幕」后的图标名 |
+| `apple-touch-icon` | 180×180（favicon 压深色底） | iOS 主屏图标，避免系统自动补黑边 |
+
+改名字要同时改三处：`<title>`、`og:title`/`og:site_name`、`manifest` 的 `name` / `short_name`（`short_name` 建议 ≤ 6 个汉字，主屏上不截断）。
+
 
 ## 本地预览
 
@@ -93,6 +109,15 @@ Cloudflare 控制台 → Workers & Pages → `swdtwhps` → Deployments → 选�
 - **竖屏取景**：`SceneManager.fitDistance(base, {fit, width})`，仅当 `aspect < 1.2` 生效，把 `width` 个世界单位铺满画面宽度；全景视角在 `PlantSceneSegment` 的 `view` 里声明 `fit: true, fitWidth: 135`，近景段（dist 20 左右）不声明即保持原距离。宽视口原样返回，桌面取景完全不变。**不要用 group 包围盒反算**：厂区 group 含远山与海面，会把镜头甩到天边。
 - 拉远取景后会看到海面平面的边界（画面下方的深色楔形），属场景范围边界，非渲染故障。
 - `offline.html` 由原工程 `node build-offline.mjs` 生成，骨架取原工程的 `index.html` —— 该文件已同步为本目录版本（含移动端 CSS / 按钮 / 开关脚本），改动时两边保持一致再构建。
+
+## 水印（角标）实现要点
+
+- 屏幕上的「江河海 / 嘉元环境」不是 HTML，是 `src/core/Watermark.js` 每帧画到覆盖层 canvas 的角标；导出（截图 / 录像 / glTF）走同一套绘制，所以改水印两边同时生效。
+- **`#wm-canvas` 必须显式 `width:100%; height:100%`**。canvas 是替换元素，只写 `inset:0` 不会把它的 CSS 尺寸拉到容器，高分屏上会按位图尺寸（如 2880×1800）铺开，水印整个跑到视口外——dpr≥2 的 Retina 与手机上一度完全看不见。
+- 画布坐标系是设备像素，`Watermark.dpr` 由 `App._syncWm` 按 `gl.width / innerWidth` 注入，角标尺寸、`margin`、窄屏 `bottomLift` 全部乘 dpr 换算，保证不同屏幕 CSS 尺寸一致。
+- 窄屏底部有「工艺段 / 参数说明」胶囊按钮，`bottomLift = 62`（CSS px）把角标抬到按钮上方，否则会被压住。
+- 副 logo 位置：`corner` 为 `bl`/`tl` 时画在主 logo 右侧，`br`/`tr` 时画在左侧；等高（`lh`）、按裁剪后宽高比定宽、间距 `lh*0.45`。
+- 嘉元 logo 原图字色是深藏青 `#052F7F`，深色底上不可见，`_prepareExtra()` 把 `R<70 / G<100 / B>90` 的像素重着色成浅蓝白 `#CFE0F6`，绿色 ENV 块与白字保持原样；抗锯齿边缘靠原 alpha 自然过渡，不要改成整体反色（反色会把绿色块变品红）。
 
 
 
