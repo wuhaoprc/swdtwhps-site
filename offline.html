@@ -26017,11 +26017,26 @@
     };
     for (const sx of [-w / 2 + 0.18, w / 2 - 0.18])
       for (const sz of [-d / 2 + 0.18, d / 2 - 0.18]) corner(sx, sz);
-    const doorFrame = new Mesh(new BoxGeometry(w * 0.62, h * 0.84, 0.1), steel);
+    const doorMat = new MeshStandardMaterial({
+      color: 10135220,
+      transparent: false,
+      opacity: 1,
+      depthWrite: true,
+      metalness: 0.55,
+      roughness: 0.4
+    });
+    const doorFrame = new Mesh(new BoxGeometry(w * 0.62, h * 0.84, 0.1), doorMat);
     doorFrame.position.set(0, cy, d / 2 + 0.07);
     doorFrame.userData.segmentId = s.id;
     g.add(doorFrame);
-    const leafMat = mat(7042951, { metalness: 0.4, roughness: 0.5 });
+    const leafMat = new MeshStandardMaterial({
+      color: 7042951,
+      transparent: false,
+      opacity: 1,
+      depthWrite: true,
+      metalness: 0.4,
+      roughness: 0.5
+    });
     for (const dx of [-w * 0.15, w * 0.15]) {
       const leaf = new Mesh(new BoxGeometry(w * 0.3, h * 0.8, 0.06), leafMat);
       leaf.position.set(dx, cy, d / 2 + 0.12);
@@ -26029,7 +26044,7 @@
       g.add(leaf);
     }
     for (const dx of [-w * 0.03, w * 0.03]) {
-      const hd = new Mesh(new CylinderGeometry(0.05, 0.05, 0.55, 8), steel);
+      const hd = new Mesh(new CylinderGeometry(0.05, 0.05, 0.55, 8), doorMat);
       hd.position.set(dx, cy, d / 2 + 0.16);
       hd.userData.segmentId = s.id;
       g.add(hd);
@@ -26058,7 +26073,7 @@
     g.traverse((o) => {
       if (o.isMesh && o.userData.segmentId === s.id) pick.push(o);
     });
-    return { group: g, wallMat, roofMat, edgeMat, pick };
+    return { group: g, wallMat, roofMat, edgeMat, doorMat, leafMat, pick };
   }
   var PlantSceneSegment = class extends SegmentBase {
     constructor() {
@@ -26559,6 +26574,8 @@
           wallMat: c.wallMat,
           roofMat: c.roofMat,
           edgeMat: c.edgeMat,
+          doorMat: c.doorMat,
+          leafMat: c.leafMat,
           pick: c.pick
         };
         this._feature(s);
@@ -27354,12 +27371,17 @@
         return sp;
       };
       PLANT_SEGMENTS.forEach((s, i) => {
-        const y = SITE.groundY + s.h + 2.6 + (i % 2 ? 3.5 : 0);
-        const z = -1 - (i % 2 ? 6 : 0);
-        const xoff = s.x < -25 ? 18 : s.x < -15 ? 6 : 0;
+        const TWEAK = {
+          intake: { dx: -1, dy: 9, dz: 0 },
+          pretreatment: { dx: 6, dy: 4.5, dz: -6 }
+        };
+        const tw = TWEAK[s.id] || {};
+        const y = SITE.groundY + s.h + 2.6 + (tw.dy != null ? tw.dy : i % 2 ? 3.5 : 0);
+        const z = -1 - (tw.dz != null ? -tw.dz : i % 2 ? 6 : 0);
+        const xoff = tw.dx != null ? tw.dx : s.x < -25 ? 18 : s.x < -15 ? 6 : 0;
         L(`${s.no} ${s.name}`, V9(s.x + xoff, y, z), { fontSize: 28, color: "#eaf4ff" });
       });
-      const ovLabel = L("\u5168\u6D41\u7A0B\u603B\u89C8", V9(-38, SITE.groundY + 4.4, -9.5), { fontSize: 26, color: "#bcd6ff" });
+      const ovLabel = L("\u5168\u6D41\u7A0B\u603B\u89C8", V9(-40.5, SITE.groundY + 4.4, -9.5), { fontSize: 26, color: "#bcd6ff" });
       if (this.halls.overview) {
         ovLabel.userData.segmentId = "overview";
         this.halls.overview.pick.push(ovLabel);
@@ -27460,13 +27482,16 @@
       this.focused = id;
       Object.entries(this.halls).forEach(([k, h]) => {
         const on = k === id;
-        [h.wallMat, h.roofMat].forEach((m) => {
+        [h.wallMat, h.roofMat, h.doorMat, h.leafMat].forEach((m) => {
+          if (!m) return;
           m.transparent = true;
           m.depthWrite = false;
           m.needsUpdate = true;
         });
         h.wallMat.opacity = on ? 0.1 : 0.3;
         h.roofMat.opacity = on ? 0.13 : 0.38;
+        if (h.doorMat) h.doorMat.opacity = on ? 0.14 : 0.34;
+        if (h.leafMat) h.leafMat.opacity = on ? 0.14 : 0.34;
         h.edgeMat.opacity = on ? 1 : 0.55;
         h.group.traverse((o) => {
           if (o.isMesh) o.castShadow = false;
@@ -27491,7 +27516,8 @@
     resetView() {
       this.focused = null;
       Object.values(this.halls).forEach((h) => {
-        [h.wallMat, h.roofMat].forEach((m) => {
+        [h.wallMat, h.roofMat, h.doorMat, h.leafMat].forEach((m) => {
+          if (!m) return;
           m.transparent = false;
           m.depthWrite = true;
           m.opacity = 1;

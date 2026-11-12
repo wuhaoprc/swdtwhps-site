@@ -220,15 +220,24 @@ function makeContainer(s, groundY) {
     for (const sz of [-d / 2 + 0.18, d / 2 - 0.18]) corner(sx, sz);
 
   // 端门（正面 +Z）：门框 + 双开页 + 把手
-  const doorFrame = new THREE.Mesh(new THREE.BoxGeometry(w * 0.62, h * 0.84, 0.1), steel);
+  // 门框/把手用独立材质（不复用 steel），否则变透明时只能淡箱体、门仍是实心；
+  // 角件/底架继续共用 steel，保持结构件不变透明的原设计。
+  const doorMat = new THREE.MeshStandardMaterial({
+    color: 0x9aa6b4, transparent: false, opacity: 1.0, depthWrite: true,
+    metalness: 0.55, roughness: 0.4
+  });
+  const doorFrame = new THREE.Mesh(new THREE.BoxGeometry(w * 0.62, h * 0.84, 0.1), doorMat);
   doorFrame.position.set(0, cy, d / 2 + 0.07); doorFrame.userData.segmentId = s.id; g.add(doorFrame);
-  const leafMat = mat(0x6b7787, { metalness: 0.4, roughness: 0.5 });
+  const leafMat = new THREE.MeshStandardMaterial({
+    color: 0x6b7787, transparent: false, opacity: 1.0, depthWrite: true,
+    metalness: 0.4, roughness: 0.5
+  });
   for (const dx of [-w * 0.15, w * 0.15]) {
     const leaf = new THREE.Mesh(new THREE.BoxGeometry(w * 0.3, h * 0.8, 0.06), leafMat);
     leaf.position.set(dx, cy, d / 2 + 0.12); leaf.userData.segmentId = s.id; g.add(leaf);
   }
   for (const dx of [-w * 0.03, w * 0.03]) {
-    const hd = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.55, 8), steel);
+    const hd = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.55, 8), doorMat);
     hd.position.set(dx, cy, d / 2 + 0.16); hd.userData.segmentId = s.id; g.add(hd);
   }
 
@@ -255,7 +264,7 @@ function makeContainer(s, groundY) {
   const pick = [];
   g.traverse(o => { if (o.isMesh && o.userData.segmentId === s.id) pick.push(o); });
 
-  return { group: g, wallMat, roofMat, edgeMat, pick };
+  return { group: g, wallMat, roofMat, edgeMat, doorMat, leafMat, pick };
 }
 
 export class PlantSceneSegment extends SegmentBase {
@@ -713,6 +722,7 @@ export class PlantSceneSegment extends SegmentBase {
       this.addMesh(c.group);
       this.halls[s.id] = {
         group: c.group, wallMat: c.wallMat, roofMat: c.roofMat, edgeMat: c.edgeMat,
+        doorMat: c.doorMat, leafMat: c.leafMat,
         pick: c.pick
       };
       this._feature(s);
@@ -1352,14 +1362,23 @@ export class PlantSceneSegment extends SegmentBase {
       return sp;
     };
     PLANT_SEGMENTS.forEach((s, i) => {
-      // 相邻厂房间距仅 ~11，标注放大后需错开深度/高度避免互相叠字遮挡厂房
-      const y = SITE.groundY + s.h + 2.6 + (i % 2 ? 3.5 : 0);
-      const z = -1 - (i % 2 ? 6.0 : 0);
+      // 相邻厂房间距仅 ~11，标注放大后需错开深度/高度避免互相叠字遮挡厂房；
+      // 但「一 取水段 / 二 预处理段」按统一直觉会与「三 UF/MF」重叠（三者屏幕坐标
+      // 仅差 10~15 px），故这两段改用显式偏移：沿 X 轻微回收 + 沿 Y 阶梯抬高，
+      // 形成自左向右递减的台阶，彼此错开且各自落在自家厂房上方。
+      const TWEAK = {
+        intake:       { dx: -1.0, dy: 9.0,  dz: 0 },
+        pretreatment: { dx: 6.0,  dy: 4.5,  dz: -6.0 }
+      };
+      const tw = TWEAK[s.id] || {};
+      const y = SITE.groundY + s.h + 2.6 + (tw.dy != null ? tw.dy : (i % 2 ? 3.5 : 0));
+      const z = -1 - (tw.dz != null ? -tw.dz : (i % 2 ? 6.0 : 0));
       // 最左侧两栋（x<-20）标注东移，避开左侧导航栏遮挡
-      const xoff = s.x < -25 ? 18 : (s.x < -15 ? 6 : 0);
+      const xoff = tw.dx != null ? tw.dx : (s.x < -25 ? 18 : (s.x < -15 ? 6 : 0));
       L(`${s.no} ${s.name}`, V(s.x + xoff, y, z), { fontSize: 28, color: '#eaf4ff' });
     });
-    const ovLabel = L('全流程总览', V(-38, SITE.groundY + 4.4, -9.5), { fontSize: 26, color: '#bcd6ff' });
+    // 总览标签左移一格，给「二 预处理段」让出横向空间（两者原来只差 44 px 会贴字）
+    const ovLabel = L('全流程总览', V(-40.5, SITE.groundY + 4.4, -9.5), { fontSize: 26, color: '#bcd6ff' });
     // 展馆标签也纳入拾取：点击文字与点击展馆本体、点击左侧导航都触发同一指令
     if (this.halls.overview) {
       ovLabel.userData.segmentId = 'overview';
@@ -1474,11 +1493,15 @@ export class PlantSceneSegment extends SegmentBase {
     this.focused = id;
     Object.entries(this.halls).forEach(([k, h]) => {
       const on = k === id;
-      [h.wallMat, h.roofMat].forEach(m => {
+      // 箱体（墙 + 顶）与端门（门框/门叶/把手）一起淡出，否则门仍是实心，看着像没变透明
+      [h.wallMat, h.roofMat, h.doorMat, h.leafMat].forEach(m => {
+        if (!m) return;
         m.transparent = true; m.depthWrite = false; m.needsUpdate = true;
       });
       h.wallMat.opacity = on ? 0.10 : 0.30;
       h.roofMat.opacity = on ? 0.13 : 0.38;
+      if (h.doorMat) h.doorMat.opacity = on ? 0.14 : 0.34;
+      if (h.leafMat) h.leafMat.opacity = on ? 0.14 : 0.34;
       h.edgeMat.opacity = on ? 1.0 : 0.55;
       h.group.traverse(o => { if (o.isMesh) o.castShadow = false; });
     });
@@ -1495,7 +1518,8 @@ export class PlantSceneSegment extends SegmentBase {
   resetView() {
     this.focused = null;
     Object.values(this.halls).forEach(h => {
-      [h.wallMat, h.roofMat].forEach(m => {
+      [h.wallMat, h.roofMat, h.doorMat, h.leafMat].forEach(m => {
+        if (!m) return;
         m.transparent = false; m.depthWrite = true; m.opacity = 1.0; m.needsUpdate = true;
       });
       h.edgeMat.opacity = 0.5;
