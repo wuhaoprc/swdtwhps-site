@@ -27373,7 +27373,7 @@
       PLANT_SEGMENTS.forEach((s, i) => {
         const TWEAK = {
           intake: { dx: -1, dy: 9, dz: 0 },
-          pretreatment: { dx: 6, dy: 4.5, dz: -6 }
+          pretreatment: { dx: 2, dy: 6.5, dz: -6 }
         };
         const tw = TWEAK[s.id] || {};
         const y = SITE.groundY + s.h + 2.6 + (tw.dy != null ? tw.dy : i % 2 ? 3.5 : 0);
@@ -27403,7 +27403,7 @@
         ["\u4E2D\u592E\u7EFF\u5316\u9694\u79BB\u5E26 \xB7 6 m", V9(77, 3.2, -5), 22, "#bfe3a0"],
         ["\u4EA7\u54C1\u6C34\u7B2C\u4E09\u8DEF \xB7 \u7F50\u88C5\u996E\u7528\u6C34\u5382\u623F", V9(86, 7.6, -1), 26, "#a6ecff"],
         ["\u704C\u88C5\u7EBF\uFF08\u96C6\u6C34\u7F50 \u2192 \u704C\u88C5\uFF09", V9(BOTTLE_X, 5.4, -2), 22, "#a6ecff"],
-        ["\u5916\u90E8\u7528\u6C34\u5DE5\u5382 \xB7 \u5DE5\u4E1A\u56ED\u533A", V9(112, 9.6, -1), 32, "#ffd9a8"],
+        ["\u5916\u90E8\u7528\u6C34\u5DE5\u5382 \xB7 \u5DE5\u4E1A\u56ED\u533A", V9(88, 9.2, -24.5), 32, "#ffd9a8"],
         ["\u4E24\u5382\u5317\u5411\u4E3B\u51FA\u5165\u53E3 \xB7 \u63A5\u516C\u5171\u8D70\u5ECA", V9(88, 4.6, 2.6), 22, "#dfe8f5"],
         ["\u5382\u533A\u4E3B\u5165\u53E3 \xB7 \u5F00\u653E\u5F0F\u5382\u95E8", V9(44, 9.5, 13), 24, "#dfe8f5"],
         ["\u5382\u524D\u533A \xB7 \u7EFC\u5408\u697C", V9(-40, 3.4, -4), 24, "#dfe8f5"]

@@ -1368,7 +1368,7 @@ export class PlantSceneSegment extends SegmentBase {
       // 形成自左向右递减的台阶，彼此错开且各自落在自家厂房上方。
       const TWEAK = {
         intake:       { dx: -1.0, dy: 9.0,  dz: 0 },
-        pretreatment: { dx: 6.0,  dy: 4.5,  dz: -6.0 }
+        pretreatment: { dx: 2.0,  dy: 6.5,  dz: -6.0 }
       };
       const tw = TWEAK[s.id] || {};
       const y = SITE.groundY + s.h + 2.6 + (tw.dy != null ? tw.dy : (i % 2 ? 3.5 : 0));
@@ -1401,7 +1401,9 @@ export class PlantSceneSegment extends SegmentBase {
       ['中央绿化隔离带 · 6 m', V(77, 3.2, -5), 22, '#bfe3a0'],
       ['产品水第三路 · 罐装饮用水厂房', V(86, 7.6, -1.0), 26, '#a6ecff'],
       ['灌装线（集水罐 → 灌装）', V(BOTTLE_X, 5.4, -2.0), 22, '#a6ecff'],
-      ['外部用水工厂 · 工业园区', V(112, 9.6, -1), 32, '#ffd9a8'],
+      // 原位置 world x=112 落在右侧参数面板底下（标注右边界 1149 > 面板 1046，右半截被遮）；
+      // 西移到园区西段上方并抬到屋脊以上，整条标注落在面板左侧的可见区域。
+      ['外部用水工厂 · 工业园区', V(88, 9.2, -24.5), 32, '#ffd9a8'],
       ['两厂北向主出入口 · 接公共走廊', V(88, 4.6, 2.6), 22, '#dfe8f5'],
       ['厂区主入口 · 开放式厂门', V(44, 9.5, 13), 24, '#dfe8f5'],
       ['厂前区 · 综合楼', V(-40, 3.4, -4.0), 24, '#dfe8f5']
