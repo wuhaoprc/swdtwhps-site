@@ -20,7 +20,16 @@
     }
     * { box-sizing: border-box; }
     html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
-      font-family: "Microsoft YaHei", "PingFang SC", "Segoe UI", system-ui, sans-serif; }
+      font-family: "Microsoft YaHei", "PingFang SC", "Segoe UI", system-ui, sans-serif;
+      /* 滚动条与深色背景统一：细窄、低对比轨道、主题蓝滑块 */
+      scrollbar-width: thin;
+      scrollbar-color: rgba(120, 170, 220, .34) rgba(120, 170, 220, .06); }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: rgba(120, 170, 220, .06); border-radius: 8px; }
+    ::-webkit-scrollbar-thumb { background: rgba(120, 170, 220, .34); border-radius: 8px;
+      border: 2px solid transparent; background-clip: padding-box; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(46, 168, 255, .5); background-clip: padding-box; }
+    ::-webkit-scrollbar-corner { background: transparent; }
     #stage { position: fixed; inset: 0; }
     #stage canvas { display: block; }
     /* 水印覆盖层：实时叠加在 3D 画面之上 */
@@ -31,6 +40,8 @@
       overflow: auto; background: var(--panel); border: 1px solid var(--line);
       border-radius: 12px; padding: 14px; backdrop-filter: blur(6px);
       box-shadow: 0 8px 30px rgba(0,0,0,.4); z-index: 10;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(120, 170, 220, .34) rgba(120, 170, 220, .06);
     }
     #panel h1 { font-size: 15px; margin: 0 0 2px; letter-spacing: .5px; }
     #panel .sub { font-size: 11px; color: var(--muted); margin-bottom: 10px; }
@@ -54,8 +65,11 @@
 
     #hud {
       position: fixed; top: 14px; right: 14px; width: 380px; max-width: calc(100vw - 28px);
+      max-height: calc(100vh - 72px); overflow: auto; /* 底部留出提示条空间 */
       background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
       padding: 14px 16px; backdrop-filter: blur(6px); z-index: 10;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(120, 170, 220, .34) rgba(120, 170, 220, .06);
     }
     /* 顶部居中主标题：海水淡化全流程工艺（SWRO）固定正上方居中 */
     #title-bar {
@@ -79,6 +93,50 @@
       background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; z-index: 10; }
     #loading { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
       background: var(--bg); color: var(--muted); font-size: 14px; z-index: 50; }
+
+    /* ===== 移动端（≤1200px：手机 + 平板，含横屏）：两侧介绍框默认收起，点击唤出 ===== */
+    .tab-btn { display: none; }
+    #scrim { display: none; }
+    @media (max-width: 1200px) {
+      #title-bar { top: 8px; max-width: calc(100vw - 24px); padding: 8px 14px; }
+      #title-bar .t-main { font-size: 14px; letter-spacing: .5px; }
+      #title-bar .t-sub { font-size: 11px; margin-left: 6px; }
+      #hint { display: none; }
+
+      #panel, #hud {
+        top: 58px; /* 让开顶部标题栏，避免面板抬头被压住 */
+        max-height: calc(100vh - 128px);
+        overflow: auto; -webkit-overflow-scrolling: touch;
+        opacity: 0; visibility: hidden; pointer-events: none;
+        transition: transform .26s ease, opacity .18s ease;
+        overscroll-behavior: contain;
+      }
+      #panel { left: 8px; width: min(86vw, 320px); transform: translateX(-108%); }
+      #hud { right: 8px; width: min(92vw, 360px); transform: translateX(108%); }
+
+      body[data-open="panel"] #panel,
+      body[data-open="hud"] #hud {
+        opacity: 1; visibility: visible; pointer-events: auto; transform: translateX(0);
+      }
+      body[data-open] #scrim {
+        display: block; position: fixed; inset: 0; z-index: 9;
+        background: rgba(4, 10, 20, .48);
+      }
+
+      .tab-btn {
+        display: inline-flex; align-items: center; gap: 6px;
+        position: fixed; bottom: calc(12px + env(safe-area-inset-bottom)); z-index: 13;
+        background: var(--panel); border: 1px solid var(--line); color: var(--text);
+        border-radius: 999px; padding: 9px 16px; font-size: 13px; font-family: inherit;
+        backdrop-filter: blur(6px); box-shadow: 0 6px 24px rgba(0, 0, 0, .45);
+        cursor: pointer; -webkit-tap-highlight-color: transparent;
+      }
+      .tab-btn:active { background: rgba(46, 168, 255, .22); }
+      #tab-panel { left: 12px; }
+      #tab-hud { right: 12px; }
+      .tab-btn[aria-expanded="true"] { background: var(--accent); color: #04121f;
+        border-color: var(--accent); font-weight: 700; }
+    }
   </style>
 </head>
 <body>
@@ -108,7 +166,47 @@
   </div>
 
   <div id="hint">鼠标拖拽旋转 · 滚轮缩放 · 右键平移 · 可开启「自动巡游」</div>
+
+  <!-- 移动端唤出按钮：窄屏下两侧介绍框默认收起，避免遮挡 3D 主画面 -->
+  <button id="tab-panel" class="tab-btn" type="button" aria-expanded="false" aria-controls="panel">工艺段</button>
+  <button id="tab-hud" class="tab-btn" type="button" aria-expanded="false" aria-controls="hud">参数说明</button>
+  <div id="scrim"></div>
+
   <div id="loading">正在加载 3D 场景…（首次需初始化 three.js）</div>
+
+  <script>
+    (function () {
+      var body = document.body;
+      var tp = document.getElementById('tab-panel');
+      var th = document.getElementById('tab-hud');
+      var scrim = document.getElementById('scrim');
+      var mq = window.matchMedia('(max-width: 1200px)');
+
+      function setOpen(name) {
+        if (name) { body.setAttribute('data-open', name); } else { body.removeAttribute('data-open'); }
+        var pOpen = name === 'panel', hOpen = name === 'hud';
+        tp.setAttribute('aria-expanded', pOpen ? 'true' : 'false');
+        th.setAttribute('aria-expanded', hOpen ? 'true' : 'false');
+        tp.textContent = pOpen ? '收起工艺段' : '工艺段';
+        th.textContent = hOpen ? '收起参数' : '参数说明';
+      }
+      function toggle(name) {
+        setOpen(body.getAttribute('data-open') === name ? '' : name);
+      }
+
+      tp.addEventListener('click', function () { toggle('panel'); });
+      th.addEventListener('click', function () { toggle('hud'); });
+      scrim.addEventListener('click', function () { setOpen(''); });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') { setOpen(''); }
+      });
+      if (mq.addEventListener) {
+        mq.addEventListener('change', function (e) { if (!e.matches) { setOpen(''); } });
+      }
+
+      setOpen('');
+    })();
+  </script>
 
   <!-- 安全网：若模块加载/初始化失败（如 WebGL 不可用、静态服务器未正常提供文件），
        4 秒后仍未初始化成功则给出可定位的诊断提示，而不是无限卡在"正在加载"。 -->
