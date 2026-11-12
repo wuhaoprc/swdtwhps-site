@@ -27,12 +27,69 @@ offline.html      # 免服务单文件版（1.4 MB，双击即可看；线上作
 npx serve .        # 或任意静态服务器，访问 http://localhost:3000
 ```
 
-## 更新流程
+## 更新流程（操作卡）
 
-1. 改 `src/` 下源码
-2. 重新生成离线单文件：`node build-offline.mjs`（在原始工程目录执行，依赖 esbuild）
-3. 把新的 `preview-offline.html` 覆盖为本目录的 `offline.html`
-4. 提交并 push，Cloudflare Pages 自动重建
+### 第 1 步：改文件
+
+只改本目录内的文件。改完在本地先看：
+
+```bash
+npx serve .        # 访问 http://localhost:3000 确认画面与交互正常
+```
+
+若动了 `src/` 里的 JS 逻辑，**必须**回原始工程重新生成单文件版，不能手改 `offline.html`：
+
+```bash
+node build-offline.mjs          # 在原工程目录执行，产物 preview-offline.html
+# 把 preview-offline.html 覆盖成本目录的 offline.html，再视情况改名为 offline.html
+```
+
+`offline.html` 与 `index.html` 的 CSS / HTML 结构目前保持一致，纯 CSS 或纯 HTML 版式改动可两处同步手改；一旦涉及 JS，一律走重新构建。
+
+### 第 2 步：提交（走 GitHub API，不需要 git）
+
+```powershell
+powershell -File "D:\Downloads\doubao\push-to-github.ps1" `
+  -Token <PAT> -Repo swdtwhps-site -Dir "D:\Downloads\doubao\swdtwhps-site" `
+  -Message "fix: 这次改了什么"
+```
+
+脚本做四件事：逐文件建 blob → 带 `base_tree` 合树（增量，只挂新内容）→ 建 commit → 更新 `refs/heads/main`。空仓库会先用 Contents API 写一次 README 建分支，否则 `git/blobs` 返回 `409 Git Repository is empty`。
+
+PAT 最小权限：`Contents: Read and write`；如需建新库再加 `Administration: Read and write`。有效期建议 90 天。
+
+### 第 3 步：等重建并验证
+
+Pages 检测到 `main` 变更后自动重建，通常 1-3 分钟。验证不要只看首页能不能打开，按这 4 条查：
+
+| 检查 | 判定标准 |
+|---|---|
+| 首页 | `https://swdtwhps.dpdns.org` 200，能看到 3D 厂区与底部「工艺段」「参数说明」两个按钮 |
+| 资源 | `vendor/three.module.js`、`assets/watermark.png`、`src/main.js` 均 200 |
+| 缓存头 | `index.html` 为 `max-age=0, must-revalidate`；`vendor/*` 为一年 `immutable` |
+| 控制台 | F12 无红色报错、无 404；水印是图片而非文字角标 |
+
+### 第 4 步：回滚（出错时）
+
+Cloudflare 控制台 → Workers & Pages → `swdtwhps` → Deployments → 选中上一个成功部署 → Rollback。只认成功构建过的生产部署，秒级生效。注意：回滚的是**部署**，仓库里的错误代码还在，要同步改回来，否则下次 push 又会覆盖。
+
+## 更新能力的边界
+
+| 能做 | 不能做 |
+|---|---|
+| 改任意文件（HTML/CSS/JS/图片/`_headers`/`robots.txt`）并触发重建 | 改 Pages 构建参数、加删自定义域、开关 Always Use HTTPS / HSTS |
+| 建仓库、查提交历史、读写文件 | Rollback 到历史部署、改环境变量、配 Cloudflare Access |
+| 增量提交，删除的文件同步消失（tree 里不出现即删除） | 操作 `dpdns.org` 的 DNS 记录 |
+
+原因是这个令牌是 **GitHub PAT**，只作用于仓库。Cloudflare 侧的配置变更要么在控制台点，要么另配一个 Cloudflare API Token（`Account:Cloudflare Pages:Edit` + `Zone:DNS:Edit`）。
+
+## 已知的移动端行为（改版时别踩回去）
+
+- 窄屏（≤1200px）下 `#panel` 与 `#hud` 默认收起，靠底部两个 `.tab-btn` 唤出；两者互斥，点面板外遮罩或按 Esc 收起。这段逻辑在 `index.html` / `offline.html` 的内联 `<script>` 里，`src/ui/UI.js` 只负责填充内容，不控制显隐。
+- 窄屏面板从 `top: 58px` 起，是给顶部标题栏让位；标题栏 `z-index: 11` 高于面板，若把面板顶回 8px 会出现标题压住面板抬头。
+- `scrollbar-width` **不继承**，只写在 `html/body` 上无效，必须写在 `#panel`、`#hud` 的规则里。
+- 竖屏下 3D 画面左右会被裁（透视相机垂直 FOV 固定，竖屏时水平 FOV 收窄），属相机取景问题，与面板无关。
+
 
 ## 发布边界（不要提交进仓库）
 
