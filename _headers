@@ -1,0 +1,13 @@
+# 长缓存给不常变的库与图片，入口与 html 不缓存（每次发布即生效）
+/vendor/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/*
+  Cache-Control: public, max-age=604800
+
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+  X-Content-Type-Options: nosniff
+
+/*.js
+  X-Content-Type-Options: nosniff

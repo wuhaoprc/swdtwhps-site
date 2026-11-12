@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>江河海 · 海水淡化全流程 3D 模拟系统</title>
+  <link rel="icon" type="image/png" href="./assets/favicon.png" />
+  <!-- 离线本地化 three.js：所有 js 由 ./vendor 提供，无需联网，且不依赖 Import Maps，
+       用相对路径直接解析，兼容性更强（旧版 WebView 也能运行）。 -->
+  <style>
+    :root {
+      --bg: #0b1220;
+      --panel: rgba(12, 22, 38, 0.86);
+      --line: rgba(120, 170, 220, 0.22);
+      --accent: #2ea8ff;
+      --accent2: #39d98a;
+      --text: #dfe8f5;
+      --muted: #8aa0bd;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
+      font-family: "Microsoft YaHei", "PingFang SC", "Segoe UI", system-ui, sans-serif; }
+    #stage { position: fixed; inset: 0; }
+    #stage canvas { display: block; }
+    /* 水印覆盖层：实时叠加在 3D 画面之上 */
+    #wm-canvas { position: absolute; inset: 0; pointer-events: none; }
+
+    #panel {
+      position: fixed; top: 14px; left: 14px; width: 264px; max-height: calc(100vh - 28px);
+      overflow: auto; background: var(--panel); border: 1px solid var(--line);
+      border-radius: 12px; padding: 14px; backdrop-filter: blur(6px);
+      box-shadow: 0 8px 30px rgba(0,0,0,.4); z-index: 10;
+    }
+    #panel h1 { font-size: 15px; margin: 0 0 2px; letter-spacing: .5px; }
+    #panel .sub { font-size: 11px; color: var(--muted); margin-bottom: 10px; }
+    .grp { font-size: 11px; color: var(--muted); margin: 12px 0 6px; text-transform: uppercase; letter-spacing: 1px; }
+    .seg-btn {
+      display: block; width: 100%; text-align: left; margin: 4px 0; padding: 8px 10px;
+      background: rgba(40, 70, 110, .35); border: 1px solid var(--line); color: var(--text);
+      border-radius: 8px; cursor: pointer; font-size: 13px; transition: .15s;
+    }
+    .seg-btn:hover { background: rgba(46, 168, 255, .22); }
+    .seg-btn.active { background: var(--accent); color: #04121f; border-color: var(--accent); font-weight: 700; }
+    .seg-btn small { display: block; color: var(--muted); font-size: 10px; margin-top: 2px; }
+    .seg-btn.active small { color: #06243a; }
+    .ex-btn {
+      display: inline-block; width: calc(50% - 4px); margin: 3px 2px; padding: 8px 0; text-align: center;
+      background: rgba(57, 217, 138, .14); border: 1px solid rgba(57,217,138,.4); color: var(--accent2);
+      border-radius: 8px; cursor: pointer; font-size: 12px;
+    }
+    .ex-btn:hover { background: rgba(57, 217, 138, .28); }
+    .ex-btn.wide { width: calc(100% - 4px); }
+
+    #hud {
+      position: fixed; top: 14px; right: 14px; width: 380px; max-width: calc(100vw - 28px);
+      background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+      padding: 14px 16px; backdrop-filter: blur(6px); z-index: 10;
+    }
+    /* 顶部居中主标题：海水淡化全流程工艺（SWRO）固定正上方居中 */
+    #title-bar {
+      position: fixed; top: 14px; left: 50%; transform: translateX(-50%);
+      background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+      padding: 11px 26px; backdrop-filter: blur(6px); z-index: 11;
+      box-shadow: 0 8px 30px rgba(0,0,0,.4);
+      white-space: nowrap; max-width: calc(100vw - 704px); overflow: hidden; text-overflow: ellipsis;
+    }
+    #title-bar .t-main { font-size: 17px; font-weight: 700; letter-spacing: 1px; color: #fff; }
+    #title-bar .t-sub { font-size: 13px; font-weight: 700; color: var(--accent); margin-left: 8px; }
+    #hud .name { font-size: 16px; font-weight: 700; color: #fff; }
+    #hud .sub2 { font-size: 12px; color: var(--accent); margin: 2px 0 8px; }
+    #hud .desc { font-size: 12px; color: var(--text); line-height: 1.6; }
+    #hud table { width: 100%; margin-top: 10px; border-collapse: collapse; font-size: 12px; }
+    #hud td { padding: 4px 6px; border-bottom: 1px solid var(--line); }
+    #hud td.k { color: var(--muted); width: 42%; }
+    #hud td.v { color: var(--text); }
+
+    #hint { position: fixed; bottom: 14px; right: 14px; font-size: 11px; color: var(--muted);
+      background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; z-index: 10; }
+    #loading { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+      background: var(--bg); color: var(--muted); font-size: 14px; z-index: 50; }
+  </style>
+</head>
+<body>
+  <div id="stage">
+    <!-- three.js 渲染画布由 JS 动态插入；水印覆盖层如下 -->
+    <canvas id="wm-canvas"></canvas>
+  </div>
+
+  <div id="panel">
+    <h1>江河海 · 海水淡化 3D 模拟</h1>
+    <div class="sub">SWRO 全流程 · 按工艺段拆分</div>
+    <div class="grp">工艺段（点击切换）</div>
+    <div id="seg-list"></div>
+    <div class="grp">导出（自动加盖 JHH 水印）</div>
+    <div id="ex-list"></div>
+  </div>
+
+  <div id="hud">
+    <div class="name" id="hud-name">—</div>
+    <div class="sub2" id="hud-sub">—</div>
+    <div class="desc" id="hud-desc">—</div>
+    <table id="hud-params"><tbody></tbody></table>
+  </div>
+
+  <div id="title-bar">
+    <span class="t-main">海水淡化全流程工艺</span><span class="t-sub">（SWRO）</span>
+  </div>
+
+  <div id="hint">鼠标拖拽旋转 · 滚轮缩放 · 右键平移 · 可开启「自动巡游」</div>
+  <div id="loading">正在加载 3D 场景…（首次需初始化 three.js）</div>
+
+  <!-- 安全网：若模块加载/初始化失败（如 WebGL 不可用、静态服务器未正常提供文件），
+       4 秒后仍未初始化成功则给出可定位的诊断提示，而不是无限卡在"正在加载"。 -->
+  <script>
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        var l = document.getElementById('loading');
+        if (l && !window.__desalApp) {
+          l.textContent =
+            '⚠ 场景加载超时：three.js 未能完成初始化。\n（本系统不依赖 Import Maps，采用纯相对路径加载，Chrome/Edge/Firefox/Safari 均可运行）\n\n可能原因与排查：\n' +
+            '1) 当前环境不支持 WebGL —— 请确认浏览器已开启硬件加速 / WebGL（Safari 需在设置或"开发"菜单中启用）；\n' +
+            '2) 静态服务器未正常提供 ./vendor 与 ./src 文件 —— 确认 npm start 已启动且端口 5173 可访问；\n' +
+            '3) 模块解析 / 网络错误 —— 按 F12 打开控制台查看红色报错。';
+          l.style.color = '#ff9a9a';
+          l.style.whiteSpace = 'pre-wrap';
+          l.style.padding = '24px';
+          l.style.textAlign = 'left';
+          l.style.fontSize = '14px';
+        }
+      }, 4000);
+    });
+  </script>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
