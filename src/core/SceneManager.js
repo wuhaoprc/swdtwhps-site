@@ -48,6 +48,9 @@ export class SceneManager {
     this.controls.enableDamping = true;
     this.controls.dampingFactor = 0.08;
     this.controls.maxPolarAngle = Math.PI * 0.495;
+    // 触摸操作按移动端习惯改写：单指平移（拖动画面看局部），双指拖动改为旋转；
+    // TWO 用 DOLLY_ROTATE 而非默认 DOLLY_PAN —— 双指捏合/分开仍为缩放，双指平移变为旋转。
+    this.controls.touches = { ONE: THREE.TOUCH.PAN, TWO: THREE.TOUCH.DOLLY_ROTATE };
 
     // 灯光：三层布光（天光 + 主光 + 边缘光），并把环境光压低以保留体积感
     // 半球光由 0.9 降至 0.55（新增 PMREM IBL 已承担大部分环境补光，避免发白）
@@ -97,6 +100,47 @@ export class SceneManager {
     this.renderer.setSize(w, h);
     this.camera.aspect = w / h;
     this.camera.updateProjectionMatrix();
+    // 竖屏/窄视口：旋转屏幕后按新的宽高比重新反算取景距离，避免左右被裁
+    if (this._frame) this._applyFitDistance();
+  }
+
+  /**
+   * 窄视口（aspect < 1.2）下按水平视野反算取景距离。
+   * 透视相机的垂直 FOV 固定，窗口变窄时水平 FOV 会同步收窄，画面左右被裁；
+   * 这里把相机按比例拉远，使「width 个世界单位」刚好装满画面宽度。
+   * 只有声明了 fit 的全景视角参与计算：近景工艺段（dist 20 左右）按其原距离，
+   * 否则会被错误的拉远（场景里含远山/海面，包围盒不可用于反算）。
+   * 宽视口（aspect ≥ 1.2）原样返回 base，桌面取景完全不变。
+   * @param {number} base 原有取景距离
+   * @param {{fit?:boolean, width?:number}} opts 取景参数
+   */
+  fitDistance(base, opts) {
+    const o = opts || {};
+    const aspect = this.camera.aspect || 1;
+    if (!o.fit || aspect >= 1.2) return base;
+    const tanV = Math.tan(((this.camera.fov * Math.PI) / 180) / 2);
+    const want = (o.width || 100) * 0.53 / (tanV * aspect);
+    // 上限 2.5 倍，防止极窄横比把镜头甩到远处
+    return Math.max(base, Math.min(want, base * 2.5));
+  }
+
+  /** 记住本次取景的基准距离与参数，供 resize（旋转屏幕）后重算 */
+  rememberFrame(base, opts) {
+    this._frame = { base, opts: opts || {} };
+  }
+
+  /** 保留当前观察方向与目标点，只把相机推到新的取景距离 */
+  _applyFitDistance() {
+    const { base, opts } = this._frame;
+    const dist = this.fitDistance(base, opts);
+    const dir = this.camera.position.clone().sub(this.controls.target);
+    if (dir.lengthSq() < 1e-6) return;
+    dir.setLength(dist);
+    this.camera.position.copy(this.controls.target).add(dir);
+    this.camera.near = Math.max(0.1, dist / 100);
+    this.camera.far = Math.max(this.camera.far, dist * 10 + 300);
+    this.camera.updateProjectionMatrix();
+    this.controls.update();
   }
 
   /** 生成竖直渐变天空纹理（深蓝→近黑），作为场景背景 */
@@ -161,8 +205,11 @@ export class SceneManager {
     if (box.isEmpty()) return;
     const center = box.getCenter(new THREE.Vector3());
     const size = box.getSize(new THREE.Vector3());
-    const maxDim = Math.max(size.x, size.y, size.z) || 10;
-    const dist = maxDim * 1.5 + 6;
+    const base = Math.max(size.x, size.y, size.z) * 1.5 + 6;
+    // 段内对象自成一个局部包围盒（不含远山/海面），可安全按水平视野反算
+    const opts = { fit: true, width: Math.max(size.x, size.z) };
+    const dist = this.fitDistance(base, opts);
+    this.rememberFrame(base, opts);
     this.controls.target.copy(center);
     const dir = new THREE.Vector3(1, 0.75, 1.25).normalize();
     this.camera.position.copy(center).add(dir.multiplyScalar(dist));

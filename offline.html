@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <!-- 离线单文件版：由 node build-offline.mjs 生成；所有 JS/CSS/图标/水印均已内联，file:// 双击即可运行 -->
@@ -66,10 +66,10 @@
     #hud {
       position: fixed; top: 14px; right: 14px; width: 380px; max-width: calc(100vw - 28px);
       max-height: calc(100vh - 72px); overflow: auto; /* 底部留出提示条空间 */
-      background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
-      padding: 14px 16px; backdrop-filter: blur(6px); z-index: 10;
       scrollbar-width: thin;
       scrollbar-color: rgba(120, 170, 220, .34) rgba(120, 170, 220, .06);
+      background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+      padding: 14px 16px; backdrop-filter: blur(6px); z-index: 10;
     }
     /* 顶部居中主标题：海水淡化全流程工艺（SWRO）固定正上方居中 */
     #title-bar {
@@ -103,6 +103,7 @@
       #title-bar .t-sub { font-size: 11px; margin-left: 6px; }
       #hint { display: none; }
 
+      /* 收起态：整体移出视口，不接收点击，也不遮挡 3D 画面 */
       #panel, #hud {
         top: 58px; /* 让开顶部标题栏，避免面板抬头被压住 */
         max-height: calc(100vh - 128px);
@@ -200,10 +201,12 @@
       document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') { setOpen(''); }
       });
+      // 切到宽屏（桌面）时清空展开状态，避免透明遮罩残留
       if (mq.addEventListener) {
         mq.addEventListener('change', function (e) { if (!e.matches) { setOpen(''); } });
       }
 
+      // 打开页面即收起：窄屏默认隐藏两侧介绍框
       setOpen('');
     })();
   </script>
@@ -21943,6 +21946,7 @@
       this.controls.enableDamping = true;
       this.controls.dampingFactor = 0.08;
       this.controls.maxPolarAngle = Math.PI * 0.495;
+      this.controls.touches = { ONE: TOUCH.PAN, TWO: TOUCH.DOLLY_ROTATE };
       this.scene.add(new HemisphereLight(12375807, 2107448, 0.55));
       const dir = new DirectionalLight(16777215, 1.25);
       dir.position.set(14, 22, 12);
@@ -21987,6 +21991,42 @@
       this.renderer.setSize(w, h);
       this.camera.aspect = w / h;
       this.camera.updateProjectionMatrix();
+      if (this._frame) this._applyFitDistance();
+    }
+    /**
+     * 窄视口（aspect < 1.2）下按水平视野反算取景距离。
+     * 透视相机的垂直 FOV 固定，窗口变窄时水平 FOV 会同步收窄，画面左右被裁；
+     * 这里把相机按比例拉远，使「width 个世界单位」刚好装满画面宽度。
+     * 只有声明了 fit 的全景视角参与计算：近景工艺段（dist 20 左右）按其原距离，
+     * 否则会被错误的拉远（场景里含远山/海面，包围盒不可用于反算）。
+     * 宽视口（aspect ≥ 1.2）原样返回 base，桌面取景完全不变。
+     * @param {number} base 原有取景距离
+     * @param {{fit?:boolean, width?:number}} opts 取景参数
+     */
+    fitDistance(base, opts) {
+      const o = opts || {};
+      const aspect2 = this.camera.aspect || 1;
+      if (!o.fit || aspect2 >= 1.2) return base;
+      const tanV = Math.tan(this.camera.fov * Math.PI / 180 / 2);
+      const want = (o.width || 100) * 0.53 / (tanV * aspect2);
+      return Math.max(base, Math.min(want, base * 2.5));
+    }
+    /** 记住本次取景的基准距离与参数，供 resize（旋转屏幕）后重算 */
+    rememberFrame(base, opts) {
+      this._frame = { base, opts: opts || {} };
+    }
+    /** 保留当前观察方向与目标点，只把相机推到新的取景距离 */
+    _applyFitDistance() {
+      const { base, opts } = this._frame;
+      const dist = this.fitDistance(base, opts);
+      const dir = this.camera.position.clone().sub(this.controls.target);
+      if (dir.lengthSq() < 1e-6) return;
+      dir.setLength(dist);
+      this.camera.position.copy(this.controls.target).add(dir);
+      this.camera.near = Math.max(0.1, dist / 100);
+      this.camera.far = Math.max(this.camera.far, dist * 10 + 300);
+      this.camera.updateProjectionMatrix();
+      this.controls.update();
     }
     /** 生成竖直渐变天空纹理（深蓝→近黑），作为场景背景 */
     _makeSky() {
@@ -22063,8 +22103,10 @@
       if (box.isEmpty()) return;
       const center = box.getCenter(new Vector3());
       const size = box.getSize(new Vector3());
-      const maxDim = Math.max(size.x, size.y, size.z) || 10;
-      const dist = maxDim * 1.5 + 6;
+      const base = Math.max(size.x, size.y, size.z) * 1.5 + 6;
+      const opts = { fit: true, width: Math.max(size.x, size.z) };
+      const dist = this.fitDistance(base, opts);
+      this.rememberFrame(base, opts);
       this.controls.target.copy(center);
       const dir = new Vector3(1, 0.75, 1.25).normalize();
       this.camera.position.copy(center).add(dir.multiplyScalar(dist));
@@ -25984,7 +26026,9 @@
         fog: { near: 180, far: 780 },
         // 取景右移并拉远：容纳并列后的市政水厂 + 扩地后的外部用水工厂 + 罐装厂（延伸至 x≈160）及更深远的海域/山地；
         // 方向 dir 不变，故各工艺段顺序、流程与聚焦动画的方位角逻辑均保持不变。
-        view: { target: [52, 4, 4], dir: [0.72, 0.82, 1.42], dist: 158, far: 1200 }
+        // fit/fitWidth：窄视口（竖屏手机/平板）下按水平视野把 118 个世界单位铺满画面宽度，
+        // 避免透视相机水平 FOV 收窄导致东西两端（取水口/东侧园区）被裁；宽视口不生效。
+        view: { target: [52, 4, 4], dir: [0.72, 0.82, 1.42], dist: 158, far: 1200, fit: true, fitWidth: 135 }
       });
       this.wave = null;
       this._m = {};
@@ -27542,19 +27586,24 @@
     /** 立即应用一个视角配置 */
     _applyView(view) {
       const c = new Vector3().fromArray(view.target);
-      const d = new Vector3().fromArray(view.dir).normalize().multiplyScalar(view.dist);
+      const opts = { fit: view.fit, width: view.fitWidth };
+      const dist = this.sm.fitDistance(view.dist, opts);
+      const d = new Vector3().fromArray(view.dir).normalize().multiplyScalar(dist);
       this.sm.controls.target.copy(c);
       this.sm.camera.position.copy(c).add(d);
       this.sm.camera.near = 0.1;
       this.sm.camera.far = view.far || 900;
       this.sm.camera.updateProjectionMatrix();
       this.sm.controls.update();
+      this.sm.rememberFrame(view.dist, opts);
       this._camAnim = null;
     }
     /** 平滑飞向视角（点击工艺段时的聚焦动画） */
     _flyTo(view) {
       const c = new Vector3().fromArray(view.target);
-      const d = new Vector3().fromArray(view.dir).normalize().multiplyScalar(view.dist);
+      const opts = { fit: view.fit, width: view.fitWidth };
+      const dist = this.sm.fitDistance(view.dist, opts);
+      const d = new Vector3().fromArray(view.dir).normalize().multiplyScalar(dist);
       this._camAnim = {
         p0: this.sm.camera.position.clone(),
         p1: c.clone().add(d),
@@ -27564,6 +27613,7 @@
       };
       this.sm.camera.far = view.far || 900;
       this.sm.camera.updateProjectionMatrix();
+      this.sm.rememberFrame(view.dist, opts);
     }
     /**
      * 东侧园区专用视角（S1 会签 v2）：两厂前后两排 + 扩地后，默认全景下东侧园区靠近
@@ -27573,7 +27623,7 @@
     focusEast() {
       if (typeof this.stopTour === "function") this.stopTour();
       if (!this.current || this.current.getInfo().id !== "plant") this.select("plant");
-      this._flyTo({ target: [80, 2, -21], dir: [0.18, 0.62, 1], dist: 155, far: 1400 });
+      this._flyTo({ target: [80, 2, -21], dir: [0.18, 0.62, 1], dist: 155, far: 1400, fit: true, fitWidth: 135 });
     }
     // --------------------------------------------------------------------------
     // 统一交互指令：聚焦「全流程总览展馆」
@@ -27693,7 +27743,7 @@
         if (!down) return;
         const moved = Math.hypot(e.clientX - down.x, e.clientY - down.y);
         down = null;
-        if (moved > 5) return;
+        if (moved > (e.pointerType === "touch" ? 12 : 5)) return;
         const cur = this.current;
         if (!cur || cur.getInfo().id !== "plant" || typeof cur.pickTargets !== "function") return;
         const rect = canvas.getBoundingClientRect();

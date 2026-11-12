@@ -289,7 +289,9 @@ export class PlantSceneSegment extends SegmentBase {
       fog: { near: 180, far: 780 },
       // 取景右移并拉远：容纳并列后的市政水厂 + 扩地后的外部用水工厂 + 罐装厂（延伸至 x≈160）及更深远的海域/山地；
       // 方向 dir 不变，故各工艺段顺序、流程与聚焦动画的方位角逻辑均保持不变。
-      view: { target: [52, 4, 4], dir: [0.72, 0.82, 1.42], dist: 158, far: 1200 }
+      // fit/fitWidth：窄视口（竖屏手机/平板）下按水平视野把 118 个世界单位铺满画面宽度，
+      // 避免透视相机水平 FOV 收窄导致东西两端（取水口/东侧园区）被裁；宽视口不生效。
+      view: { target: [52, 4, 4], dir: [0.72, 0.82, 1.42], dist: 158, far: 1200, fit: true, fitWidth: 135 }
     });
     this.wave = null;
     this._m = {};

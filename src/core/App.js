@@ -142,26 +142,33 @@ export class App {
   /** 立即应用一个视角配置 */
   _applyView(view) {
     const c = new THREE.Vector3().fromArray(view.target);
-    const d = new THREE.Vector3().fromArray(view.dir).normalize().multiplyScalar(view.dist);
+    // 窄视口下把全景视角按水平视野反算拉远；宽视口原样返回（桌面取景不变）
+    const opts = { fit: view.fit, width: view.fitWidth };
+    const dist = this.sm.fitDistance(view.dist, opts);
+    const d = new THREE.Vector3().fromArray(view.dir).normalize().multiplyScalar(dist);
     this.sm.controls.target.copy(c);
     this.sm.camera.position.copy(c).add(d);
     this.sm.camera.near = 0.1;
     this.sm.camera.far = view.far || 900;
     this.sm.camera.updateProjectionMatrix();
     this.sm.controls.update();
+    this.sm.rememberFrame(view.dist, opts);
     this._camAnim = null;
   }
 
   /** 平滑飞向视角（点击工艺段时的聚焦动画） */
   _flyTo(view) {
     const c = new THREE.Vector3().fromArray(view.target);
-    const d = new THREE.Vector3().fromArray(view.dir).normalize().multiplyScalar(view.dist);
+    const opts = { fit: view.fit, width: view.fitWidth };
+    const dist = this.sm.fitDistance(view.dist, opts);
+    const d = new THREE.Vector3().fromArray(view.dir).normalize().multiplyScalar(dist);
     this._camAnim = {
       p0: this.sm.camera.position.clone(), p1: c.clone().add(d),
       t0: this.sm.controls.target.clone(), t1: c, k: 0
     };
     this.sm.camera.far = view.far || 900;
     this.sm.camera.updateProjectionMatrix();
+    this.sm.rememberFrame(view.dist, opts);
   }
 
   /**
@@ -172,7 +179,7 @@ export class App {
   focusEast() {
     if (typeof this.stopTour === 'function') this.stopTour();
     if (!this.current || this.current.getInfo().id !== 'plant') this.select('plant');
-    this._flyTo({ target: [80, 2, -21], dir: [0.18, 0.62, 1.0], dist: 155, far: 1400 });
+    this._flyTo({ target: [80, 2, -21], dir: [0.18, 0.62, 1.0], dist: 155, far: 1400, fit: true, fitWidth: 135 });
   }
 
   // --------------------------------------------------------------------------
@@ -302,7 +309,8 @@ export class App {
       if (!down) return;
       const moved = Math.hypot(e.clientX - down.x, e.clientY - down.y);
       down = null;
-      if (moved > 5) return;
+      // 触摸屏单指已是平移操作，手指抖动阈值放宽，避免轻微移动就丢掉点击选中
+      if (moved > (e.pointerType === 'touch' ? 12 : 5)) return;
       const cur = this.current;
       if (!cur || cur.getInfo().id !== 'plant' || typeof cur.pickTargets !== 'function') return;
       const rect = canvas.getBoundingClientRect();
