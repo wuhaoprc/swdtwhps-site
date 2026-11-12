@@ -114,7 +114,9 @@ const ANCHORS = {
 };
 
 const SITE = {
-  groundY: 0.35, seaY: 0.10, coastZ: 11.5, seaFrontZ: 140,
+  // seaFrontZ 由 140 扩到 260：窄视口把取景放宽到 fitWidth 190 后，相机拉远会看到海面平面的
+  // 远端边界（画面下方出现黑色楔形），加深远海把边界推到雾里之外。
+  groundY: 0.35, seaY: 0.10, coastZ: 11.5, seaFrontZ: 260,
   siteFrontZ: 11, siteBackZ: -13, halfX: 45
 };
 // —— 东侧园区总平面（S1 会签版）：前排市政水厂 + 后排外部工业用水工厂（山侧前后两排）——
@@ -298,9 +300,11 @@ export class PlantSceneSegment extends SegmentBase {
       fog: { near: 180, far: 780 },
       // 取景右移并拉远：容纳并列后的市政水厂 + 扩地后的外部用水工厂 + 罐装厂（延伸至 x≈160）及更深远的海域/山地；
       // 方向 dir 不变，故各工艺段顺序、流程与聚焦动画的方位角逻辑均保持不变。
-      // fit/fitWidth：窄视口（竖屏手机/平板）下按水平视野把 118 个世界单位铺满画面宽度，
-      // 避免透视相机水平 FOV 收窄导致东西两端（取水口/东侧园区）被裁；宽视口不生效。
-      view: { target: [52, 4, 4], dir: [0.72, 0.82, 1.42], dist: 158, far: 1200, fit: true, fitWidth: 135 }
+      // fit/fitWidth：窄视口（竖屏手机/平板）下按水平视野把 190 个世界单位铺满画面宽度。
+      // 实测整个流程从取水段 x=-33 到外部园区 x≈160 跨 193 个单位，原先 135 只框住主厂区，
+      // 竖屏下左端标注（一 取水段 / 全流程总览 / 厂前区）被屏幕边缘切掉；190 后七段标注全部完整，
+      // 仅「海域·海水取水区」「海水取水头部」两个环境标注仍略微出边 5~16px。宽视口不生效。
+      view: { target: [52, 4, 4], dir: [0.72, 0.82, 1.42], dist: 158, far: 1200, fit: true, fitWidth: 190 }
     });
     this.wave = null;
     this._m = {};
@@ -423,7 +427,7 @@ export class PlantSceneSegment extends SegmentBase {
 
   // —— 1. 海水（更大覆盖 + 三段色标 + 多频波浪 + 近岸浅滩带）——
   _sea() {
-    const w = 330, d = SITE.seaFrontZ - SITE.coastZ;   // 东延覆盖罐装厂以东，避免背景空洞
+    const w = 480, d = SITE.seaFrontZ - SITE.coastZ;   // 东延覆盖罐装厂以东 + 向海面外侧加宽，避免拉远后露出平面边界
     const geo = new THREE.PlaneGeometry(w, d, 150, 72);
     geo.rotateX(-Math.PI / 2);
     const pos = geo.attributes.position;

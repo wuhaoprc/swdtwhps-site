@@ -91,13 +91,30 @@ export class App {
       this.wmCanvas.width = gl.width;
       this.wmCanvas.height = gl.height;
     }
-    // 窄屏底部有「工艺段」「参数说明」胶囊按钮（高约 40px + 12px 安全边距），
-    // 水印默认贴底会被压住，故在窄屏把角标整体抬高到按钮上方。
+    // 窄屏底部左右各有一个胶囊按钮（「工艺段」「参数说明」，高 38px、距底 12px + 安全边距）。
+    // 两个 logo 与按钮同一水平线：按按钮实际底边反算 lift，让 logo 底边与按钮底边齐平，
+    // 而不是把角标整体抬到按钮上方（那样看起来像悬空一级）。
     // 单位是 CSS 像素，Watermark 内部按 dpr 换算成设备像素。
     this.wm.dpr = (window.innerWidth > 0) ? (gl.width / window.innerWidth) : 1;
-    this.wm.bottomLift = window.innerWidth <= 1200 ? 62 : 0;
+    const narrow = window.innerWidth <= 1200;
+    if (narrow) {
+      // 与胶囊按钮同一水平线：让两个 logo 的竖直中心落在按钮中心上。
+      // 实时角标用的是 liveScale（默认 scale*0.38，高度约短边 4.2%），
+      // 故这里按 liveScale 反算 logo 的 CSS 高度，而不是 opts.scale。
+      const btn = document.getElementById('tab-hud') || document.getElementById('tab-panel');
+      const rect = btn ? btn.getBoundingClientRect() : null;
+      const gap = rect ? (window.innerHeight - rect.bottom) : 12;
+      const btnH = rect ? rect.height : 38;
+      const margin = (this.wm.opts && this.wm.opts.margin) || 14;
+      const liveScale = (this.wm.opts && this.wm.opts.liveScale) || 0.0418;
+      const logoH = Math.min(window.innerWidth, window.innerHeight) * liveScale;
+      const btnCenter = gap + btnH / 2;           // 按钮中心距底高度（CSS px）
+      this.wm.bottomLift = Math.round(btnCenter - margin - logoH / 2);
+    } else {
+      this.wm.bottomLift = 0;
+    }
     // 窄屏把两个 logo 水平居中：底部左右各有一个胶囊按钮，靠左会被「工艺段」压住
-    this.wm.centerH = window.innerWidth <= 1200;
+    this.wm.centerH = narrow;
   }
 
   select(id) {

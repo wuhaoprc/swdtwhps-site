@@ -25892,7 +25892,7 @@
     groundY: 0.35,
     seaY: 0.1,
     coastZ: 11.5,
-    seaFrontZ: 140,
+    seaFrontZ: 260,
     siteFrontZ: 11,
     siteBackZ: -13,
     halfX: 45
@@ -26110,7 +26110,7 @@
         // 方向 dir 不变，故各工艺段顺序、流程与聚焦动画的方位角逻辑均保持不变。
         // fit/fitWidth：窄视口（竖屏手机/平板）下按水平视野把 118 个世界单位铺满画面宽度，
         // 避免透视相机水平 FOV 收窄导致东西两端（取水口/东侧园区）被裁；宽视口不生效。
-        view: { target: [52, 4, 4], dir: [0.72, 0.82, 1.42], dist: 158, far: 1200, fit: true, fitWidth: 135 }
+        view: { target: [52, 4, 4], dir: [0.72, 0.82, 1.42], dist: 158, far: 1200, fit: true, fitWidth: 190 }
       });
       this.wave = null;
       this._m = {};
@@ -26260,7 +26260,7 @@
     }
     // —— 1. 海水（更大覆盖 + 三段色标 + 多频波浪 + 近岸浅滩带）——
     _sea() {
-      const w = 330, d = SITE.seaFrontZ - SITE.coastZ;
+      const w = 480, d = SITE.seaFrontZ - SITE.coastZ;
       const geo = new PlaneGeometry(w, d, 150, 72);
       geo.rotateX(-Math.PI / 2);
       const pos = geo.attributes.position;
@@ -27639,8 +27639,20 @@
         this.wmCanvas.height = gl.height;
       }
       this.wm.dpr = window.innerWidth > 0 ? gl.width / window.innerWidth : 1;
-      this.wm.bottomLift = window.innerWidth <= 1200 ? 62 : 0;
-      this.wm.centerH = window.innerWidth <= 1200;
+      const narrow = window.innerWidth <= 1200;
+      if (narrow) {
+        const btn = document.getElementById("tab-hud") || document.getElementById("tab-panel");
+        const rect = btn ? btn.getBoundingClientRect() : null;
+        const gap = rect ? window.innerHeight - rect.bottom : 12;
+        const btnH = rect ? rect.height : 38;
+        const margin = this.wm.opts && this.wm.opts.margin || 14;
+        const liveScale = this.wm.opts && this.wm.opts.liveScale || 0.0418;
+        const logoH = Math.min(window.innerWidth, window.innerHeight) * liveScale;
+        this.wm.bottomLift = Math.round(gap + btnH / 2 - margin - logoH / 2);
+      } else {
+        this.wm.bottomLift = 0;
+      }
+      this.wm.centerH = narrow;
     }
     select(id) {
       const def = SEGMENTS.find((s) => s.id === id);
