@@ -53,12 +53,18 @@ npx serve .        # 或任意静态服务器，访问 http://localhost:3000
 npx serve .        # 访问 http://localhost:3000 确认画面与交互正常
 ```
 
-若动了 `src/` 里的 JS 逻辑，**必须**回原始工程重新生成单文件版，不能手改 `offline.html`：
+若动了 `src/` 里的 JS 逻辑，**必须**重新生成单文件版，不要手改 `offline.html`（历史上有过手工字符串同步阶段，容易漏改）：
 
 ```bash
-node build-offline.mjs          # 在原工程目录执行，产物 preview-offline.html
-# 把 preview-offline.html 覆盖成本目录的 offline.html，再视情况改名为 offline.html
+bun utils/build-offline.mjs     # 在仓库根执行，直接覆盖 offline.html
 ```
+
+构建脚本自带打包与内联：`src/main.js` 连同 `vendor/three.module.js` 打成一份 ESM 代码，`assets/` 里的图标与水印转成 data URI，`index.html` 的文案与 CSS 原样沿用。要求 `bun` ≥ 1.x（云主机实测 1.3.3）。改完必须验证：
+
+```bash
+node check-offline.mjs   # 期望输出 ready= true errors= 0
+```
+
 
 `offline.html` 与 `index.html` 的 CSS / HTML 结构目前保持一致，纯 CSS 或纯 HTML 版式改动可两处同步手改；一旦涉及 JS，一律走重新构建。
 
