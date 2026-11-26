@@ -235,6 +235,9 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--aqua-d);
 textarea{min-height:96px;resize:vertical}
 form .submit{display:flex;align-items:center;gap:16px;margin-top:6px;flex-wrap:wrap}
 form .submit small{color:#8095A5;font-size:12px;line-height:1.6}
+form .submit small.err{color:#C0392B}
+form .submit small.ok{color:#0E7C46}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .contact-info{background:var(--paper);border:1px solid var(--line);padding:32px 30px;display:grid;gap:22px}
 .contact-info h3{margin:0;font-size:16px;color:var(--ink)}
 .contact-info div p{margin:4px 0 0;font-size:13.5px;color:#3C5468;line-height:1.8}
@@ -788,7 +791,7 @@ body.is-home .fhome{display:flex}
     <div class="contact-grid">
       <div>
         <h2 style="font-size:24px;margin-bottom:8px">工况与询价</h2>
-        <p class="lead" style="margin-bottom:26px">表单提交为演示流程，正式上线后接入后台与邮件通知。</p>
+        <p class="lead" style="margin-bottom:26px">填好水量与源水类型即可，技术团队 1 个工作日内回一轮判断；信息只用于本项目评估，不对外转交。</p>
         <form id="inquiry" novalidate>
           <div class="f2">
             <div><label for="company">公司名称 *</label><input id="company" name="company" required placeholder="例：某某水务 / 某某船厂"></div>
@@ -815,9 +818,10 @@ body.is-home .fhome{display:flex}
             </div>
           </div>
           <div><label for="note">补充说明</label><textarea id="note" name="note" placeholder="源水水质报告、含盐量、安装空间、用电条件、期望交期等"></textarea></div>
+          <div class="hp" aria-hidden="true"><label for="website">请勿填写</label><input id="website" name="website" tabindex="-1" autocomplete="off" placeholder=""></div>
           <div class="submit">
-            <button class="btn btn-primary" type="submit">提交工况</button>
-            <small>提交后由技术团队初审；如需保密，可先只填水量与源水类型。</small>
+            <button class="btn btn-primary" id="inqBtn" type="submit">提交工况</button>
+            <small id="inqMsg">提交后由技术团队初审；如需保密，可先只填水量与源水类型。</small>
           </div>
         </form>
       </div>
@@ -825,7 +829,7 @@ body.is-home .fhome{display:flex}
         <div class="contact-info">
           <div><div class="k">上海 · 嘉元环境</div><p>上海市浦东新区环湖西二路 888 号 C 楼</p></div>
           <div><div class="k">集团总机</div><p>+86 0756-3225888 / 3225828</p></div>
-          <div><div class="k">邮箱</div><p>待核（上线前由公司确认对外邮箱与域名）</p></div>
+          <div><div class="k">邮箱</div><p><a href="mailto:sales@waterjhh.com" style="color:#0E9C90">sales@waterjhh.com</a><br>集团销售邮箱，可直接转嘉元技术团队</p></div>
           <div><div class="k">工作时间</div><p>周一至周五 08:30–17:30（北京时间）<br>紧急项目可先加微信留言</p></div>
           <div><div class="k">集团官网</div><p><a href="https://www.waterjhh.com/" target="_blank" rel="noopener" style="color:#0E9C90">www.waterjhh.com ↗</a></p></div>
         </div>
@@ -871,7 +875,7 @@ body.is-home .fhome{display:flex}
       <div>
         <h4>联系</h4>
         <p>集团总机：+86 0756-3225888 / 828<br>
-        邮箱：待核<br>
+        邮箱：<a href="mailto:sales@waterjhh.com">sales@waterjhh.com</a><br>
         <a href="#/contact" style="color:#8FD9D2">提交工况表 →</a></p>
       </div>
     </div>
@@ -891,7 +895,7 @@ body.is-home .fhome{display:flex}
     </div>
     <div class="fbottom">
       <span>© 2026 上海嘉元环境科技有限公司</span>
-      <span>沪 ICP 备 XXXXXXXX 号（待核）｜ 本站为设计稿，表单与备案信息待上线前确认</span>
+      <span>沪 ICP 备案办理中｜当前为临时演示域名，正式域名上线后补录备案号；页内厂区场景为示意图</span>
     </div>
   </div>
 </footer>
@@ -1039,20 +1043,67 @@ body.is-home .fhome{display:flex}
   document.getElementById('drawerClose').addEventListener('click', closeCase);
   document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeCase(); });
 
-  /* 表单 */
+  /* 表单：POST /api/inquiry（Pages Functions 转发到群机器人 / 邮箱） */
   var form = document.getElementById('inquiry');
   if(form){
+    var inqBtn = document.getElementById('inqBtn');
+    var inqMsg = document.getElementById('inqMsg');
+    var inqDefault = inqMsg ? inqMsg.textContent : '';
+    function say(text, cls){ if(inqMsg){ inqMsg.textContent = text; inqMsg.className = cls || ''; } }
+
     form.addEventListener('submit', function(e){
       e.preventDefault();
-      var company = form.company.value.trim();
-      var person = form.person.value.trim();
-      var phone = form.phone.value.trim();
-      if(!company || !person || !phone){
+      var d = {
+        company: form.company.value.trim(),
+        person: form.person.value.trim(),
+        phone: form.phone.value.trim(),
+        email: form.email.value.trim(),
+        place: form.place.value.trim(),
+        capacity: form.capacity.value.trim(),
+        source: form.source.value,
+        use: form.use.value,
+        note: form.note.value.trim(),
+        website: form.website ? form.website.value : '',
+        ref: location.href,
+        ts: new Date().toISOString()
+      };
+      if(!d.company || !d.person || !d.phone){
+        say('请先填写公司名称、联系人和电话', 'err');
         toast('请先填写公司名称、联系人和电话');
         return;
       }
-      toast('已收到工况（演示）：正式上线后由后台接收并邮件通知技术团队');
-      form.reset();
+      if(d.phone.replace(/\D/g,'').length < 7){
+        say('电话看起来不完整，请再核对一次', 'err');
+        return;
+      }
+      var label = inqBtn.textContent;
+      inqBtn.disabled = true;
+      inqBtn.textContent = '提交中…';
+      say('正在提交…', '');
+      fetch('/api/inquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(d)
+      })
+        .then(function(r){ return r.json().catch(function(){ return { ok:false, error:'bad_response' }; }); })
+        .then(function(res){
+          inqBtn.disabled = false;
+          inqBtn.textContent = label;
+          if(res && res.ok){
+            say('已收到。技术团队会通过电话或微信回你，1 个工作日内给首轮判断。', 'ok');
+            toast('工况已提交');
+            form.reset();
+          } else if(res && res.error === 'not_configured'){
+            say('提交通道还在配置，请直接致电 +86 0756-3225888 或发邮件到 sales@waterjhh.com', 'err');
+          } else {
+            say('没提交成功，请重试一次，或致电 +86 0756-3225888', 'err');
+          }
+        })
+        .catch(function(){
+          inqBtn.disabled = false;
+          inqBtn.textContent = label;
+          say('网络好像不通，请致电 +86 0756-3225888 或稍后再试', 'err');
+        });
     });
   }
 

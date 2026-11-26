@@ -62,8 +62,28 @@ node check-offline.mjs                   # 期望 ready=true errors=0
 
 换正式域名时同步改三处：根 `index.html` 的 canonical 与 `og:url`、`robots.txt` 的 Sitemap 行、`sitemap.xml` 的 `<loc>`。
 
+## 询价表单的后端（Pages Functions）
+
+`functions/api/inquiry.js` 是「提交工况」的接收端，随站点一起部署，无需单独服务：
+
+- 只接受 `POST`，校验必填项（公司 / 联系人 / 电话）、电话位数、邮箱格式；
+- 隐藏蜜罐字段 `website` 被填写时直接返回成功，不给机器人反馈；
+- 不落库、不写 D1/KV，只做即时转发。
+
+转发到哪由环境变量决定（Pages 项目 → Settings → Environment variables）：
+
+| 变量 | 作用 |
+|---|---|
+| `INQUIRY_WEBHOOK` | 群机器人地址；自动识别飞书（`msg_type/content`）、企业微信（`msgtype/text`），其他按 `{text}` 通用格式 |
+| `RESEND_API_KEY` | 可选，Resend 邮件 Key |
+| `INQUIRY_EMAIL_TO` | 可选，收件邮箱，多个用逗号分隔 |
+| `INQUIRY_EMAIL_FROM` | 可选，发件地址（需在 Resend 验证过域名） |
+
+两者都没配时接口返回 `503 {error:"not_configured"}`，页面会提示改用电话 / 邮箱，不会假装提交成功。
+
 ## 待办（上线前）
 
-- 询价表单当前是纯前端演示（`toast` 提示），未接后端；需接 Worker/Functions 或第三方表单服务。
-- 邮箱、上海直线电话、ICP 备案号在页面上标「待核」。
-- 产品图与场景图有集团官网素材与 AI 示意，正式对外前替换为嘉元自有项目照片。
+- 询价表单需先配 `INQUIRY_WEBHOOK`（或 Resend 那三项）才真正投递。
+- 企业资质（ISO 9001 / CE / 船级社）与专利号仍标「待核」，需质量部门提供证书扫描件。
+- 产品图与厂区场景含集团公开素材与 AI 示意图，正式对外前替换为嘉元自有项目照片。
+- ICP 备案与自有域名尚未办理，当前域名为临时演示地址。
