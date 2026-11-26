@@ -1,250 +1,1078 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>江河海 · 海水淡化全流程 3D 模拟系统</title>
-  <meta name="description" content="江河海 SWRO 海水淡化全流程三维可视化：取水、预处理、超滤、高压与能量回收、反渗透、后处理、浓水排放七段工艺逐段建模，支持截图、动画与 3D 模型导出。" />
-  <meta name="theme-color" content="#0b1220" />
-  <link rel="icon" type="image/png" href="./assets/favicon.png" />
-  <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png" />
-  <link rel="manifest" href="./manifest.webmanifest" />
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="江河海 · 海水淡化全流程 3D 模拟系统" />
-  <meta property="og:title" content="江河海 · 海水淡化全流程 3D 模拟系统" />
-  <meta property="og:description" content="七段工艺三维可视化模拟，可截图、录屏与导出 3D 模型。" />
-  <meta property="og:url" content="https://swdtwhps.dpdns.org/" />
-  <meta name="twitter:card" content="summary" />
-  <!-- 离线本地化 three.js：所有 js 由 ./vendor 提供，无需联网，且不依赖 Import Maps，
-       用相对路径直接解析，兼容性更强（旧版 WebView 也能运行）。 -->
-  <style>
-    :root {
-      --bg: #0b1220;
-      --panel: rgba(12, 22, 38, 0.86);
-      --line: rgba(120, 170, 220, 0.22);
-      --accent: #2ea8ff;
-      --accent2: #39d98a;
-      --text: #dfe8f5;
-      --muted: #8aa0bd;
-    }
-    * { box-sizing: border-box; }
-    html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
-      font-family: "Microsoft YaHei", "PingFang SC", "Segoe UI", system-ui, sans-serif;
-      /* 滚动条与深色背景统一：细窄、低对比轨道、主题蓝滑块 */
-      scrollbar-width: thin;
-      scrollbar-color: rgba(120, 170, 220, .34) rgba(120, 170, 220, .06); }
-    ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: rgba(120, 170, 220, .06); border-radius: 8px; }
-    ::-webkit-scrollbar-thumb { background: rgba(120, 170, 220, .34); border-radius: 8px;
-      border: 2px solid transparent; background-clip: padding-box; }
-    ::-webkit-scrollbar-thumb:hover { background: rgba(46, 168, 255, .5); background-clip: padding-box; }
-    ::-webkit-scrollbar-corner { background: transparent; }
-    #stage { position: fixed; inset: 0; }
-    #stage canvas { display: block; }
-    /* 水印覆盖层：实时叠加在 3D 画面之上。
-       canvas 是替换元素，只写 inset:0 不会把 CSS 尺寸拉到容器宽度，
-       在高分屏（dpr≥2）上会按位图尺寸（如 2880×1800）铺开，导致水印跑到视口外，
-       必须显式给 width/height 100%。 */
-    #wm-canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>上海嘉元环境科技 · 海水淡化与工业纯水系统</title>
+<meta name="description" content="上海嘉元环境科技有限公司，专注海水与苦咸水淡化、工业纯水与超纯水、中水回用系统的工艺设计、设备制造、现场施工与远程运维。11 类产品线，7 类工程场景。">
+<meta name="theme-color" content="#071A2B">
+<link rel="icon" href="assets/img/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png?v=2">
+<link rel="icon" type="image/png" sizes="64x64" href="assets/img/favicon.png?v=2">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png?v=2">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://swdtwhps.dpdns.org/">
+<link rel="canonical" href="https://swdtwhps.dpdns.org/">
+<meta property="og:title" content="上海嘉元环境科技 · 海水淡化与工业纯水系统">
+<meta property="og:description" content="海水与苦咸水淡化、工业纯水与超纯水、中水回用：从工艺设计到远程运维的一套水系统。">
+<style>
+:root{
+  --ink:#071A2B; --navy:#0E2C46; --deep:#0A3346; --paper:#F5F8FA;
+  --line:#E2E9EF; --aqua:#25D0C0; --aqua-d:#0E9C90; --mute:#5A7186; --white:#fff;
+  --sans:"Noto Sans SC","PingFang SC","Microsoft YaHei",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--sans);color:#14242F;background:var(--white);line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+button{font-family:inherit}
+.wrap{width:min(1240px,calc(100% - 48px));margin:0 auto}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 
-    #panel {
-      position: fixed; top: 14px; left: 14px; width: 264px; max-height: calc(100vh - 28px);
-      overflow: auto; background: var(--panel); border: 1px solid var(--line);
-      border-radius: 12px; padding: 14px; backdrop-filter: blur(6px);
-      box-shadow: 0 8px 30px rgba(0,0,0,.4); z-index: 10;
-      scrollbar-width: thin;
-      scrollbar-color: rgba(120, 170, 220, .34) rgba(120, 170, 220, .06);
-    }
-    #panel h1 { font-size: 15px; margin: 0 0 2px; letter-spacing: .5px; }
-    #panel .sub { font-size: 11px; color: var(--muted); margin-bottom: 10px; }
-    .grp { font-size: 11px; color: var(--muted); margin: 12px 0 6px; text-transform: uppercase; letter-spacing: 1px; }
-    .seg-btn {
-      display: block; width: 100%; text-align: left; margin: 4px 0; padding: 8px 10px;
-      background: rgba(40, 70, 110, .35); border: 1px solid var(--line); color: var(--text);
-      border-radius: 8px; cursor: pointer; font-size: 13px; transition: .15s;
-    }
-    .seg-btn:hover { background: rgba(46, 168, 255, .22); }
-    .seg-btn.active { background: var(--accent); color: #04121f; border-color: var(--accent); font-weight: 700; }
-    .seg-btn small { display: block; color: var(--muted); font-size: 10px; margin-top: 2px; }
-    .seg-btn.active small { color: #06243a; }
-    .ex-btn {
-      display: inline-block; width: calc(50% - 4px); margin: 3px 2px; padding: 8px 0; text-align: center;
-      background: rgba(57, 217, 138, .14); border: 1px solid rgba(57,217,138,.4); color: var(--accent2);
-      border-radius: 8px; cursor: pointer; font-size: 12px;
-    }
-    .ex-btn:hover { background: rgba(57, 217, 138, .28); }
-    .ex-btn.wide { width: calc(100% - 4px); }
+/* ---------- header ---------- */
+.topbar{background:var(--ink);color:#9FB4C4;font-size:12.5px;letter-spacing:.02em}
+.topbar .wrap{display:flex;justify-content:space-between;align-items:center;height:38px;gap:16px}
+.topbar b{color:#DCE7EE;font-weight:500}
+.header{position:sticky;top:0;z-index:80;background:rgba(255,255,255,.93);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:78px;gap:24px}
+.brand{display:flex;align-items:center;gap:12px;flex:0 0 auto}
+.brand img{height:54px;width:auto}
+.brand .tag{font-size:11px;color:var(--mute);letter-spacing:.16em;line-height:1.2;border-left:1px solid var(--line);padding-left:12px}
+.menu{display:flex;align-items:center;gap:2px}
+.menu a{padding:8px 13px;font-size:15px;color:#2B3F50;border-radius:4px;position:relative;white-space:nowrap}
+.menu a:hover{background:#F1F5F8}
+.menu a.active{color:var(--ink);font-weight:600}
+.menu a.active::after{content:"";position:absolute;left:13px;right:13px;bottom:1px;height:2px;background:var(--aqua)}
+.nav .nav-cta{display:flex;align-items:center;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border:1px solid transparent;border-radius:4px;font-size:15px;font-weight:600;cursor:pointer;transition:.2s;line-height:1}
+.btn-primary{background:var(--aqua);color:#062A2B}
+.btn-primary:hover{background:#3EE0D0;transform:translateY(-1px)}
+.btn-ghost{background:transparent;border-color:rgba(255,255,255,.5);color:#fff}
+.btn-ghost:hover{border-color:#fff;background:rgba(255,255,255,.1)}
+.btn-line{border-color:var(--line);color:var(--ink);background:#fff}
+.btn-line:hover{border-color:#BFD1DC}
+.btn-sm{padding:9px 14px;font-size:13.5px}
+.burger{display:none;width:44px;height:44px;border:1px solid var(--line);background:#fff;border-radius:4px;cursor:pointer;align-items:center;justify-content:center;flex-direction:column;gap:5px}
+.burger span{width:20px;height:2px;background:var(--ink);display:block}
+.drawer-nav{display:none}
 
-    #hud {
-      position: fixed; top: 14px; right: 14px; width: 380px; max-width: calc(100vw - 28px);
-      max-height: calc(100vh - 72px); overflow: auto; /* 底部留出提示条空间 */
-      scrollbar-width: thin;
-      scrollbar-color: rgba(120, 170, 220, .34) rgba(120, 170, 220, .06);
-      background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
-      padding: 14px 16px; backdrop-filter: blur(6px); z-index: 10;
-    }
-    /* 顶部居中主标题：海水淡化全流程工艺（SWRO）固定正上方居中 */
-    #title-bar {
-      position: fixed; top: 14px; left: 50%; transform: translateX(-50%);
-      background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
-      padding: 11px 26px; backdrop-filter: blur(6px); z-index: 11;
-      box-shadow: 0 8px 30px rgba(0,0,0,.4);
-      white-space: nowrap; max-width: calc(100vw - 704px); overflow: hidden; text-overflow: ellipsis;
-    }
-    #title-bar .t-main { font-size: 17px; font-weight: 700; letter-spacing: 1px; color: #fff; }
-    #title-bar .t-sub { font-size: 13px; font-weight: 700; color: var(--accent); margin-left: 8px; }
-    #hud .name { font-size: 16px; font-weight: 700; color: #fff; }
-    #hud .sub2 { font-size: 12px; color: var(--accent); margin: 2px 0 8px; }
-    #hud .desc { font-size: 12px; color: var(--text); line-height: 1.6; }
-    #hud table { width: 100%; margin-top: 10px; border-collapse: collapse; font-size: 12px; }
-    #hud td { padding: 4px 6px; border-bottom: 1px solid var(--line); }
-    #hud td.k { color: var(--muted); width: 42%; }
-    #hud td.v { color: var(--text); }
+/* ---------- hero ---------- */
+.hero{position:relative;height:78vh;min-height:560px;max-height:760px;color:#fff;overflow:hidden;background:var(--ink)}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 45%}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,26,43,.55) 0%,rgba(7,26,43,.25) 40%,rgba(7,26,43,.88) 100%)}
+.hero .inner{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:52px}
+.eyebrow{font-size:12px;letter-spacing:.26em;color:#8FD9D2;text-transform:uppercase;margin-bottom:18px}
+.hero h1{margin:0;font-size:clamp(32px,4.6vw,64px);line-height:1.18;font-weight:900;letter-spacing:.01em;max-width:16ch}
+.hero p{margin:18px 0 0;max-width:56ch;color:#CFDCE4;font-size:clamp(15px,1.6vw,18px);line-height:1.8}
+.hero .acts{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap}
+.hero .stats{display:flex;gap:0;margin-top:44px;border-top:1px solid rgba(255,255,255,.22);padding-top:20px;max-width:820px;flex-wrap:wrap}
+.hero .stats div{padding-right:46px;margin-right:46px;border-right:1px solid rgba(255,255,255,.16)}
+.hero .stats div:last-child{border:0}
+.hero .stats b{display:block;font-size:26px;font-weight:800;letter-spacing:.01em}
+.hero .stats span{font-size:12.5px;color:#A9BCC9;letter-spacing:.06em}
 
-    #hint { position: fixed; bottom: 14px; right: 14px; font-size: 11px; color: var(--muted);
-      background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; z-index: 10; }
-    #loading { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
-      background: var(--bg); color: var(--muted); font-size: 14px; z-index: 50; }
+/* ---------- common section ---------- */
+section{padding:92px 0}
+section.view{padding:0}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:40px}
+.sec-head .l{max-width:720px}
+.kicker{font-size:12px;letter-spacing:.22em;color:var(--aqua-d);text-transform:uppercase;margin-bottom:12px}
+h2{margin:0;font-size:clamp(26px,3vw,40px);line-height:1.28;font-weight:800;letter-spacing:.01em;color:var(--ink)}
+h2 em{font-style:normal;color:var(--mute);font-weight:500}
+h2 + p{margin-top:16px}
+.lead{color:#40586B;margin:14px 0 0;font-size:15.5px;max-width:64ch}
+.more{font-size:14px;color:var(--ink);border-bottom:1px solid var(--ink);padding-bottom:2px;white-space:nowrap}
+.more:hover{color:var(--aqua-d);border-color:var(--aqua-d)}
 
-    /* ===== 移动端（≤1200px：手机 + 平板，含横屏）：两侧介绍框默认收起，点击唤出 ===== */
-    .tab-btn { display: none; }
-    #scrim { display: none; }
-    @media (max-width: 1200px) {
-      #title-bar { top: 8px; max-width: calc(100vw - 24px); padding: 8px 14px; }
-      #title-bar .t-main { font-size: 14px; letter-spacing: .5px; }
-      #title-bar .t-sub { font-size: 11px; margin-left: 6px; }
-      #hint { display: none; }
+/* ---------- value cards ---------- */
+.values{background:var(--paper)}
+.vgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.vcard{background:#fff;padding:30px 26px 26px;min-height:240px;display:flex;flex-direction:column}
+.vcard .no{font-size:12px;letter-spacing:.18em;color:var(--aqua-d);margin-bottom:16px}
+.vcard h3{margin:16px 0 8px;font-size:20px;font-weight:700;color:var(--ink)}
+.vcard p{margin:0;font-size:14px;color:var(--mute);line-height:1.78}
+.vcard a{margin-top:auto;padding-top:16px;font-size:13.5px;color:var(--ink);display:inline-flex;align-items:center;gap:6px}
+.vcard a:hover{color:var(--aqua-d)}
 
-      /* 收起态：整体移出视口，不接收点击，也不遮挡 3D 画面 */
-      #panel, #hud {
-        top: 58px; /* 让开顶部标题栏，避免面板抬头被压住 */
-        max-height: calc(100vh - 128px);
-        overflow: auto; -webkit-overflow-scrolling: touch;
-        opacity: 0; visibility: hidden; pointer-events: none;
-        transition: transform .26s ease, opacity .18s ease;
-        overscroll-behavior: contain;
-      }
-      #panel { left: 8px; width: min(86vw, 320px); transform: translateX(-108%); }
-      #hud { right: 8px; width: min(92vw, 360px); transform: translateX(108%); }
+/* ---------- products ---------- */
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.pcard{border:1px solid var(--line);background:#fff;border-radius:4px;overflow:hidden;display:flex;flex-direction:column;transition:.25s}
+.pcard:hover{transform:translateY(-3px);box-shadow:0 14px 34px -18px rgba(11,42,63,.35);border-color:#CFDEE8}
+.pcard .ph{aspect-ratio:4/3;background:var(--paper);overflow:hidden}
+.pcard .ph img{width:100%;height:100%;object-fit:cover;transition:.4s}
+.pcard:hover .ph img{transform:scale(1.03)}
+.pcard .body{padding:20px 20px 22px;display:flex;flex-direction:column;gap:8px;flex:1}
+.pcard .cat{font-size:11.5px;letter-spacing:.12em;color:var(--aqua-d)}
+.pcard h3{margin:0;font-size:17.5px;font-weight:700;color:var(--ink);line-height:1.4}
+.pcard .spec{font-size:13px;color:var(--mute);line-height:1.7}
+.pcard .foot{margin-top:auto;padding-top:14px;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--ink)}
+.pcard .foot .arw{color:var(--aqua-d)}
 
-      body[data-open="panel"] #panel,
-      body[data-open="hud"] #hud {
-        opacity: 1; visibility: visible; pointer-events: auto; transform: translateX(0);
-      }
-      body[data-open] #scrim {
-        display: block; position: fixed; inset: 0; z-index: 9;
-        background: rgba(4, 10, 20, .48);
-      }
+/* ---------- scenario table ---------- */
+.scen{background:var(--ink);color:#DCE7EE}
+.scen h2{color:#fff}
+.scen .lead{color:#A9BECB}
+table{width:100%;border-collapse:collapse;font-size:14px}
+.scen table th,.scen table td{text-align:left;padding:16px 14px;border-bottom:1px solid rgba(255,255,255,.13);vertical-align:top}
+.scen table th{font-size:12px;letter-spacing:.12em;color:#8FD9D2;font-weight:500;white-space:nowrap}
+.scen table td b{color:#fff;font-weight:600}
+.scen table td span{color:#9FB6C4;display:block;font-size:12.5px;margin-top:3px}
+.scen .tip{margin-top:22px;font-size:12.5px;color:#7E97A6}
 
-      .tab-btn {
-        display: inline-flex; align-items: center; gap: 6px;
-        position: fixed; bottom: calc(12px + env(safe-area-inset-bottom)); z-index: 13;
-        background: var(--panel); border: 1px solid var(--line); color: var(--text);
-        border-radius: 999px; padding: 9px 16px; font-size: 13px; font-family: inherit;
-        backdrop-filter: blur(6px); box-shadow: 0 6px 24px rgba(0, 0, 0, .45);
-        cursor: pointer; -webkit-tap-highlight-color: transparent;
-      }
-      .tab-btn:active { background: rgba(46, 168, 255, .22); }
-      #tab-panel { left: 12px; }
-      #tab-hud { right: 12px; }
-      .tab-btn[aria-expanded="true"] { background: var(--accent); color: #04121f;
-        border-color: var(--accent); font-weight: 700; }
-    }
-  </style>
+/* ---------- process ---------- */
+.steps{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:8px}
+.step{background:#fff;padding:22px 16px 24px}
+.step b{display:block;font-size:11.5px;color:var(--aqua-d);letter-spacing:.1em;margin-bottom:10px}
+.step strong{display:block;font-size:15.5px;color:var(--ink);margin-bottom:6px}
+.step p{margin:0;font-size:12.5px;color:var(--mute);line-height:1.65}
+.steps-note{margin-top:18px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center;font-size:13px;color:var(--mute)}
+
+/* ---------- cases ---------- */
+.case{background:var(--paper)}
+.cgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.ccard{background:#fff;border:1px solid var(--line);border-radius:4px;overflow:hidden;cursor:pointer;text-align:left;padding:0;transition:.25s;display:flex;flex-direction:column}
+.ccard:hover{transform:translateY(-3px);box-shadow:0 14px 34px -18px rgba(11,42,63,.35)}
+.ccard .ph{aspect-ratio:16/10;overflow:hidden;background:var(--paper)}
+.ccard .ph img{width:100%;height:100%;object-fit:cover}
+.ccard .body{padding:18px 20px 20px;display:flex;flex-direction:column;gap:8px;flex:1}
+.ccard .meta{font-size:11.5px;color:var(--aqua-d);letter-spacing:.1em}
+.ccard h3{margin:0;font-size:16.5px;font-weight:700;line-height:1.45;color:var(--ink)}
+.ccard p{margin:0;font-size:13px;color:var(--mute);line-height:1.7}
+.ccard .tagline{margin-top:auto;padding-top:12px;font-size:12px;color:#8095A5;border-top:1px solid var(--line);display:flex;justify-content:space-between}
+.source-note{margin-top:26px;font-size:12px;color:#8095A5}
+
+/* ---------- tech / patent ---------- */
+.two{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:start}
+.klist{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:6px}
+.kitem{background:#fff;padding:22px 22px;display:flex;gap:18px}
+.kitem .no{font-size:12px;color:var(--aqua-d);letter-spacing:.12em;flex:0 0 28px;padding-top:3px}
+.kitem h3{margin:0 0 6px;font-size:16.5px;color:var(--ink)}
+.kitem p{margin:0;font-size:13.5px;color:var(--mute);line-height:1.75}
+.side{background:var(--paper);border:1px solid var(--line);padding:30px 28px}
+.side h3{margin:0 0 16px;font-size:17px;color:var(--ink)}
+.side ul{margin:0;padding:0;list-style:none;display:grid;gap:12px}
+.side li{font-size:13.5px;color:#3C5468;display:flex;gap:10px;line-height:1.6}
+.side li i{color:var(--aqua-d);font-style:normal;flex:0 0 auto}
+.side .note{margin-top:20px;font-size:11.5px;color:#8095A5;line-height:1.7}
+
+/* ---------- news ---------- */
+.news{background:var(--paper)}
+.nlist{border-top:1px solid var(--line)}
+.nrow{display:grid;grid-template-columns:120px 120px 1fr 60px;gap:20px;align-items:center;padding:22px 4px;border-bottom:1px solid var(--line);transition:.2s}
+.nrow:hover{background:#fff;padding-left:14px}
+.nrow time{font-size:13px;color:var(--mute);font-variant-numeric:tabular-nums}
+.nrow .tag{font-size:11.5px;color:var(--aqua-d);letter-spacing:.08em}
+.nrow h3{margin:0;font-size:16px;font-weight:600;color:var(--ink);line-height:1.5}
+.nrow .arw{text-align:right;color:#9DB2C0}
+
+/* ---------- CTA ---------- */
+.cta{background:var(--deep);color:#fff;padding:74px 0}
+.cta .wrap{display:flex;justify-content:space-between;align-items:center;gap:40px;flex-wrap:wrap}
+.cta h2{color:#fff;font-size:clamp(24px,2.6vw,34px)}
+.cta p{margin:10px 0 0;color:#AFC6D3;font-size:14.5px}
+
+/* ---------- footer ---------- */
+footer{background:var(--ink);color:#93A9B8;padding:64px 0 30px;font-size:13.5px}
+.fgrid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1.3fr;gap:40px;padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,.12)}
+.fgrid h4{margin:0 0 16px;font-size:12px;letter-spacing:.16em;color:#C9D9E2;font-weight:500}
+.fgrid p{margin:0;line-height:1.9;color:#93A9B8}
+.fgrid ul{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.fgrid li a:hover{color:#fff}
+.fbrand{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.fbrand img{height:40px;width:auto;background:#fff;padding:10px 12px;border-radius:4px}
+.fbottom{display:flex;justify-content:space-between;gap:20px;padding-top:22px;font-size:12px;color:#6F8797;flex-wrap:wrap}
+
+/* ---------- pages ---------- */
+.page-hero{background:var(--ink);color:#fff;padding:96px 0 64px}
+.page-hero .kicker{color:#8FD9D2}
+.page-hero h1{margin:0;font-size:clamp(30px,3.8vw,50px);font-weight:900;line-height:1.24}
+.page-hero p{margin:16px 0 0;max-width:62ch;color:#B7CCD8;font-size:15.5px}
+.crumb{font-size:12px;color:#7E97A6;letter-spacing:.06em;margin-bottom:22px}
+.crumb a:hover{color:#fff}
+
+/* solutions */
+.sol{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line);border-bottom:0}
+.sol .txt{padding:40px 40px 42px;display:flex;flex-direction:column;gap:14px}
+.sol .pic{background:var(--paper);min-height:320px;overflow:hidden}
+.sol .pic img{width:100%;height:100%;object-fit:cover}
+.sol .no{font-size:12px;letter-spacing:.16em;color:var(--aqua-d)}
+.sol h2{font-size:26px}
+.sol p{margin:0;font-size:14px;color:var(--mute);line-height:1.8}
+.sol .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.chip{font-size:12.5px;padding:5px 10px;border:1px solid var(--line);border-radius:3px;color:#3C5468;background:#fff}
+.sol .meta{display:flex;gap:26px;margin-top:auto;padding-top:16px;font-size:12.5px;color:#8095A5;flex-wrap:wrap}
+.sol.reverse .txt{order:2}
+.sol:last-child{border-bottom:1px solid var(--line)}
+
+/* products filter */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:32px}
+.filters button{background:#fff;border:1px solid var(--line);padding:9px 16px;border-radius:3px;font-size:13.5px;color:#3C5468;cursor:pointer;transition:.2s}
+.filters button:hover{border-color:#BFD1DC}
+.filters button.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.service-strip{margin-top:40px;background:var(--paper);border:1px solid var(--line);padding:30px 32px;display:flex;justify-content:space-between;gap:24px;align-items:center;flex-wrap:wrap}
+.service-strip h3{margin:0;font-size:18px;color:var(--ink)}
+.service-strip p{margin:6px 0 0;font-size:13.5px;color:var(--mute)}
+
+/* about */
+.about-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:start}
+.about-grid p{font-size:15px;color:#33495B;line-height:1.95;margin:0 0 16px}
+.about-grid .quote{border-left:3px solid var(--aqua);padding:4px 0 4px 20px;color:var(--ink);font-size:17px;line-height:1.8;margin:26px 0}
+.timeline{border-left:1px solid var(--line);padding-left:26px;margin-top:8px}
+.timeline div{position:relative;padding-bottom:26px}
+.timeline div::before{content:"";position:absolute;left:-31px;top:8px;width:9px;height:9px;border-radius:50%;background:var(--aqua);box-shadow:0 0 0 4px #fff inset}
+.timeline b{display:block;font-size:13px;color:var(--aqua-d);letter-spacing:.1em;margin-bottom:4px}
+.timeline span{font-size:14.5px;color:var(--ink)}
+.timeline em{display:block;font-style:normal;font-size:12.5px;color:var(--mute);margin-top:3px}
+
+/* contact */
+.contact-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:start}
+form{display:grid;gap:16px}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+label{font-size:12.5px;color:#5A7186;letter-spacing:.06em;display:block;margin-bottom:6px}
+input,select,textarea{width:100%;padding:11px 12px;border:1px solid #D7E1E9;border-radius:3px;font-size:14px;font-family:inherit;color:var(--ink);background:#fff;transition:.15s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--aqua-d);box-shadow:0 0 0 3px rgba(37,208,192,.18)}
+textarea{min-height:96px;resize:vertical}
+form .submit{display:flex;align-items:center;gap:16px;margin-top:6px;flex-wrap:wrap}
+form .submit small{color:#8095A5;font-size:12px;line-height:1.6}
+.contact-info{background:var(--paper);border:1px solid var(--line);padding:32px 30px;display:grid;gap:22px}
+.contact-info h3{margin:0;font-size:16px;color:var(--ink)}
+.contact-info div p{margin:4px 0 0;font-size:13.5px;color:#3C5468;line-height:1.8}
+.contact-info .k{font-size:11.5px;letter-spacing:.14em;color:var(--aqua-d)}
+.promise{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:56px}
+.promise div{background:#fff;padding:24px}
+.promise b{display:block;font-size:15px;color:var(--ink);margin-bottom:6px}
+.promise span{font-size:13px;color:var(--mute);line-height:1.7}
+
+/* drawer & toast */
+.mask{position:fixed;inset:0;background:rgba(7,26,43,.55);opacity:0;pointer-events:none;transition:.25s;z-index:120;backdrop-filter:blur(2px)}
+.mask.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;height:100%;width:min(560px,92vw);background:#fff;z-index:130;transform:translateX(100%);transition:transform .3s cubic-bezier(.22,.7,.3,1);display:flex;flex-direction:column;box-shadow:-20px 0 60px rgba(7,26,43,.25)}
+.drawer.on{transform:none}
+.drawer .hd{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:1px solid var(--line)}
+.drawer .hd b{font-size:13px;letter-spacing:.14em;color:var(--aqua-d)}
+.drawer .hd button{border:0;background:#F1F5F8;width:36px;height:36px;border-radius:3px;cursor:pointer;font-size:18px;line-height:1;color:var(--ink)}
+.drawer .bd{padding:26px 24px 40px;overflow:auto}
+.drawer .bd img{width:100%;border-radius:3px;margin-bottom:22px}
+.drawer .bd h3{margin:0 0 12px;font-size:22px;line-height:1.4;color:var(--ink)}
+.drawer .bd dl{display:grid;grid-template-columns:96px 1fr;gap:10px 16px;margin:20px 0 0;font-size:13.5px;border-top:1px solid var(--line);padding-top:20px}
+.drawer .bd dt{color:#8095A5}
+.drawer .bd dd{margin:0;color:#25394A}
+.toast{position:fixed;left:50%;bottom:34px;transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:13px 22px;border-radius:4px;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:150;max-width:min(560px,90vw);text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in{opacity:1;transform:none}
+
+/* ---------- responsive ---------- */
+@media (max-width:1100px){
+  .vgrid{grid-template-columns:repeat(2,1fr)}
+  .pgrid,.cgrid{grid-template-columns:repeat(2,1fr)}
+  .two,.about-grid,.contact-grid{grid-template-columns:1fr;gap:36px}
+  .steps{grid-template-columns:repeat(4,1fr)}
+  .sol{grid-template-columns:1fr}
+  .sol .pic{min-height:240px;order:1}
+  .sol.reverse .txt{order:0}
+  .fgrid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:820px){
+  .topbar{display:none}
+  .menu{display:none}
+  .nav{height:66px}
+  .burger{display:flex}
+  .nav .nav-cta .btn{display:none}
+  .brand img{height:44px}
+  .brand .tag{display:none}
+  section{padding:64px 0}
+  .hero{height:auto;min-height:0;max-height:none}
+  .hero .inner{height:auto;padding:112px 0 44px;justify-content:flex-start}
+  .hero::after{background:linear-gradient(180deg,rgba(7,26,43,.35) 0%,rgba(7,26,43,.35) 34%,rgba(7,26,43,.95) 100%)}
+  .hero .stats{display:grid;grid-template-columns:1fr 1fr;gap:18px 0;margin-top:34px}
+  .hero .stats div{padding:0;margin:0;border:0}
+  .hero .stats b{font-size:24px}
+  .pgrid,.cgrid,.vgrid{grid-template-columns:1fr}
+  .steps{grid-template-columns:repeat(2,1fr)}
+  .nrow{grid-template-columns:1fr;gap:6px;padding:18px 0}
+  .nrow .arw{display:none}
+  .f2{grid-template-columns:1fr}
+  .promise{grid-template-columns:1fr}
+  .drawer-nav{display:none;position:fixed;inset:66px 0 auto 0;background:#fff;border-bottom:1px solid var(--line);z-index:90;padding:10px 0 18px;box-shadow:0 18px 40px -20px rgba(7,26,43,.3)}
+  .drawer-nav a{display:block;padding:14px 24px;font-size:16px;border-bottom:1px solid #F1F5F8}
+}
+@media (max-width:480px){
+  .hero h1{font-size:30px}
+  .hero .acts{flex-direction:column;align-items:stretch}
+  .hero .acts .btn{justify-content:center}
+  .sec-head{flex-direction:column;align-items:flex-start;gap:12px}
+  .steps{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important;scroll-behavior:auto}
+  .reveal{opacity:1;transform:none}
+}
+
+/* ---------- 首页：整屏呈现，不出现滚动 ---------- */
+body.is-home{height:100vh;height:100dvh;overflow:hidden;display:flex;flex-direction:column}
+body.is-home main{flex:1 1 auto;min-height:0;display:flex}
+body.is-home .view[data-view="home"]{flex:1 1 auto;min-height:0;display:flex;width:100%}
+body.is-home .hero{flex:1 1 auto;height:auto;min-height:0;max-height:none;width:100%}
+body.is-home .hero .inner{height:100%;justify-content:center;padding:clamp(14px,3.4vh,40px) 0}
+body.is-home .eyebrow{margin-bottom:clamp(8px,1.7vh,18px)}
+body.is-home .hero h1{font-size:clamp(28px,6.2vh,62px)}
+body.is-home .hero p{margin-top:clamp(8px,1.8vh,18px);font-size:clamp(13.5px,1.55vh,17px);max-width:54ch}
+body.is-home .hero .acts{margin-top:clamp(12px,2.5vh,28px)}
+body.is-home .hero .stats{margin-top:clamp(14px,3.2vh,42px);padding-top:clamp(10px,1.9vh,20px)}
+body.is-home .hero .stats b{font-size:clamp(19px,2.5vh,26px)}
+body.is-home .hero .stats span{font-size:clamp(11px,1.35vh,12.5px)}
+body.is-home footer{padding:0;flex:0 0 auto}
+body.is-home .fgrid,body.is-home .fbottom{display:none}
+body.is-home .fhome{display:flex}
+.fhome{display:none;align-items:center;justify-content:space-between;gap:18px;height:56px;font-size:12.5px;color:#93A9B8}
+.fhome .fl{display:flex;align-items:center;gap:14px;min-width:0}
+.fhome img{height:26px;width:auto;background:#fff;padding:4px 8px;border-radius:3px}
+.fhome .sep{color:#3E5A6E}
+.fhome a{color:#8FD9D2}
+.fhome a:hover{color:#fff}
+.fhome span,.fhome a{white-space:nowrap}
+@media (max-width:560px){
+  .fphone,.m-hide{display:none}
+  body.is-home .fhome{font-size:11px;letter-spacing:0}
+  body.is-home .fhome .sep{display:none}
+}
+/* 极端矮窗口（<600px 高）退回可滚动，避免内容被裁 */
+@media (max-height:600px){
+  body.is-home{overflow:auto}
+  body.is-home .view[data-view="home"]{min-height:520px}
+}
+@media (max-width:820px){
+  body.is-home .fhome{height:50px;font-size:11.5px;gap:10px;justify-content:center}
+  body.is-home .fhome img{height:22px}
+  .m-hide{display:none}
+  body.is-home .hero .inner{padding:clamp(10px,2.6vh,32px) 0}
+  body.is-home .hero h1{font-size:clamp(26px,4.6vh,38px)}
+  body.is-home .hero .stats{gap:clamp(10px,1.8vh,18px) 0}
+}
+</style>
 </head>
 <body>
-  <div id="stage">
-    <!-- three.js 渲染画布由 JS 动态插入；水印覆盖层如下 -->
-    <canvas id="wm-canvas"></canvas>
+
+<!-- ================= 顶部 ================= -->
+<div class="topbar">
+  <div class="wrap">
+    <span>上海嘉元环境科技有限公司 · 海水淡化 / 工业纯水 / 中水回用</span>
+    <span>集团总机 <b>+86 0756-3225888 / 828</b> ｜ 工作时间 <b>周一至周五 08:30–17:30</b></span>
+  </div>
+</div>
+
+<header class="header">
+  <div class="wrap nav">
+    <a class="brand" href="#/home" aria-label="嘉元环境首页">
+      <img src="assets/img/logo-stack.png" alt="嘉元环境 JIAYUAN ENV">
+    </a>
+    <nav class="menu" aria-label="主导航">
+      <a href="#/home" data-nav="home">首页</a>
+      <a href="#/solutions" data-nav="solutions">解决方案</a>
+      <a href="#/products" data-nav="products">产品中心</a>
+      <a href="#/cases" data-nav="cases">工程案例</a>
+      <a href="#/tech" data-nav="tech">技术与资质</a>
+      <a href="#/about" data-nav="about">关于嘉元</a>
+      <a href="#/news" data-nav="news">新闻资讯</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-primary btn-sm" href="#/contact">提交工况</a>
+      <button class="burger" id="burger" aria-label="打开菜单" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="drawer-nav" id="drawerNav">
+    <a href="#/solutions">解决方案</a>
+    <a href="#/products">产品中心</a>
+    <a href="#/cases">工程案例</a>
+    <a href="#/tech">技术与资质</a>
+    <a href="#/about">关于嘉元</a>
+    <a href="#/news">新闻资讯</a>
+    <a href="#/contact">提交工况</a>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ================= 视图：首页 ================= -->
+<section class="view" data-view="home" style="padding:0">
+  <div class="hero">
+    <img src="assets/img/hero-plant.webp" alt="海岸海水淡化厂区示意">
+    <div class="wrap inner">
+      <div class="eyebrow">Seawater Desalination · Industrial Water</div>
+      <h1>把不可用的水<br>做成可用的水</h1>
+      <p>上海嘉元环境科技专注海水与苦咸水淡化、工业纯水与超纯水、中水回用系统：从工艺设计、设备制造，到现场施工与远程运维，交付一套能长期跑得稳的水系统。</p>
+      <div class="acts">
+        <a class="btn btn-primary" href="#/contact">提交工况 · 48 小时出方案</a>
+        <a class="btn btn-ghost" href="#/products">查看 11 类产品线</a>
+      </div>
+      <div class="stats">
+        <div><b>2019</b><span>成立于上海</span></div>
+        <div><b>11</b><span>类产品线</span></div>
+        <div><b>7</b><span>类工程场景</span></div>
+        <div><b>20+ 年</b><span>集团海水淡化积累</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 视图：解决方案 ================= -->
+<section class="view" data-view="solutions" hidden>
+  <div class="page-hero">
+    <div class="wrap">
+      <div class="crumb"><a href="#/home">首页</a> ／ 解决方案</div>
+      <div class="kicker">Solutions</div>
+      <h1>按场景选工艺，<br>而不是按型号选设备</h1>
+      <p>四条业务线先划清能力边界，五类典型场景给出源水判断与工艺路线。方案以水质全分析与现场条件为准。</p>
+    </div>
+  </div>
+  <div class="wrap" style="padding-top:64px">
+    <div class="sec-head reveal">
+      <div class="l">
+        <div class="kicker">Business Scope</div>
+        <h2>四条业务线，覆盖从取水到回用</h2>
+        <p class="lead">按水源与用水要求选工艺，而不是先选设备。四条线共用同一套设计与制造标准，也共用同一支现场服务团队。</p>
+      </div>
+      <a class="more" href="#/products">全部产品线</a>
+    </div>
+    <div class="vgrid reveal">
+      <article class="vcard">
+        <div class="no">01</div>
+        <h3>海水与苦咸水淡化</h3>
+        <p>船用造水机、陆用与集装箱式 SWRO、海水淡化厂成套设备。高盐度、高浊度、离岸与偏远场景按工况选型。</p>
+        <a href="#/products">产品线 →</a>
+      </article>
+      <article class="vcard">
+        <div class="no">02</div>
+        <h3>工业纯水与超纯水</h3>
+        <p>RO + EDI、电厂与锅炉补给水、软化与多介质过滤。按进水水质与产水电阻率反推配置。</p>
+        <a href="#/products">产品线 →</a>
+      </article>
+      <article class="vcard">
+        <div class="no">03</div>
+        <h3>中水回用与零排放</h3>
+        <p>电镀、洗砂、漂染等行业的回用与减量，浓水再浓缩，把排放量压到许可范围内。</p>
+        <a href="#/products">产品线 →</a>
+      </article>
+      <article class="vcard">
+        <div class="no">04</div>
+        <h3>运维、配件与租赁</h3>
+        <p>远程监控、备件供应、膜元件更换与系统翻新。设备交付后，运行数据仍在同一套体系里。</p>
+        <a href="#/contact">服务咨询 →</a>
+      </article>
+    </div>
+  
+  </div>
+  <div class="wrap" style="padding-top:56px">
+    <div class="sol">
+      <div class="txt">
+        <div class="no">场景 01 · 船舶与海工</div>
+        <h2>机舱里的一台造水机</h2>
+        <p>空间紧、连续运行、维护窗口短。船用装置按机舱尺寸与船舶电网设计，膜壳与高压泵集中布置，日常只需检查压力与流量。</p>
+        <div class="chips"><span class="chip">5–50 t/d</span><span class="chip">反渗透式</span><span class="chip">饮用水标准</span><span class="chip">船级社认证可选</span></div>
+        <div class="meta"><span>对应产品：船用海水淡化装置、紫外消毒、矿化器</span></div>
+      </div>
+      <div class="pic"><img src="assets/img/scene-ship.webp" alt="船舶机舱内的海水淡化装置" loading="lazy"></div>
+    </div>
+    <div class="sol reverse">
+      <div class="txt">
+        <div class="no">场景 02 · 海岛与沿海园区</div>
+        <h2>离岸供水，先解决取水与浓水</h2>
+        <p>海水取水与浓水排放往往比淡化本身更难。开式取水加防生物附着，浓水多端口扩散，按环评要求定位置与稀释比。</p>
+        <div class="chips"><span class="chip">50–5,000 t/d</span><span class="chip">SWRO 一级/二级</span><span class="chip">含取排水</span><span class="chip">能量回收</span></div>
+        <div class="meta"><span>对应产品：陆用海水淡化系统、海水淡化厂成套设备</span></div>
+      </div>
+      <div class="pic"><img src="assets/img/hero-plant.webp" alt="沿海海水淡化厂区" loading="lazy"></div>
+    </div>
+    <div class="sol">
+      <div class="txt">
+        <div class="no">场景 03 · 工业制造</div>
+        <h2>产水指标先定，设备再谈</h2>
+        <p>电子、电力、食品饮料对纯水的要求差别很大。先确认产水电阻率、TOC 与流量曲线，再决定 RO 级数、EDI 与抛光混床。</p>
+        <div class="chips"><span class="chip">5–200 t/h</span><span class="chip">RO + EDI</span><span class="chip">18.2 MΩ·cm</span><span class="chip">模块化扩容</span></div>
+        <div class="meta"><span>对应产品：工业纯水与超纯水、电厂与锅炉补给水、软化过滤</span></div>
+      </div>
+      <div class="pic"><img src="assets/img/prod-pure.webp" alt="工业纯水与超纯水系统" loading="lazy"></div>
+    </div>
+    <div class="sol reverse">
+      <div class="txt">
+        <div class="no">场景 04 · 市政与园区供水</div>
+        <h2>把苦咸水变成达标自来水</h2>
+        <p>地下水含盐量高、硬度大，直接供口感差、管道结垢。淡化后矿化调质，出水稳定达到生活饮用水标准。</p>
+        <div class="chips"><span class="chip">10–500 t/d</span><span class="chip">苦咸水 RO</span><span class="chip">矿化调质</span><span class="chip">无人值守</span></div>
+        <div class="meta"><span>对应产品：集装箱式苦咸水淡化、紫外消毒与矿化</span></div>
+      </div>
+      <div class="pic"><img src="assets/img/scene-container.webp" alt="集装箱式苦咸水淡化装置" loading="lazy"></div>
+    </div>
+    <div class="sol">
+      <div class="txt">
+        <div class="no">场景 05 · 油田与偏远地区</div>
+        <h2>没人值守，也要天天出水</h2>
+        <p>沙尘、温差、断电与无人现场是常态。集装箱式装置做防沙与保温，控制逻辑按无人值守设计，数据回传后远程处置。</p>
+        <div class="chips"><span class="chip">10–500 t/d</span><span class="chip">高盐度适应</span><span class="chip">远程监控</span><span class="chip">定期巡检</span></div>
+        <div class="meta"><span>对应产品：集装箱式苦咸水淡化、便携与应急供水</span></div>
+      </div>
+      <div class="pic"><img src="assets/img/prod-ro-compact.webp" alt="紧凑型反渗透淡化装置" loading="lazy"></div>
+    </div>
   </div>
 
-  <div id="panel">
-    <h1>江河海 · 海水淡化 3D 模拟</h1>
-    <div class="sub">SWRO 全流程 · 按工艺段拆分</div>
-    <div class="grp">工艺段（点击切换）</div>
-    <div id="seg-list"></div>
-    <div class="grp">导出（自动加盖 JHH 水印）</div>
-    <div id="ex-list"></div>
+  <div class="scen" style="padding:76px 0">
+    <div class="sec-head reveal">
+      <div class="l">
+        <div class="kicker">Working Conditions</div>
+        <h2 style="color:#fff">先看工况，再定配置</h2>
+        <p class="lead">同样的产水量，源水不同、安装位置不同，配置差出一倍。下面是最常见的四类工况，实际项目按水质全分析后出方案。</p>
+      </div>
+      <a class="more" href="#/contact" style="color:#fff;border-color:#fff">带工况来询价</a>
+    </div>
+    <table class="reveal">
+      <thead><tr><th>典型工况</th><th>源水</th><th>产水与用途</th><th>推荐工艺</th></tr></thead>
+      <tbody>
+        <tr><td><b>海岛 / 沿海园区</b><span>取水距离远、电力条件有限</span></td><td>海水（TDS 30,000–45,000 mg/L）</td><td>生活与生产用水 50–5,000 t/d</td><td>UF 预处理 → SWRO → 矿化 → 供水</td></tr>
+        <tr><td><b>船舶与海工</b><span>机舱空间紧、连续运行</span></td><td>海水 / 辅机冷却水</td><td>5–50 t/d，饮用水与锅炉补给</td><td>多级过滤 → 高压 RO → 紫外消毒</td></tr>
+        <tr><td><b>工业制造</b><span>产水电阻率与稳定性要求高</span></td><td>市政自来水 / 地下水</td><td>纯水 5–200 t/h，超纯水 18.2 MΩ·cm</td><td>软化 → RO → EDI → 抛光</td></tr>
+        <tr><td><b>油田与偏远地区</b><span>无人值守、沙尘与温差</span></td><td>高盐度苦咸水（TDS 5,000–20,000 mg/L）</td><td>钻井与生活用水 10–500 t/d</td><td>集装箱式 RO → 远程监控 → 定期巡检</td></tr>
+      </tbody>
+    </table>
+    <div class="tip">表内水量与水质为常见区间，具体项目以水质检测报告与现场条件为准。</div>
+  
   </div>
+</section>
 
-  <div id="hud">
-    <div class="name" id="hud-name">—</div>
-    <div class="sub2" id="hud-sub">—</div>
-    <div class="desc" id="hud-desc">—</div>
-    <table id="hud-params"><tbody></tbody></table>
+<!-- ================= 视图：产品中心 ================= -->
+<section class="view" data-view="products" hidden>
+  <div class="page-hero">
+    <div class="wrap">
+      <div class="crumb"><a href="#/home">首页</a> ／ 产品中心</div>
+      <div class="kicker">Products</div>
+      <h1>11 类产品线</h1>
+      <p>按水量、源水与安装条件组合成撬装、集装箱或成套厂站：从 2 t/d 的便携机到 5,000 t/d 的成套厂站，同一套设计与制造标准。点选分类筛选，具体参数按项目工况确认。</p>
+    </div>
   </div>
-
-  <div id="title-bar">
-    <span class="t-main">海水淡化全流程工艺</span><span class="t-sub">（SWRO）</span>
+  <div class="wrap" style="padding-top:64px;padding-bottom:92px">
+    <div class="filters" id="filters">
+      <button class="on" data-f="all">全部 11</button>
+      <button data-f="sea">海水淡化</button>
+      <button data-f="brackish">苦咸水</button>
+      <button data-f="pure">纯水 · 超纯水</button>
+      <button data-f="reuse">中水回用</button>
+      <button data-f="mobile">便携 · 应急</button>
+    </div>
+    <div class="pgrid" id="productGrid">
+      <article class="pcard" data-cat="sea">
+        <div class="ph"><img src="assets/img/scene-ship.webp" alt="船用海水淡化装置" loading="lazy"></div>
+        <div class="body"><div class="cat">船用 · 造水机</div><h3>船用海水淡化装置</h3><div class="spec">5–50 t/d ｜ 反渗透式 ｜ 机舱紧凑布置 ｜ 可选船级社认证</div><div class="foot"><span>饮用水 / 锅炉补给</span><span class="arw">→</span></div></div>
+      </article>
+      <article class="pcard" data-cat="sea">
+        <div class="ph"><img src="assets/img/prod-ro-plant.webp" alt="陆用海水淡化系统" loading="lazy"></div>
+        <div class="body"><div class="cat">陆用 · EPC</div><h3>陆用海水淡化系统</h3><div class="spec">50–5,000 t/d ｜ 一级 / 二级 RO ｜ 含取水与浓水排放</div><div class="foot"><span>园区 / 市政 / 海岛</span><span class="arw">→</span></div></div>
+      </article>
+      <article class="pcard" data-cat="brackish sea">
+        <div class="ph"><img src="assets/img/scene-container.webp" alt="集装箱式苦咸水淡化装置" loading="lazy"></div>
+        <div class="body"><div class="cat">集装箱 · 无人值守</div><h3>集装箱式苦咸水淡化装置</h3><div class="spec">10–500 t/d ｜ 免土建 ｜ PLC + 远程监控</div><div class="foot"><span>油田 / 偏远地区</span><span class="arw">→</span></div></div>
+      </article>
+      <article class="pcard" data-cat="sea">
+        <div class="ph"><img src="assets/img/prod-ro-stack.webp" alt="海水淡化厂成套设备" loading="lazy"></div>
+        <div class="body"><div class="cat">成套 · 厂站</div><h3>海水淡化厂成套设备</h3><div class="spec">5,000 t/d 以上 ｜ 取水—预处理—RO—供水全流程</div><div class="foot"><span>设计 + 制造 + 调试</span><span class="arw">→</span></div></div>
+      </article>
+      <article class="pcard" data-cat="pure">
+        <div class="ph"><img src="assets/img/prod-pure.webp" alt="工业纯水与超纯水系统" loading="lazy"></div>
+        <div class="body"><div class="cat">纯水 · 超纯水</div><h3>工业纯水与超纯水系统</h3><div class="spec">RO + EDI ｜ 电阻率 18.2 MΩ·cm ｜ 模块化扩容</div><div class="foot"><span>电子 / 食品 / 医药</span><span class="arw">→</span></div></div>
+      </article>
+      <article class="pcard" data-cat="pure">
+        <div class="ph"><img src="assets/img/prod-ro-green.webp" alt="电厂与锅炉补给水系统" loading="lazy"></div>
+        <div class="body"><div class="cat">电力 · 锅炉补给</div><h3>电厂与锅炉补给水系统</h3><div class="spec">一级除盐 + 混床 ｜ 按锅炉压力等级配置</div><div class="foot"><span>电厂 / 工业锅炉</span><span class="arw">→</span></div></div>
+      </article>
+      <article class="pcard" data-cat="pure">
+        <div class="ph"><img src="assets/img/prod-softener.webp" alt="软化与多介质过滤装置" loading="lazy"></div>
+        <div class="body"><div class="cat">预处理 · 软化</div><h3>软化与多介质过滤</h3><div class="spec">降低硬度与浊度 ｜ 控制 SDI ｜ RO 前置保护</div><div class="foot"><span>全系系统前置</span><span class="arw">→</span></div></div>
+      </article>
+      <article class="pcard" data-cat="pure">
+        <div class="ph"><img src="assets/img/prod-uv.webp" alt="紫外消毒与矿化装置" loading="lazy"></div>
+        <div class="body"><div class="cat">消毒 · 矿化</div><h3>紫外消毒与矿化装置</h3><div class="spec">饮用水紫外消毒 ｜ 中压紫外 ｜ pH 与矿物质调节</div><div class="foot"><span>淡化水后处理</span><span class="arw">→</span></div></div>
+      </article>
+      <article class="pcard" data-cat="reuse">
+        <div class="ph"><img src="assets/img/prod-panel.webp" alt="中水回用与零排放系统" loading="lazy"></div>
+        <div class="body"><div class="cat">回用 · 零排放</div><h3>中水回用与零排放系统</h3><div class="spec">电镀 / 洗砂 / 漂染 ｜ 回用率按工艺定 ｜ 浓水再浓缩</div><div class="foot"><span>减量 + 达标</span><span class="arw">→</span></div></div>
+      </article>
+      <article class="pcard" data-cat="reuse">
+        <div class="ph"><img src="assets/img/prod-ro-compact.webp" alt="液体浓缩与海水提浓装置" loading="lazy"></div>
+        <div class="body"><div class="cat">浓缩 · 提纯</div><h3>液体浓缩与海水提浓</h3><div class="spec">物料减量 30–70% ｜ 海水浓缩制盐与提溴前置</div><div class="foot"><span>食品 / 化工 / 盐业</span><span class="arw">→</span></div></div>
+      </article>
+      <article class="pcard" data-cat="mobile">
+        <div class="ph"><img src="assets/img/prod-portable.webp" alt="便携与应急供水装置" loading="lazy"></div>
+        <div class="body"><div class="cat">便携 · 应急</div><h3>便携与应急供水装置</h3><div class="spec">2–10 t/d ｜ 拖车 / 手提 ｜ 到场即用</div><div class="foot"><span>救援 / 海岛 / 工地</span><span class="arw">→</span></div></div>
+      </article>
+    </div>
+    <div class="service-strip">
+      <div>
+        <h3>设备运维、备件与租赁</h3>
+        <p>膜元件更换、仪表校验、系统翻新与短期租赁；已交付项目可接入远程监控。</p>
+      </div>
+      <a class="btn btn-line btn-sm" href="#/contact">咨询运维服务</a>
+    </div>
   </div>
+</section>
 
-  <div id="hint">鼠标拖拽旋转 · 滚轮缩放 · 右键平移 · 可开启「自动巡游」</div>
+<!-- ================= 视图：工程案例 ================= -->
+<section class="view" data-view="cases" hidden>
+  <div class="page-hero">
+    <div class="wrap">
+      <div class="crumb"><a href="#/home">首页</a> ／ 工程案例</div>
+      <div class="kicker">Cases</div>
+      <h1>七类工程场景的实战记录</h1>
+      <p>船用、陆用、苦咸水、工业纯水、超纯水、中水回用、液体浓缩。以下先列集团公开案例，嘉元自有项目持续补充。</p>
+    </div>
+  </div>
+  <div class="wrap" style="padding-top:64px;padding-bottom:92px">
+    <div class="cgrid">
+      <button class="ccard" data-case="c1"><div class="ph"><img src="assets/img/scene-ship.webp" alt="极地号破冰船装配海水淡化装置" loading="lazy"></div><div class="body"><div class="meta">船用 · 海水淡化</div><h3>「中山大学极地」号破冰船</h3><p>高校首艘破冰船装配「江河海」牌造水机，随船渤海试航。</p><div class="tagline"><span>船用造水机</span><span>集团公开案例</span></div></div></button>
+      <button class="ccard" data-case="c2"><div class="ph"><img src="assets/img/scene-container.webp" alt="塔里木油田集装箱式淡化装置" loading="lazy"></div><div class="body"><div class="meta">苦咸水 · 无人值守</div><h3>中石油塔里木 · 深地塔科 1 井</h3><p>高盐度集装箱式苦咸水淡化，远程控制、无人值守全自动运行。</p><div class="tagline"><span>集装箱式 RO</span><span>集团公开案例</span></div></div></button>
+      <button class="ccard" data-case="c3"><div class="ph"><img src="assets/img/prod-portable.webp" alt="斐济项目海水淡化机" loading="lazy"></div><div class="body"><div class="meta">外贸 · 海岛供水</div><h3>斐济 15 t/d 海水淡化机出口</h3><p>整机出口并完成现场调试，为海岛社区提供生活淡水。</p><div class="tagline"><span>15 t/d</span><span>集团公开案例</span></div></div></button>
+      <button class="ccard" data-case="c4"><div class="ph"><img src="assets/img/prod-pure.webp" alt="288 吨每天纯水处理系统" loading="lazy"></div><div class="body"><div class="meta">工业纯水</div><h3>288 t/d 纯水处理系统</h3><p>成套纯水系统发货并投运，服务工业用户的工艺用水。</p><div class="tagline"><span>288 t/d</span><span>集团公开案例</span></div></div></button>
+      <button class="ccard" data-case="c5"><div class="ph"><img src="assets/img/prod-panel.webp" alt="洗砂废水中水回用系统" loading="lazy"></div><div class="body"><div class="meta">中水回用</div><h3>6,000 t/d 洗砂废水回用系统</h3><p>洗砂废水处理与回用，降低新水取用量与排放量。</p><div class="tagline"><span>6,000 t/d</span><span>集团公开案例</span></div></div></button>
+      <button class="ccard" data-case="c6"><div class="ph"><img src="assets/img/hero-plant.webp" alt="沿海园区海水淡化供水" loading="lazy"></div><div class="body"><div class="meta">陆用 · 园区供水</div><h3>沿海园区海水淡化供水（方案示意）</h3><p>取水—预处理—SWRO—矿化—园区管网，按园区用水曲线配置调蓄。</p><div class="tagline"><span>方案示意</span><span>待补实拍</span></div></div></button>
+    </div>
+    <div class="source-note">案例 1–5 的时间、水量与场景引自江河海集团官网公开资讯（截至 2026-02）；案例 6 为方案示意，尚未落成。上线前请市场部逐条确认可公开口径与配图授权。</div>
+  </div>
+</section>
 
-  <!-- 移动端唤出按钮：窄屏下两侧介绍框默认收起，避免遮挡 3D 主画面 -->
-  <button id="tab-panel" class="tab-btn" type="button" aria-expanded="false" aria-controls="panel">工艺段</button>
-  <button id="tab-hud" class="tab-btn" type="button" aria-expanded="false" aria-controls="hud">参数说明</button>
-  <div id="scrim"></div>
+<!-- ================= 视图：技术与资质 ================= -->
+<section class="view" data-view="tech" hidden>
+  <div class="page-hero">
+    <div class="wrap">
+      <div class="crumb"><a href="#/home">首页</a> ／ 技术与资质</div>
+      <div class="kicker">Technology</div>
+      <h1>稳定的出水，是设计出来的</h1>
+      <p>工艺模型、能量回收、集装箱化与远程运维，四件事决定了系统三年后还在不在设计工况上运行。</p>
+    </div>
+  </div>
+  <div class="wrap" style="padding-top:72px;padding-bottom:92px">
+    <div class="two">
+      <div>
+        <div class="kicker">Process Model</div>
+        <h2>SWRO 七段工艺，逐段定指标</h2>
+        <p class="lead">每段都有进出的水质与压力窗口，方案里写清、调试时按表核对。</p>
+        <div class="klist" style="margin-top:24px">
+          <div class="kitem"><div class="no">01</div><div><h3>取水</h3><p>开式取水或沙滩井；控制浊度、藻类与生物附着，取水口流速与反冲周期写入运行手册。</p></div></div>
+          <div class="kitem"><div class="no">02</div><div><h3>预处理</h3><p>混凝 + 多介质过滤，出水 SDI 控制在膜厂家要求以内，压住胶体与悬浮物。</p></div></div>
+          <div class="kitem"><div class="no">03</div><div><h3>超滤 / 微滤</h3><p>UF 作为 RO 前置屏障，定期反洗与化学加强洗，保证出水浊度稳定。</p></div></div>
+          <div class="kitem"><div class="no">04</div><div><h3>高压泵与能量回收</h3><p>高压段配 ERD，回收浓水余压；吨水电耗按项目水量核算并写进方案。</p></div></div>
+          <div class="kitem"><div class="no">05</div><div><h3>反渗透</h3><p>一级 / 二级 RO 按回收率与产水指标配置膜阵列，控制通量与段间压差。</p></div></div>
+          <div class="kitem"><div class="no">06</div><div><h3>后处理</h3><p>矿化、pH 调节与紫外消毒，出水按饮用水或工艺用水标准检测。</p></div></div>
+          <div class="kitem"><div class="no">07</div><div><h3>浓水排放</h3><p>多端口扩散器或蒸发结晶，按环评批复的排放点、稀释比与监测要求执行。</p></div></div>
+        </div>
+      </div>
+      <aside>
+        <div class="side">
+          <h3>专利</h3>
+          <ul>
+            <li><i>◆</i><span>一种利用船舶废热的海水淡化装置</span></li>
+            <li><i>◆</i><span>一种可调整水质酸碱度的矿化过滤装置</span></li>
+            <li><i>◆</i><span>便携式海水净化装置</span></li>
+          </ul>
+          <div class="note">专利信息引自公开工商数据（截至 2026-11），专利号与法律状态待核。</div>
+        </div>
+        <div class="side" style="margin-top:24px">
+          <h3>资质与体系</h3>
+          <ul>
+            <li><i>◇</i><span>ISO 9001 质量管理体系（待核）</span></li>
+            <li><i>◇</i><span>CE 认证（按出口项目配置，待核）</span></li>
+            <li><i>◇</i><span>船级社认证（船用项目可选，待核）</span></li>
+            <li><i>◇</i><span>集团「江河海」广东省专精特新（2026-02 复核通过）</span></li>
+          </ul>
+          <div class="note">标「待核」的项需质量部门提供证书扫描件与有效期，未确认前不对外宣称已取证。</div>
+        </div>
+      </aside>
+    </div>
+    <div style="margin-top:64px">
+      <div class="kicker">Design Focus</div>
+      <h2>把稳定性做进设计里</h2>
+      <p class="lead">海水淡化的难点不在“能不能出淡水”，而在三年、五年后还能不能稳定出水。我们在四个地方下了功夫。</p>
+      <div class="klist" style="margin-top:24px">
+        <div class="kitem"><div class="no">01</div><div><h3>能量回收与吨水电耗</h3><p>高压段配能量回收装置，把浓水余压送回进水侧；按项目水量核算吨水电耗，写进方案而不是只写承诺。</p></div></div>
+        <div class="kitem"><div class="no">02</div><div><h3>集装箱化与免土建</h3><p>撬装与集装箱模块在厂内完成管路、电气与调试，现场只需接管接电，缩短工期也降低现场质量波动。</p></div></div>
+        <div class="kitem"><div class="no">03</div><div><h3>无人值守与远程运维</h3><p>PLC + 远程监控，关键参数上云；异常先报警、再远程处置，减少偏远项目的到场次数。</p></div></div>
+        <div class="kitem"><div class="no">04</div><div><h3>抗污染预处理</h3><p>按源水藻类、油类与浊度设计预处理组合，控制膜通量衰减与清洗周期，延长膜寿命。</p></div></div>
+      </div>
+    </div>
+    <div style="margin-top:56px;display:flex;gap:12px;flex-wrap:wrap">
+      <a class="btn btn-line" href="https://swdtwhps.dpdns.org/3d/" target="_blank" rel="noopener">交互式 3D 工艺演示 ↗</a>
+      <a class="btn btn-primary" href="#/contact">索取工艺说明与参数表</a>
+    </div>
+  </div>
+</section>
 
-  <div id="loading">正在加载 3D 场景…（首次需初始化 three.js）</div>
+<!-- ================= 视图：关于嘉元 ================= -->
+<section class="view" data-view="about" hidden>
+  <div class="page-hero">
+    <div class="wrap">
+      <div class="crumb"><a href="#/home">首页</a> ／ 关于嘉元</div>
+      <div class="kicker">About</div>
+      <h1>嘉元环境：<br>集团在上海的那支队伍</h1>
+      <p>2019 年成立于浦东临港，承接江河海在华东与海外的设计、制造、施工与运维。</p>
+    </div>
+  </div>
+  <div class="wrap" style="padding-top:72px;padding-bottom:92px">
+    <div class="about-grid">
+      <div>
+        <div class="kicker">Company</div>
+        <h2>我们做的是“长期能跑”的系统</h2>
+        <p>上海嘉元环境科技有限公司成立于 2019 年 8 月，是珠海市江河海水处理科技股份有限公司（江河海）的子公司，专注海水与苦咸水淡化、工业纯水与超纯水、中水回用系统的设计、制造、施工与运维。</p>
+        <p>公司位于上海市浦东新区环湖西二路 888 号，业务覆盖船舶海工、海岛与沿海园区、电力电子、食品饮料、油田与偏远地区等场景。设备在集团制造基地完成集成与调试，现场由嘉元团队负责安装、调试与售后。</p>
+        <p class="quote">“把水处理当成一项长期运行的服务，而不是一次设备买卖。”</p>
+        <p>因此我们做三件额外的事：方案里写清吨水电耗与清洗周期；交付时给运行手册与备件清单；交付后能远程看到关键参数。</p>
+      </div>
+      <aside>
+        <div class="side">
+          <h3>发展节点</h3>
+          <div class="timeline" style="margin-top:16px">
+            <div><b>2019</b><span>上海嘉元环境科技成立</span><em>落地浦东临港</em></div>
+            <div><b>2020</b><span>15 t/d 海水淡化机出口斐济</span><em>集团项目</em></div>
+            <div><b>2023</b><span>「极地」号破冰船装配造水机；万米深地科探井投运</span><em>集团项目</em></div>
+            <div><b>2026</b><span>集团通过广东省专精特新复核，入围中国水务合作单位</span><em>集团动态</em></div>
+          </div>
+          <div class="note">时间线中的集团项目用于说明技术沿革，嘉元自有项目档案待补。</div>
+        </div>
+        <div class="side" style="margin-top:24px">
+          <h3>集团与基地</h3>
+          <ul>
+            <li><i>◆</i><span>珠海市江河海水处理科技股份有限公司（集团）</span></li>
+            <li><i>◆</i><span>上海 · 浦东临港（嘉元）</span></li>
+            <li><i>◆</i><span>珠海 · 金鼎科技工业园（制造基地）</span></li>
+          </ul>
+          <div class="note"><a href="https://www.waterjhh.com/" target="_blank" rel="noopener" style="color:#0E9C90">访问集团官网 ↗</a></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
 
-  <script>
-    (function () {
-      var body = document.body;
-      var tp = document.getElementById('tab-panel');
-      var th = document.getElementById('tab-hud');
-      var scrim = document.getElementById('scrim');
-      var mq = window.matchMedia('(max-width: 1200px)');
+<!-- ================= 视图：新闻 ================= -->
+<section class="view" data-view="news" hidden>
+  <div class="page-hero">
+    <div class="wrap">
+      <div class="crumb"><a href="#/home">首页</a> ／ 新闻资讯</div>
+      <div class="kicker">News</div>
+      <h1>新闻与动态</h1>
+      <p>公司新闻、项目动态与行业观察。嘉元自有资讯待补，当前先同步集团公开报道。</p>
+    </div>
+  </div>
+  <div class="wrap" style="padding-top:56px;padding-bottom:92px">
+    <div class="nlist">
+      <a class="nrow" href="#/news"><time>2026-02-10</time><span class="tag">公司新闻</span><h3>「江河海」复核通过广东省专精特新中小企业认定</h3><span class="arw">→</span></a>
+      <a class="nrow" href="#/news"><time>2026-02-09</time><span class="tag">公司新闻</span><h3>成功中标中国水务城乡供水领域科技创新合作单位入围项目</h3><span class="arw">→</span></a>
+      <a class="nrow" href="#/news"><time>2023-06-02</time><span class="tag">项目动态</span><h3>掘地三万尺：高盐度集装箱式苦咸水淡化装置服务万米深地科探井</h3><span class="arw">→</span></a>
+      <a class="nrow" href="#/news"><time>2023-01-28</time><span class="tag">项目动态</span><h3>「中山大学极地」号破冰船装配江河海海水淡化装置赴渤海试航</h3><span class="arw">→</span></a>
+      <a class="nrow" href="#/news"><time>2020-02-21</time><span class="tag">外贸</span><h3>外贸出货：发往斐济 15 吨/天海水淡化机一台套</h3><span class="arw">→</span></a>
+      <a class="nrow" href="#/news"><time>2020-02-20</time><span class="tag">项目动态</span><h3>项目发货：288 吨/天纯水处理系统一套</h3><span class="arw">→</span></a>
+    </div>
+    <div class="source-note">以上资讯同步自集团官网公开内容（截至 2026-02），点击暂不跳转详情页；正式上线时接内容管理后台。</div>
+  </div>
+</section>
 
-      function setOpen(name) {
-        if (name) { body.setAttribute('data-open', name); } else { body.removeAttribute('data-open'); }
-        var pOpen = name === 'panel', hOpen = name === 'hud';
-        tp.setAttribute('aria-expanded', pOpen ? 'true' : 'false');
-        th.setAttribute('aria-expanded', hOpen ? 'true' : 'false');
-        tp.textContent = pOpen ? '收起工艺段' : '工艺段';
-        th.textContent = hOpen ? '收起参数' : '参数说明';
-      }
-      function toggle(name) {
-        setOpen(body.getAttribute('data-open') === name ? '' : name);
-      }
+<!-- ================= 视图：联系 ================= -->
+<section class="view" data-view="contact" hidden>
+  <div class="page-hero">
+    <div class="wrap">
+      <div class="crumb"><a href="#/home">首页</a> ／ 联系我们</div>
+      <div class="kicker">Contact</div>
+      <h1>提交工况，<br>48 小时内给初步方案</h1>
+      <p>水量、源水、项目地、用电与安装条件，四项说清即可。复杂项目我们会先约一次电话或现场勘查。</p>
+    </div>
+  </div>
+  <div class="wrap" style="padding-top:64px;padding-bottom:92px">
+    <div class="contact-grid">
+      <div>
+        <h2 style="font-size:24px;margin-bottom:8px">工况与询价</h2>
+        <p class="lead" style="margin-bottom:26px">表单提交为演示流程，正式上线后接入后台与邮件通知。</p>
+        <form id="inquiry" novalidate>
+          <div class="f2">
+            <div><label for="company">公司名称 *</label><input id="company" name="company" required placeholder="例：某某水务 / 某某船厂"></div>
+            <div><label for="person">联系人 *</label><input id="person" name="person" required placeholder="姓名"></div>
+          </div>
+          <div class="f2">
+            <div><label for="phone">电话 / 微信 *</label><input id="phone" name="phone" required placeholder="手机号"></div>
+            <div><label for="email">邮箱</label><input id="email" name="email" type="email" placeholder="用于接收方案与报价"></div>
+          </div>
+          <div class="f2">
+            <div><label for="place">项目地</label><input id="place" name="place" placeholder="国家 / 城市 / 海岛或船名"></div>
+            <div><label for="capacity">需求水量（t/d）</label><input id="capacity" name="capacity" inputmode="numeric" placeholder="例：300"></div>
+          </div>
+          <div class="f2">
+            <div><label for="source">源水类型</label>
+              <select id="source" name="source">
+                <option>海水</option><option>苦咸水 / 地下水</option><option>市政自来水</option><option>地表水</option><option>废水 / 回用水</option><option>其他</option>
+              </select>
+            </div>
+            <div><label for="use">用途</label>
+              <select id="use" name="use">
+                <option>生活饮用水</option><option>工业工艺用水</option><option>锅炉补给水</option><option>超纯水</option><option>灌溉 / 养殖</option><option>其他</option>
+              </select>
+            </div>
+          </div>
+          <div><label for="note">补充说明</label><textarea id="note" name="note" placeholder="源水水质报告、含盐量、安装空间、用电条件、期望交期等"></textarea></div>
+          <div class="submit">
+            <button class="btn btn-primary" type="submit">提交工况</button>
+            <small>提交后由技术团队初审；如需保密，可先只填水量与源水类型。</small>
+          </div>
+        </form>
+      </div>
+      <aside>
+        <div class="contact-info">
+          <div><div class="k">上海 · 嘉元环境</div><p>上海市浦东新区环湖西二路 888 号 C 楼</p></div>
+          <div><div class="k">集团总机</div><p>+86 0756-3225888 / 3225828</p></div>
+          <div><div class="k">邮箱</div><p>待核（上线前由公司确认对外邮箱与域名）</p></div>
+          <div><div class="k">工作时间</div><p>周一至周五 08:30–17:30（北京时间）<br>紧急项目可先加微信留言</p></div>
+          <div><div class="k">集团官网</div><p><a href="https://www.waterjhh.com/" target="_blank" rel="noopener" style="color:#0E9C90">www.waterjhh.com ↗</a></p></div>
+        </div>
+      </aside>
+    </div>
+    <div class="promise">
+      <div><b>48 小时</b><span>收到完整工况后给出初步工艺路线与配置清单</span></div>
+      <div><b>现场勘查</b><span>复杂项目先看取水、安装与排放条件，再定方案</span></div>
+      <div><b>可核对</b><span>方案里写清吨水电耗、回收率与清洗周期，不只写“稳定运行”</span></div>
+    </div>
+  </div>
+</section>
 
-      tp.addEventListener('click', function () { toggle('panel'); });
-      th.addEventListener('click', function () { toggle('hud'); });
-      scrim.addEventListener('click', function () { setOpen(''); });
-      document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') { setOpen(''); }
-      });
-      // 切到宽屏（桌面）时清空展开状态，避免透明遮罩残留
-      if (mq.addEventListener) {
-        mq.addEventListener('change', function (e) { if (!e.matches) { setOpen(''); } });
-      }
+</main>
 
-      // 打开页面即收起：窄屏默认隐藏两侧介绍框
-      setOpen('');
-    })();
-  </script>
+<!-- ================= 页脚 ================= -->
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <div class="fbrand"><img src="assets/img/logo-stack.png" alt="上海嘉元环境科技有限公司"></div>
+        <p>海水与苦咸水淡化、工业纯水与超纯水、中水回用系统的设计、制造、施工与运维。</p>
+        <p style="margin-top:14px;color:#6F8797">上海市浦东新区环湖西二路 888 号 C 楼</p>
+      </div>
+      <div>
+        <h4>产品线</h4>
+        <ul>
+          <li><a href="#/products">船用海水淡化</a></li>
+          <li><a href="#/products">陆用 / 集装箱式</a></li>
+          <li><a href="#/products">纯水与超纯水</a></li>
+          <li><a href="#/products">中水回用与零排放</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>公司</h4>
+        <ul>
+          <li><a href="#/about">关于嘉元</a></li>
+          <li><a href="#/tech">技术与资质</a></li>
+          <li><a href="#/cases">工程案例</a></li>
+          <li><a href="#/news">新闻资讯</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>联系</h4>
+        <p>集团总机：+86 0756-3225888 / 828<br>
+        邮箱：待核<br>
+        <a href="#/contact" style="color:#8FD9D2">提交工况表 →</a></p>
+      </div>
+    </div>
+    <div class="fhome">
+      <div class="fl">
+        <img src="assets/img/logo-stack.png" alt="上海嘉元环境科技有限公司">
+        <span class="sep">｜</span>
+        <span class="fphone">集团总机 +86 0756-3225888</span>
+        <span class="sep m-hide">｜</span>
+        <span class="m-hide">上海市浦东新区环湖西二路 888 号 C 楼</span>
+      </div>
+      <div class="fl">
+        <a href="#/contact">提交工况表 →</a>
+        <span class="sep">｜</span>
+        <span>© 2026 上海嘉元环境科技</span>
+      </div>
+    </div>
+    <div class="fbottom">
+      <span>© 2026 上海嘉元环境科技有限公司</span>
+      <span>沪 ICP 备 XXXXXXXX 号（待核）｜ 本站为设计稿，表单与备案信息待上线前确认</span>
+    </div>
+  </div>
+</footer>
 
-  <!-- 安全网：若模块加载/初始化失败（如 WebGL 不可用、静态服务器未正常提供文件），
-       4 秒后仍未初始化成功则给出可定位的诊断提示，而不是无限卡在"正在加载"。 -->
-  <script>
-    window.addEventListener('load', function () {
-      setTimeout(function () {
-        var l = document.getElementById('loading');
-        if (l && !window.__desalApp) {
-          l.textContent =
-            '⚠ 场景加载超时：three.js 未能完成初始化。\n（本系统不依赖 Import Maps，采用纯相对路径加载，Chrome/Edge/Firefox/Safari 均可运行）\n\n可能原因与排查：\n' +
-            '1) 当前环境不支持 WebGL —— 请确认浏览器已开启硬件加速 / WebGL（Safari 需在设置或"开发"菜单中启用）；\n' +
-            '2) 静态服务器未正常提供 ./vendor 与 ./src 文件 —— 确认 npm start 已启动且端口 5173 可访问；\n' +
-            '3) 模块解析 / 网络错误 —— 按 F12 打开控制台查看红色报错。';
-          l.style.color = '#ff9a9a';
-          l.style.whiteSpace = 'pre-wrap';
-          l.style.padding = '24px';
-          l.style.textAlign = 'left';
-          l.style.fontSize = '14px';
-        }
-      }, 4000);
+<!-- ================= 抽屉 / 提示 ================= -->
+<div class="mask" id="mask"></div>
+<aside class="drawer" id="drawer" aria-hidden="true" aria-label="案例详情">
+  <div class="hd"><b>CASE DETAIL</b><button id="drawerClose" aria-label="关闭">×</button></div>
+  <div class="bd" id="drawerBody"></div>
+</aside>
+<div class="toast" id="toast"></div>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"Organization",
+  "name":"上海嘉元环境科技有限公司",
+  "alternateName":"Jiayuan Environment",
+  "description":"海水与苦咸水淡化、工业纯水与超纯水、中水回用系统的设计、制造、施工与运维",
+  "address":{"@type":"PostalAddress","addressLocality":"上海市","addressRegion":"浦东新区","streetAddress":"环湖西二路888号C楼","addressCountry":"CN"},
+  "telephone":"+86-756-3225888",
+  "parentOrganization":{"@type":"Organization","name":"珠海市江河海水处理科技股份有限公司","url":"https://www.waterjhh.com/"}
+}
+</script>
+
+<script>
+(function(){
+  "use strict";
+  var views = Array.prototype.slice.call(document.querySelectorAll('.view'));
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('[data-nav]'));
+  var drawerNav = document.getElementById('drawerNav');
+  var burger = document.getElementById('burger');
+  var drawer = document.getElementById('drawer');
+  var drawerBody = document.getElementById('drawerBody');
+  var mask = document.getElementById('mask');
+  var toastEl = document.getElementById('toast');
+  var toastTimer = null;
+
+  function toast(msg){
+    toastEl.textContent = msg;
+    toastEl.classList.add('on');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toastEl.classList.remove('on'); }, 3200);
+  }
+
+  /* 路由 */
+  function route(){
+    var hash = (location.hash || '#/home').replace('#/','');
+    var name = hash.split('?')[0] || 'home';
+    if(!document.querySelector('.view[data-view="'+name+'"]')) name = 'home';
+    views.forEach(function(v){ v.hidden = v.getAttribute('data-view') !== name; });
+    navLinks.forEach(function(a){ a.classList.toggle('active', a.getAttribute('data-nav') === name); });
+    document.body.classList.toggle('is-home', name === 'home');
+    window.scrollTo(0,0);
+    document.title = ({
+      home:'上海嘉元环境科技 · 海水淡化与工业纯水系统',
+      solutions:'解决方案 · 嘉元环境',
+      products:'产品中心 · 嘉元环境',
+      cases:'工程案例 · 嘉元环境',
+      tech:'技术与资质 · 嘉元环境',
+      about:'关于嘉元 · 嘉元环境',
+      news:'新闻资讯 · 嘉元环境',
+      contact:'联系我们 · 嘉元环境'
+    })[name] || '嘉元环境';
+    if(drawerNav) drawerNav.style.display = 'none';
+    if(burger) burger.setAttribute('aria-expanded','false');
+    refreshReveal();
+  }
+  window.addEventListener('hashchange', route);
+
+  /* 移动端菜单 */
+  if(burger){
+    burger.addEventListener('click', function(){
+      var open = drawerNav.style.display === 'block';
+      drawerNav.style.display = open ? 'none' : 'block';
+      burger.setAttribute('aria-expanded', open ? 'false' : 'true');
     });
-  </script>
+  }
 
-  <script type="module" src="./src/main.js"></script>
+  /* 产品筛选 */
+  var filters = document.getElementById('filters');
+  if(filters){
+    filters.addEventListener('click', function(e){
+      var btn = e.target.closest('button[data-f]');
+      if(!btn) return;
+      Array.prototype.forEach.call(filters.querySelectorAll('button'), function(b){ b.classList.remove('on'); });
+      btn.classList.add('on');
+      var f = btn.getAttribute('data-f');
+      Array.prototype.forEach.call(document.querySelectorAll('#productGrid .pcard'), function(card){
+        var cat = card.getAttribute('data-cat') || '';
+        card.style.display = (f === 'all' || cat.indexOf(f) > -1) ? '' : 'none';
+      });
+    });
+  }
+
+  /* 案例数据 */
+  var CASES = {
+    c1:{ tag:'船用 · 海水淡化', title:'「中山大学极地」号破冰船',
+      img:'assets/img/scene-ship.webp',
+      body:'我国高校首艘破冰船「中山大学极地」号装配「江河海」牌海水淡化装置，赴渤海进行破冰试航。船用装置在机舱空间受限条件下布置，连续运行、维护窗口短，对设备紧凑度与稳定性要求高。',
+      meta:[['场景','船舶机舱，连续运行'],['装置','船用反渗透造水机'],['产水','生活淡水与锅炉补给'],['来源','集团官网公开资讯']] },
+    c2:{ tag:'苦咸水 · 无人值守', title:'中石油塔里木 · 深地塔科 1 井',
+      img:'assets/img/scene-container.webp',
+      body:'高盐度集装箱式苦咸水淡化装置伴随万米深地科探井项目投运，采用远程控制、无人值守全自动运行。现场为沙漠环境，沙尘、温差与供电波动是主要挑战。',
+      meta:[['场景','沙漠油田，无人值守'],['装置','集装箱式苦咸水淡化'],['控制','远程监控 + 全自动运行'],['来源','集团官网公开资讯']] },
+    c3:{ tag:'外贸 · 海岛供水', title:'斐济 15 t/d 海水淡化机出口',
+      img:'assets/img/prod-portable.webp',
+      body:'整机出口发往斐济并完成现场调试，为海岛社区提供生活淡水。小水量整机的运输、安装与操作简化，是外贸项目的主要诉求。',
+      meta:[['场景','海岛社区供水'],['装置','15 t/d 海水淡化机'],['交付','整机出口 + 现场调试'],['来源','集团官网公开资讯']] },
+    c4:{ tag:'工业纯水', title:'288 t/d 纯水处理系统',
+      img:'assets/img/prod-pure.webp',
+      body:'成套纯水处理系统发货并投运，服务工业用户的工艺用水。系统按产水指标反推配置，包含预处理、RO 与后段精处理。',
+      meta:[['场景','工业工艺用水'],['水量','288 t/d'],['工艺','预处理 + RO + 精处理'],['来源','集团官网公开资讯']] },
+    c5:{ tag:'中水回用', title:'6,000 t/d 洗砂废水回用系统',
+      img:'assets/img/prod-panel.webp',
+      body:'洗砂废水处理与回用系统，降低新水取用量与排放量。高悬浮物工况下，预处理与污泥处置是稳定运行的关键。',
+      meta:[['场景','洗砂废水'],['水量','6,000 t/d'],['目标','回用 + 减量排放'],['来源','集团官网公开资讯']] },
+    c6:{ tag:'陆用 · 园区供水', title:'沿海园区海水淡化供水（方案示意）',
+      img:'assets/img/hero-plant.webp',
+      body:'取水—预处理—SWRO—矿化—园区管网的典型配置，按园区用水曲线设置清水池调蓄。此条为方案示意，尚未落成，用于说明系统构成。',
+      meta:[['状态','方案示意，未落成'],['场景','沿海工业园区'],['工艺','SWRO + 矿化 + 调蓄'],['说明','配图为场景示意，非项目实拍']] }
+  };
+
+  function openCase(id){
+    var c = CASES[id];
+    if(!c) return;
+    var meta = (c.meta || []).map(function(m){ return '<dt>'+m[0]+'</dt><dd>'+m[1]+'</dd>'; }).join('');
+    drawerBody.innerHTML = '<img src="'+c.img+'" alt="'+c.title+'"><h3>'+c.title+'</h3><p style="color:#5A7186;font-size:14px;line-height:1.85;margin:0">'+c.body+'</p><dl>'+meta+'</dl><div style="margin-top:24px"><a class="btn btn-primary btn-sm" href="#/contact" id="drawerCta">按同类工况询价</a></div>';
+    drawer.classList.add('on'); mask.classList.add('on');
+    drawer.setAttribute('aria-hidden','false');
+    document.body.style.overflow = 'hidden';
+    var cta = document.getElementById('drawerCta');
+    if(cta) cta.addEventListener('click', closeCase);
+  }
+  function closeCase(){
+    drawer.classList.remove('on'); mask.classList.remove('on');
+    drawer.setAttribute('aria-hidden','true');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('click', function(e){
+    var card = e.target.closest('[data-case]');
+    if(card){ openCase(card.getAttribute('data-case')); }
+  });
+  document.getElementById('mask').addEventListener('click', closeCase);
+  document.getElementById('drawerClose').addEventListener('click', closeCase);
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeCase(); });
+
+  /* 表单 */
+  var form = document.getElementById('inquiry');
+  if(form){
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      var company = form.company.value.trim();
+      var person = form.person.value.trim();
+      var phone = form.phone.value.trim();
+      if(!company || !person || !phone){
+        toast('请先填写公司名称、联系人和电话');
+        return;
+      }
+      toast('已收到工况（演示）：正式上线后由后台接收并邮件通知技术团队');
+      form.reset();
+    });
+  }
+
+  /* 滚动显隐 */
+  var revealEls = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+  var io = null;
+  if('IntersectionObserver' in window){
+    io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, {threshold:.12});
+  }
+  function refreshReveal(){
+    revealEls.forEach(function(el){
+      if(el.closest('.view[hidden]')) return;
+      if(io){ io.observe(el); } else { el.classList.add('in'); }
+    });
+  }
+
+  route();
+})();
+</script>
 </body>
 </html>
