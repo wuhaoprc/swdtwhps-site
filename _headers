@@ -1,28 +1,36 @@
-# 长缓存给不常变的库与图片；入口 html 与站点自有 JS 每次必回源校验（发布即生效）
-/vendor/*
-  Cache-Control: public, max-age=31536000, immutable
-
-/assets/*
-  Cache-Control: public, max-age=604800
-
+# ---------- 官网（根路径） ----------
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
   X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=()
 
-# Cloudflare Pages 默认给非 html 资源 max-age=14400，且会洗掉我们设的 no-cache。
-# 先用 ! 删除默认头，再写入 no-cache —— 否则指令会被丢掉。
-# 新增源码目录时记得同步加一行。
-/src/*
+/assets/img/*
+  Cache-Control: public, max-age=604800
+
+# ---------- 3D 演示（/3d/） ----------
+/3d/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+  X-Content-Type-Options: nosniff
+
+/3d/vendor/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/3d/assets/*
+  Cache-Control: public, max-age=604800
+
+/3d/src/*
   ! Cache-Control
   Cache-Control: no-cache
   X-Content-Type-Options: nosniff
 
-/utils/*
+/3d/utils/*
   ! Cache-Control
   Cache-Control: no-cache
   X-Content-Type-Options: nosniff
 
-/*.js
+/3d/*.js
   ! Cache-Control
   Cache-Control: no-cache
   X-Content-Type-Options: nosniff
