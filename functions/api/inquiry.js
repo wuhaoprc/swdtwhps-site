@@ -112,6 +112,12 @@ export async function onRequest(context) {
   const { request, env } = context;
   if (request.method !== 'POST') return json({ ok: false, error: 'method_not_allowed' }, 405);
 
+  // 只接受本站页面发来的请求：浏览器的跨站 POST 会带 Origin，一律核对同源
+  const origin = request.headers.get('Origin') || '';
+  if (origin && origin !== new URL(request.url).origin) {
+    return json({ ok: false, error: 'forbidden_origin' }, 403);
+  }
+
   if (overLimit(clientIp(request))) {
     return new Response(JSON.stringify({ ok: false, error: 'rate_limited' }), {
       status: 429,
