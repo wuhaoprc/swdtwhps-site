@@ -1,0 +1,11 @@
+# 带 .html 的地址统一 301 到干净路径，避免同一内容两个 URL
+/index.html        /        301
+/solutions.html    /solutions 301
+/products.html     /products  301
+/cases.html        /cases     301
+/tech.html         /tech      301
+/about.html        /about     301
+/news.html         /news      301
+/contact.html      /contact   301
+/privacy.html      /privacy   301
+/credits.html      /credits   301
