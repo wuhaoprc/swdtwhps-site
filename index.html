@@ -188,16 +188,15 @@ footer{background:var(--ink);color:#93A9B8;padding:64px 0 30px;font-size:13.5px}
 
 /* ---------- pages ---------- */
 .page-hero{position:relative;overflow:hidden;background:var(--ink) center/cover no-repeat;color:#fff;padding:96px 0 64px}
-.page-hero::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(7,26,43,.82) 0%,rgba(7,26,43,.60) 45%,rgba(7,26,43,.95) 100%)}
+.page-hero::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(7,26,43,.88) 0%,rgba(7,26,43,.64) 45%,rgba(7,26,43,.96) 100%)}
 .page-hero .wrap{position:relative;z-index:2}
-.page-hero .hero-ai{position:absolute;right:18px;bottom:12px;z-index:3;font-size:11px;letter-spacing:.05em;color:rgba(255,255,255,.45)}
-.ph-solutions{background-image:url(assets/img/ph-solutions.webp?v=4)}
-.ph-products{background-image:url(assets/img/ph-products.webp?v=4)}
-.ph-cases{background-image:url(assets/img/ph-cases.webp?v=4)}
-.ph-tech{background-image:url(assets/img/ph-tech.webp?v=4)}
-.ph-about{background-image:url(assets/img/ph-about.webp?v=4)}
-.ph-news{background-image:url(assets/img/ph-news.webp?v=4)}
-.ph-contact{background-image:url(assets/img/ph-contact.webp?v=4)}
+.ph-solutions{background-image:url(assets/img/ph-solutions.webp?v=5)}
+.ph-products{background-image:url(assets/img/ph-products.webp?v=5)}
+.ph-cases{background-image:url(assets/img/ph-cases.webp?v=5)}
+.ph-tech{background-image:url(assets/img/ph-tech.webp?v=5)}
+.ph-about{background-image:url(assets/img/ph-about.webp?v=5)}
+.ph-news{background-image:url(assets/img/ph-news.webp?v=5)}
+.ph-contact{background-image:url(assets/img/ph-contact.webp?v=5)}
 .page-hero .kicker{color:#8FD9D2}
 .page-hero h1{margin:0;font-size:clamp(30px,3.8vw,50px);font-weight:900;line-height:1.24}
 .page-hero p{margin:16px 0 0;max-width:62ch;color:#B7CCD8;font-size:15.5px}
@@ -436,7 +435,7 @@ body.is-home .fhome{display:flex}
 <!-- ================= 视图：首页 ================= -->
 <section class="view" data-view="home" style="padding:0">
   <div class="hero">
-    <img src="assets/img/hero-plant.webp?v=3" alt="海水淡化厂区场景示意（AI 生成）">
+    <img src="assets/img/hero-plant.webp?v=3" alt="海水淡化厂区场景示意">
     <div class="wrap inner">
       <div class="eyebrow">Seawater Desalination · Industrial Water</div>
       <h1>把不可用的水<br>做成可用的水</h1>
@@ -457,7 +456,6 @@ body.is-home .fhome{display:flex}
 <!-- ================= 视图：解决方案 ================= -->
 <section class="view" data-view="solutions" hidden>
   <div class="page-hero ph-solutions">
-    <span class="hero-ai">背景为 AI 示意</span>
     <div class="wrap">
       <div class="crumb"><a href="#/home">首页</a> ／ 解决方案</div>
       <div class="kicker">Solutions</div>
@@ -521,7 +519,7 @@ body.is-home .fhome{display:flex}
         <div class="chips"><span class="chip">50–5,000 t/d</span><span class="chip">SWRO 一级/二级</span><span class="chip">含取排水</span><span class="chip">能量回收</span></div>
         <div class="meta"><span>对应产品：陆用海水淡化系统、海水淡化厂成套设备</span></div>
       </div>
-      <div class="pic"><img src="assets/img/hero-plant.webp?v=3" alt="沿海海水淡化厂区示意" loading="lazy"><span class="ptag">AI 示意图</span></div>
+      <div class="pic"><img src="assets/img/hero-plant.webp?v=3" alt="沿海海水淡化厂区示意" loading="lazy"></div>
     </div>
     <div class="sol">
       <div class="txt">
@@ -551,7 +549,7 @@ body.is-home .fhome{display:flex}
         <div class="chips"><span class="chip">10–500 t/d</span><span class="chip">高盐度适应</span><span class="chip">远程监控</span><span class="chip">定期巡检</span></div>
         <div class="meta"><span>对应产品：集装箱式苦咸水淡化、便携与应急供水</span></div>
       </div>
-      <div class="pic"><img src="assets/img/scene-oilfield.webp?v=3" alt="沙漠站点集装箱式淡化站示意" loading="lazy"><span class="ptag">AI 示意图</span></div>
+      <div class="pic"><img src="assets/img/scene-oilfield.webp?v=3" alt="沙漠站点集装箱式淡化站示意" loading="lazy"></div>
     </div>
   </div>
 
@@ -581,7 +579,6 @@ body.is-home .fhome{display:flex}
 <!-- ================= 视图：产品中心 ================= -->
 <section class="view" data-view="products" hidden>
   <div class="page-hero ph-products">
-    <span class="hero-ai">背景为 AI 示意</span>
     <div class="wrap">
       <div class="crumb"><a href="#/home">首页</a> ／ 产品中心</div>
       <div class="kicker">Products</div>
@@ -617,7 +614,7 @@ body.is-home .fhome{display:flex}
       </article>
       <article class="pcard" data-cat="pure">
         <div class="ph"><img src="assets/img/prod-upw.webp?v=4" alt="电子级超纯水精处理设备" loading="lazy"></div>
-        <div class="body"><div class="cat">电子级 · UPW</div><h3>电子级超纯水（UPW）系统</h3><div class="spec">抛光混床 + TOC-UV + 终端超滤 ｜ 18.2 MΩ·cm ｜ 半导体 / 面板 / 光伏</div><div class="psrc">图：<b>AI 生成示意图</b>，非现场实拍</div><div class="foot"><span>半导体 / 面板 / 光伏</span><span class="arw">→</span></div></div>
+        <div class="body"><div class="cat">电子级 · UPW</div><h3>电子级超纯水（UPW）系统</h3><div class="spec">抛光混床 + TOC-UV + 终端超滤 ｜ 18.2 MΩ·cm ｜ 半导体 / 面板 / 光伏</div><div class="psrc">图：<b>系统构成示意图</b>，非现场实拍</div><div class="foot"><span>半导体 / 面板 / 光伏</span><span class="arw">→</span></div></div>
       </article>
       <article class="pcard" data-cat="pure">
         <div class="ph"><img src="assets/img/prod-ultrapure.webp?v=3" alt="EDI 超纯水设备" loading="lazy"></div>
@@ -625,7 +622,7 @@ body.is-home .fhome{display:flex}
       </article>
       <article class="pcard" data-cat="pure">
         <div class="ph"><img src="assets/img/prod-boiler.webp?v=3" alt="电厂锅炉补给水除盐设备" loading="lazy"></div>
-        <div class="body"><div class="cat">电力 · 锅炉补给</div><h3>电厂与锅炉补给水系统</h3><div class="spec">一级除盐 + 混床 ｜ 按锅炉压力等级配置</div><div class="psrc">图：<b>AI 生成示意图</b>，非现场实拍</div><div class="foot"><span>电厂 / 工业锅炉</span><span class="arw">→</span></div></div>
+        <div class="body"><div class="cat">电力 · 锅炉补给</div><h3>电厂与锅炉补给水系统</h3><div class="spec">一级除盐 + 混床 ｜ 按锅炉压力等级配置</div><div class="psrc">图：<b>系统构成示意图</b>，非现场实拍</div><div class="foot"><span>电厂 / 工业锅炉</span><span class="arw">→</span></div></div>
       </article>
       <article class="pcard" data-cat="pure">
         <div class="ph"><img src="assets/img/prod-pretreat.webp?v=3" alt="软化与多介质过滤装置" loading="lazy"></div>
@@ -661,7 +658,6 @@ body.is-home .fhome{display:flex}
 <!-- ================= 视图：工程案例 ================= -->
 <section class="view" data-view="cases" hidden>
   <div class="page-hero ph-cases">
-    <span class="hero-ai">背景为 AI 示意</span>
     <div class="wrap">
       <div class="crumb"><a href="#/home">首页</a> ／ 工程案例</div>
       <div class="kicker">Cases</div>
@@ -676,16 +672,15 @@ body.is-home .fhome{display:flex}
       <button class="ccard" data-case="c3"><div class="ph"><img src="assets/img/case-fiji.webp?v=3" alt="同型号 JHH-FSHB-15 海水淡化整机" loading="lazy"></div><div class="body"><div class="meta">外贸 · 海岛供水</div><h3>斐济 15 t/d 海水淡化机出口</h3><p>整机出口并完成现场调试，为海岛社区提供生活淡水。</p><div class="tagline"><span>15 t/d</span><span class="src">图：江河海官网</span></div></div></button>
       <button class="ccard" data-case="c4"><div class="ph"><img src="assets/img/case-pure.webp?v=3" alt="工业纯水系统 EDI 控制段" loading="lazy"></div><div class="body"><div class="meta">工业纯水</div><h3>288 t/d 纯水处理系统</h3><p>成套纯水系统发货并投运，服务工业用户的工艺用水。</p><div class="tagline"><span>288 t/d</span><span class="src">图：江河海官网</span></div></div></button>
       <button class="ccard" data-case="c5"><div class="ph"><img src="assets/img/case-reuse.webp?v=3" alt="中水回用项目膜组与储罐" loading="lazy"></div><div class="body"><div class="meta">中水回用</div><h3>6,000 t/d 洗砂废水回用系统</h3><p>洗砂废水处理与回用，降低新水取用量与排放量。</p><div class="tagline"><span>6,000 t/d</span><span class="src">图：江河海官网</span></div></div></button>
-      <button class="ccard" data-case="c6"><div class="ph"><img src="assets/img/hero-plant.webp?v=3" alt="沿海园区海水淡化供水场景示意（AI 生成）" loading="lazy"></div><div class="body"><div class="meta">陆用 · 园区供水</div><h3>沿海园区海水淡化供水（方案示意）</h3><p>取水—预处理—SWRO—矿化—园区管网，按园区用水曲线配置调蓄。</p><div class="tagline"><span>方案示意</span><span class="src">图：AI 生成</span></div></div></button>
+      <button class="ccard" data-case="c6"><div class="ph"><img src="assets/img/hero-plant.webp?v=3" alt="沿海园区海水淡化供水场景示意" loading="lazy"></div><div class="body"><div class="meta">陆用 · 园区供水</div><h3>沿海园区海水淡化供水（方案示意）</h3><p>取水—预处理—SWRO—矿化—园区管网，按园区用水曲线配置调蓄。</p><div class="tagline"><span>方案示意</span><span class="src">图：本站示意图</span></div></div></button>
     </div>
-    <div class="source-note">案例 1–5 的时间、水量与场景引自江河海集团官网公开资讯（发布于 2020-02 至 2023-06），每条可在详情抽屉中跳转原文核对；案例 6 为方案示意，尚未落成。图源：案例 1 为《南方日报》报道配图（中山大学供图），案例 2–5 为集团官网项目图片，案例 6 为 AI 生成示意。详见<a href="#/credits" style="color:#0E9C90">图片来源与版权说明</a>。</div>
+    <div class="source-note">案例 1–5 的时间、水量与场景引自江河海集团官网公开资讯（发布于 2020-02 至 2023-06），每条可在详情抽屉中跳转原文核对；案例 6 为方案示意，尚未落成。图源：案例 1 为《南方日报》报道配图（中山大学供图），案例 2–5 为集团官网项目图片，案例 6 为本站方案示意图。详见<a href="#/credits" style="color:#0E9C90">图片来源与版权说明</a>。</div>
   </div>
 </section>
 
 <!-- ================= 视图：技术资质 ================= -->
 <section class="view" data-view="tech" hidden>
   <div class="page-hero ph-tech">
-    <span class="hero-ai">背景为 AI 示意</span>
     <div class="wrap">
       <div class="crumb"><a href="#/home">首页</a> ／ 技术资质</div>
       <div class="kicker">Technology</div>
@@ -752,7 +747,6 @@ body.is-home .fhome{display:flex}
 <!-- ================= 视图：关于嘉元 ================= -->
 <section class="view" data-view="about" hidden>
   <div class="page-hero ph-about">
-    <span class="hero-ai">背景为 AI 示意</span>
     <div class="wrap">
       <div class="crumb"><a href="#/home">首页</a> ／ 关于嘉元</div>
       <div class="kicker">About</div>
@@ -798,7 +792,6 @@ body.is-home .fhome{display:flex}
 <!-- ================= 视图：新闻 ================= -->
 <section class="view" data-view="news" hidden>
   <div class="page-hero ph-news">
-    <span class="hero-ai">背景为 AI 示意</span>
     <div class="wrap">
       <div class="crumb"><a href="#/home">首页</a> ／ 新闻资讯</div>
       <div class="kicker">News</div>
@@ -822,7 +815,6 @@ body.is-home .fhome{display:flex}
 <!-- ================= 视图：联系 ================= -->
 <section class="view" data-view="contact" hidden>
   <div class="page-hero ph-contact">
-    <span class="hero-ai">背景为 AI 示意</span>
     <div class="wrap">
       <div class="crumb"><a href="#/home">首页</a> ／ 联系我们</div>
       <div class="kicker">Contact</div>
@@ -986,7 +978,7 @@ body.is-home .fhome{display:flex}
         <tr><td>集团官网产品图</td><td>10 张</td><td>waterjhh.com 产品与服务页</td><td>卡片下注「图：江河海官网 · 型号」</td></tr>
         <tr><td>集团官网工程案例图</td><td>7 张</td><td>waterjhh.com 工程案例各分类页</td><td>卡片角标「图：江河海项目现场」</td></tr>
         <tr><td>媒体报道配图</td><td>1 张</td><td>《南方日报》2023-01-28（中山大学供图）</td><td>角标「图：南方日报 · 侵删」</td></tr>
-        <tr><td>AI 生成图</td><td>11 张</td><td>本站用 AI 生成，无外部来源</td><td>角标「AI 示意图」；内页页头右下「背景为 AI 示意」</td></tr>
+        <tr><td>AI 生成图</td><td>11 张</td><td>本站用 AI 生成，无外部来源</td><td>页面内不单独标注，均在本页登记</td></tr>
         <tr><td>自有品牌素材</td><td>字标与图标</td><td>本站按公司标识重绘，无第三方素材</td><td>—</td></tr>
       </table>
 
@@ -1010,7 +1002,7 @@ body.is-home .fhome{display:flex}
         <tr><td>工程案例 · 288 t/d 纯水</td><td><a href="https://www.waterjhh.com/displaynews.html?id=5055092449002304" target="_blank" rel="noopener" style="color:#0E9C90">集团官网 2020-02-20 报道</a>；配图为工业纯水项目现场</td></tr>
         <tr><td>工程案例 · 6,000 t/d 洗砂</td><td><a href="https://www.waterjhh.com/displaynews.html?id=5055091766412096" target="_blank" rel="noopener" style="color:#0E9C90">集团官网 2020-02-20 报道</a>；配图为中水回用项目现场</td></tr>
         <tr><td>解决方案 · 四个场景图</td><td><a href="https://www.waterjhh.com/page.html?id=35" target="_blank" rel="noopener" style="color:#0E9C90">工业纯水项目</a>、<a href="https://www.waterjhh.com/page.html?id=36" target="_blank" rel="noopener" style="color:#0E9C90">苦咸水项目</a>、<a href="https://www.waterjhh.com/page.html?id=38" target="_blank" rel="noopener" style="color:#0E9C90">船用海淡项目</a></td></tr>
-        <tr><td>首屏与场景 02／05</td><td>本地 AI 生成示意图（seedream），不代表真实厂区，已在图上标注</td></tr>
+        <tr><td>首屏与场景 02／05</td><td>本地 AI 生成示意图（seedream），不代表真实厂区，页面内不再单独标注</td></tr>
         <tr><td>产品中心「电子级超纯水」卡片</td><td>本地 AI 生成示意图（seedream），仅示意系统构成，非本公司设备实拍</td></tr>
       </table>
 
@@ -1055,6 +1047,7 @@ body.is-home .fhome{display:flex}
       <p>2026-11-27：完成首轮全站图文核对，替换 10 张产品图、4 张解决方案场景图与 5 张案例图，新增本页；对 1 项媒体图与 5 项官方信息逐条标注来源。</p>
       <p>2026-11-27（第二轮）：七个内页页头改为 AI 生成的工程全景背景（共 7 张，均在右下标注「背景为 AI 示意」）；联系页加入微信二维码。</p>
       <p>2026-11-27（第三轮）：产品中心补充「电子级超纯水（UPW）系统」产品线（AI 示意图，卡片内标注），产品线由 11 条增至 12 条。</p>
+      <p>2026-11-27（第四轮）：七个内页页头背景重新生成差异化版本（机位、光线、季节均与原图不同，不指向任何现有厂区照片）；取消页头「背景为 AI 示意」角标与场景图「AI 示意图」标签，来源统一在第五部分登记。</p>
       <p class="small">本页随图片或资料变更同步更新；新增外部素材须先在本页登记来源。</p>
     </div>
   </div>
@@ -1115,7 +1108,7 @@ body.is-home .fhome{display:flex}
     <div class="fbottom">
       <span>© 2026 上海嘉元环境科技有限公司</span>
       <span><a href="#/privacy">隐私政策</a>　｜　<a href="#/credits">图片来源与版权</a>　｜　<a href="#/contact">联系我们</a>　｜　<a href="https://www.waterjhh.com/" target="_blank" rel="noopener">集团官网 ↗</a></span>
-      <span>沪 ICP 备案办理中｜当前为临时演示域名，正式域名上线后补录备案号；AI 示意图已逐张标注，其余图片来自集团官网或已注明出处</span>
+      <span>沪 ICP 备案办理中｜当前为临时演示域名，正式域名上线后补录备案号；示意图为本站自制、非项目实拍，其余图片来自集团官网或已注明出处</span>
     </div>
   </div>
 </footer>
@@ -1242,8 +1235,8 @@ body.is-home .fhome{display:flex}
       src:['查看集团原报道','https://www.waterjhh.com/displaynews.html?id=5055091766412096'] },
     c6:{ tag:'陆用 · 园区供水', title:'沿海园区海水淡化供水（方案示意）',
       img:'assets/img/hero-plant.webp?v=3',
-      body:'取水—预处理—SWRO—矿化—园区管网的典型配置，按园区用水曲线设置清水池调蓄。此条为方案示意，尚未落成，用于说明系统构成；配图为 AI 生成场景，非项目实拍。',
-      meta:[['状态','方案示意，未落成'],['场景','沿海工业园区'],['工艺','SWRO + 矿化 + 调蓄'],['说明','配图为 AI 示意，非项目实拍']] }
+      body:'取水—预处理—SWRO—矿化—园区管网的典型配置，按园区用水曲线设置清水池调蓄。此条为方案示意，尚未落成，用于说明系统构成；配图为本站示意图，非项目实拍。',
+      meta:[['状态','方案示意，未落成'],['场景','沿海工业园区'],['工艺','SWRO + 矿化 + 调蓄'],['说明','配图为示意图，非项目实拍']] }
   };
 
   function openCase(id){
