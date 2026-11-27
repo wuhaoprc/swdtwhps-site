@@ -1015,7 +1015,7 @@ body.is-home .top-phone{display:none}
         <tr><td>企业登记信息<br>（成立 2019-08-14、注册资本 208 万元、统一社会信用代码 91310115MA1HAR6782）</td>
             <td><a href="https://www.gsxt.gov.cn/" target="_blank" rel="noopener" style="color:#0E9C90">国家企业信用信息公示系统</a></td><td>按公示系统口径录入；以营业执照原件为准</td></tr>
         <tr><td>集团持股 43%</td>
-            <td><a href="http://static.cninfo.com.cn/finalpage/2020-04-27/1207738087.PDF" target="_blank" rel="noopener" style="color:#0E9C90">巨潮资讯网：江河海《对外投资暨关联交易的公告》2020-04-27</a></td><td>已核对公告原文</td></tr>
+            <td><a href="https://static.cninfo.com.cn/finalpage/2020-04-27/1207738087.PDF" target="_blank" rel="noopener" style="color:#0E9C90">巨潮资讯网：江河海《对外投资暨关联交易的公告》2020-04-27</a></td><td>已核对公告原文</td></tr>
         <tr><td>集团「江河海」通过广东省专精特新中小企业复核</td>
             <td><a href="https://gdii.gd.gov.cn/gkmlpt/content/4/4856/mpost_4856033.html" target="_blank" rel="noopener" style="color:#0E9C90">广东省工业和信息化厅 2026-02-10 通告</a><br>
             <a href="https://gdii.gd.gov.cn/gkmlpt/content/4/4842/post_4842481.html" target="_blank" rel="noopener" style="color:#0E9C90">2026-01-13 公示名单（序号 325）</a></td><td>已核对官方通告与名单，有效期三年</td></tr>
@@ -1317,6 +1317,8 @@ body.is-home .top-phone{display:none}
             form.reset();
           } else if(res && res.error === 'not_configured'){
             say('提交通道还在配置，请直接致电 +86 13661599170 或发邮件到 markwoo@163.com', 'err');
+          } else if(res && res.error === 'rate_limited'){
+            say('提交有点频繁，请 10 分钟后再试，或直接致电 +86 13661599170', 'err');
           } else {
             say('没提交成功，请重试一次，或致电 +86 13661599170', 'err');
           }

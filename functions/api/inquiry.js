@@ -11,6 +11,24 @@
 
 const MAX = { company: 80, person: 40, phone: 40, email: 120, place: 80, capacity: 30, note: 800 };
 
+// 基础频次限制：同一 IP 10 分钟内最多 6 次，超限返回 429。
+// 只在当前 isolate 内存里计数，属于尽力而为的第一道闸，不落库、不写 KV。
+const RATE = { windowMs: 10 * 60 * 1000, max: 6, keep: 4000 };
+const hits = new Map();
+
+function overLimit(ip) {
+  const now = Date.now();
+  const arr = (hits.get(ip) || []).filter((t) => now - t < RATE.windowMs);
+  arr.push(now);
+  if (hits.size > RATE.keep) {
+    for (const [k, v] of hits) {
+      if (!v.length || now - v[v.length - 1] > RATE.windowMs) hits.delete(k);
+    }
+  }
+  hits.set(ip, arr);
+  return arr.length > RATE.max;
+}
+
 function json(body, status) {
   return new Response(JSON.stringify(body), {
     status: status || 200,
@@ -24,6 +42,11 @@ function json(body, status) {
 
 function clip(v, n) {
   return typeof v === 'string' ? v.trim().slice(0, n) : '';
+}
+
+// 短字段压成单行，避免换行/制表符把转发消息的结构打乱
+function one(v, n) {
+  return clip(v, n).replace(/[\r\n\t]+/g, ' ').replace(/\s{2,}/g, ' ');
 }
 
 function clientIp(request) {
@@ -89,6 +112,18 @@ export async function onRequest(context) {
   const { request, env } = context;
   if (request.method !== 'POST') return json({ ok: false, error: 'method_not_allowed' }, 405);
 
+  if (overLimit(clientIp(request))) {
+    return new Response(JSON.stringify({ ok: false, error: 'rate_limited' }), {
+      status: 429,
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Cache-Control': 'no-store',
+        'X-Content-Type-Options': 'nosniff',
+        'Retry-After': '600',
+      },
+    });
+  }
+
   let raw;
   try {
     raw = await request.json();
@@ -103,17 +138,17 @@ export async function onRequest(context) {
   }
 
   const d = {
-    company: clip(raw.company, MAX.company),
-    person: clip(raw.person, MAX.person),
-    phone: clip(raw.phone, MAX.phone),
-    email: clip(raw.email, MAX.email),
-    place: clip(raw.place, MAX.place),
-    capacity: clip(raw.capacity, MAX.capacity),
-    source: clip(raw.source, 40),
-    use: clip(raw.use, 40),
+    company: one(raw.company, MAX.company),
+    person: one(raw.person, MAX.person),
+    phone: one(raw.phone, MAX.phone),
+    email: one(raw.email, MAX.email),
+    place: one(raw.place, MAX.place),
+    capacity: one(raw.capacity, MAX.capacity),
+    source: one(raw.source, 40),
+    use: one(raw.use, 40),
     note: clip(raw.note, MAX.note),
-    ref: clip(raw.ref, 200),
-    ts: clip(raw.ts, 40),
+    ref: one(raw.ref, 200),
+    ts: one(raw.ts, 40),
     ip: clientIp(request),
   };
 
