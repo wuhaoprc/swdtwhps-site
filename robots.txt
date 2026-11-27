@@ -1,5 +1,8 @@
+# 临时演示域名：整体禁止收录
+# 正式域名上线时，改成下面的两行：
+#   User-agent: *
+#   Allow: /
+#   Disallow: /api/
+#   Sitemap: https://swdtwhps.dpdns.org/sitemap.xml
 User-agent: *
-Allow: /
-Disallow: /api/
-
-Sitemap: https://swdtwhps.dpdns.org/sitemap.xml
+Disallow: /
