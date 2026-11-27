@@ -6,8 +6,9 @@
 <title>上海嘉元环境科技 · 海水淡化与工业纯水系统</title>
 <meta name="description" content="上海嘉元环境科技有限公司，提供海水与苦咸水淡化、电子级水、工业纯水与超纯水、锅炉补给水、中水回用系统的优化、设计、制造、施工与运维。12+ 产品线，8+ 工程场景。">
 <meta name="theme-color" content="#071A2B">
-<meta property="og:url" content="https://swdtwhps.dpdns.org/">
 <link rel="canonical" href="https://swdtwhps.dpdns.org/">
+<meta property="og:url" content="https://swdtwhps.dpdns.org/">
+<meta property="og:image" content="https://swdtwhps.dpdns.org/assets/img/hero-plant.webp">
 <!-- 临时演示域名期间禁止搜索引擎收录；正式域名上线后删除本行与 _headers 中的 X-Robots-Tag、并放开 robots.txt -->
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="googlebot" content="noindex, nofollow, noarchive">
@@ -18,7 +19,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png?v=2">
 <meta property="og:type" content="website">
 <meta property="og:title" content="上海嘉元环境科技 · 海水淡化与工业纯水系统">
-<meta property="og:description" content="海水与苦咸水淡化、电子级水、工业纯水与超纯水、锅炉补给水、中水回用：从优化设计到制造、施工与运维的一整套水系统。">
+<meta property="og:description" content="上海嘉元环境科技有限公司，提供海水与苦咸水淡化、电子级水、工业纯水与超纯水、锅炉补给水、中水回用系统的优化、设计、制造、施工与运维。12+ 产品线，8+ 工程场景。">
 <style>
 :root{
   --ink:#071A2B; --navy:#0E2C46; --deep:#0A3346; --paper:#F5F8FA;
@@ -395,7 +396,7 @@ body.is-home .top-phone{display:none}
 </style>
 </head>
 <body>
-<script>document.body.className=((((location.hash||'').replace('#/','').split('?')[0])||'home')==='home'?'is-home':'');</script>
+<script>document.body.className=((location.pathname==='/'||/\/index\.html$/.test(location.pathname))?'is-home':'');if(location.hash&&location.hash.indexOf('#/')===0){var n=location.hash.slice(2).split('?')[0]||'home';var ok=['home','solutions','products','cases','tech','about','news','contact','privacy','credits'];if(ok.indexOf(n)>-1){location.replace(n==='home'?'/':'/'+n);}}</script>
 
 <!-- ================= 顶部 ================= -->
 <div class="topbar">
@@ -407,38 +408,36 @@ body.is-home .top-phone{display:none}
 
 <header class="header">
   <div class="wrap nav">
-    <a class="brand" href="#/home" aria-label="嘉元环境首页">
+    <a class="brand" href="/" aria-label="嘉元环境首页">
       <img src="assets/img/logo-stack.png" alt="嘉元环境 JIAYUAN ENV">
     </a>
     <nav class="menu" aria-label="主导航">
-      <a href="#/home" data-nav="home">首页</a>
-      <a href="#/solutions" data-nav="solutions">解决方案</a>
-      <a href="#/products" data-nav="products">产品中心</a>
-      <a href="#/cases" data-nav="cases">工程案例</a>
-      <a href="#/tech" data-nav="tech">技术资质</a>
-      <a href="#/about" data-nav="about">关于嘉元</a>
-      <a href="#/news" data-nav="news">新闻资讯</a>
+      <a href="/" data-nav="home">首页</a>
+      <a href="/solutions" data-nav="solutions">解决方案</a>
+      <a href="/products" data-nav="products">产品中心</a>
+      <a href="/cases" data-nav="cases">工程案例</a>
+      <a href="/tech" data-nav="tech">技术资质</a>
+      <a href="/about" data-nav="about">关于嘉元</a>
+      <a href="/news" data-nav="news">新闻资讯</a>
     </nav>
     <div class="nav-cta">
-      <a class="btn btn-primary btn-sm" href="#/contact">提交工况</a>
+      <a class="btn btn-primary btn-sm" href="/contact">提交工况</a>
       <button class="burger" id="burger" aria-label="打开菜单" aria-expanded="false"><span></span><span></span><span></span></button>
     </div>
   </div>
   <div class="drawer-nav" id="drawerNav">
-    <a href="#/solutions">解决方案</a>
-    <a href="#/products">产品中心</a>
-    <a href="#/cases">工程案例</a>
-    <a href="#/tech">技术资质</a>
-    <a href="#/about">关于嘉元</a>
-    <a href="#/news">新闻资讯</a>
-    <a href="#/contact">提交工况</a>
+    <a href="/solutions">解决方案</a>
+    <a href="/products">产品中心</a>
+    <a href="/cases">工程案例</a>
+    <a href="/tech">技术资质</a>
+    <a href="/about">关于嘉元</a>
+    <a href="/news">新闻资讯</a>
+    <a href="/contact">提交工况</a>
   </div>
 </header>
 
 <main id="main">
-
-<!-- ================= 视图：首页 ================= -->
-<section class="view" data-view="home" style="padding:0">
+<section class="view" data-view="home">
   <div class="hero">
     <img src="assets/img/hero-plant.webp?v=3" alt="海水淡化厂区场景示意" fetchpriority="high" decoding="async">
     <div class="wrap inner">
@@ -446,7 +445,7 @@ body.is-home .top-phone{display:none}
       <h1>把不可用的水<br>做成可用的水</h1>
       <p>上海嘉元环境科技专注海水与苦咸水淡化、工业纯水与超纯水、中水回用系统：从工艺设计、设备制造，到现场施工与远程运维，交付一套能长期跑得稳的水系统。</p>
       <div class="acts">
-        <a class="btn btn-primary" href="#/contact">提交工况 · 48 小时出方案</a>
+        <a class="btn btn-primary" href="/contact">提交工况 · 48 小时出方案</a>
       </div>
       <div class="stats">
         <div><b>2019</b><span>成立于上海</span></div>
@@ -457,608 +456,6 @@ body.is-home .top-phone{display:none}
     </div>
   </div>
 </section>
-
-<!-- ================= 视图：解决方案 ================= -->
-<section class="view" data-view="solutions" hidden>
-  <div class="page-hero ph-solutions">
-    <div class="wrap">
-      <div class="crumb"><a href="#/home">首页</a> ／ 解决方案</div>
-      <div class="kicker">Solutions</div>
-      <h1>按场景设计工艺</h1>
-      <p>四条业务线先划清能力边界，五类典型场景给出源水判断与工艺路线。方案以水质全分析与现场条件为准。</p>
-    </div>
-  </div>
-  <div class="wrap" style="padding-top:64px">
-    <div class="sec-head reveal">
-      <div class="l">
-        <div class="kicker">Business Scope</div>
-        <h2>全面覆盖从取水到供水</h2>
-        <p class="lead">按水源与用水要求选工艺，而不是先选设备。四条线共用同一套设计与制造标准，也共用同一支现场服务团队。</p>
-      </div>
-      <a class="more" href="#/products">全部产品线</a>
-    </div>
-    <div class="vgrid reveal">
-      <article class="vcard">
-        <div class="no">01</div>
-        <h3>海水与苦咸水淡化</h3>
-        <p>船用造水机、陆用与集装箱式 SWRO、海水淡化厂成套设备。高盐度、高浊度、离岸与偏远场景按工况选型。</p>
-        <a href="#/products">产品线 →</a>
-      </article>
-      <article class="vcard">
-        <div class="no">02</div>
-        <h3>工业纯水与超纯水</h3>
-        <p>RO + EDI、电厂与锅炉补给水、软化与多介质过滤。按进水水质与产水电阻率反推配置。</p>
-        <a href="#/products">产品线 →</a>
-      </article>
-      <article class="vcard">
-        <div class="no">03</div>
-        <h3>中水回用与零排放</h3>
-        <p>电镀、洗砂、漂染等行业的回用与减量，浓水再浓缩，把排放量压到许可范围内。</p>
-        <a href="#/products">产品线 →</a>
-      </article>
-      <article class="vcard">
-        <div class="no">04</div>
-        <h3>运维、配件与租赁</h3>
-        <p>远程监控、备件供应、膜元件更换与系统翻新。设备交付后，运行数据仍在同一套体系里。</p>
-        <a href="#/contact">服务咨询 →</a>
-      </article>
-    </div>
-  
-  </div>
-  <div class="wrap" style="padding-top:56px">
-    <div class="sol">
-      <div class="txt">
-        <div class="no">场景 01 · 船舶与海工</div>
-        <h2>机舱里的一台造水机</h2>
-        <p>空间紧、连续运行、维护窗口短。船用装置按机舱尺寸与船舶电网设计，膜壳与高压泵集中布置，日常只需检查压力与流量。</p>
-        <div class="chips"><span class="chip">5–50 t/d</span><span class="chip">反渗透式</span><span class="chip">饮用水标准</span><span class="chip">船级社认证可选</span></div>
-        <div class="meta"><span>对应产品：船用海水淡化装置、紫外消毒、矿化器</span></div>
-      </div>
-      <div class="pic"><img src="assets/img/scene-ship.webp?v=3" alt="船用海水淡化装置整机" loading="lazy"><span class="ptag">图：江河海项目现场</span></div>
-    </div>
-    <div class="sol reverse">
-      <div class="txt">
-        <div class="no">场景 02 · 海岛与沿海园区</div>
-        <h2>离岸供水，先解决取水与浓水</h2>
-        <p>海水取水与浓水排放往往比淡化本身更难。开式取水加防生物附着，浓水多端口扩散，按环评要求定位置与稀释比。</p>
-        <div class="chips"><span class="chip">50–5,000 t/d</span><span class="chip">SWRO 一级/二级</span><span class="chip">含取排水</span><span class="chip">能量回收</span></div>
-        <div class="meta"><span>对应产品：陆用海水淡化系统、海水淡化厂成套设备</span></div>
-      </div>
-      <div class="pic"><img src="assets/img/hero-plant.webp?v=3" alt="沿海海水淡化厂区示意" loading="lazy"></div>
-    </div>
-    <div class="sol">
-      <div class="txt">
-        <div class="no">场景 03 · 工业制造</div>
-        <h2>产水指标先定，设备再谈</h2>
-        <p>电子、电力、食品饮料对纯水的要求差别很大。先确认产水电阻率、TOC 与流量曲线，再决定 RO 级数、EDI 与抛光混床。</p>
-        <div class="chips"><span class="chip">5–200 t/h</span><span class="chip">RO + EDI</span><span class="chip">18.2 MΩ·cm</span><span class="chip">模块化扩容</span></div>
-        <div class="meta"><span>对应产品：工业纯水与超纯水、电厂与锅炉补给水、软化过滤</span></div>
-      </div>
-      <div class="pic"><img src="assets/img/scene-industrial.webp?v=3" alt="工业纯水项目车间" loading="lazy"><span class="ptag">图：江河海项目现场</span></div>
-    </div>
-    <div class="sol reverse">
-      <div class="txt">
-        <div class="no">场景 04 · 市政与园区供水</div>
-        <h2>把苦咸水变成达标自来水</h2>
-        <p>地下水含盐量高、硬度大，直接供口感差、管道结垢。淡化后矿化调质，出水稳定达到生活饮用水标准。</p>
-        <div class="chips"><span class="chip">10–500 t/d</span><span class="chip">苦咸水 RO</span><span class="chip">矿化调质</span><span class="chip">无人值守</span></div>
-        <div class="meta"><span>对应产品：集装箱式苦咸水淡化、紫外消毒与矿化</span></div>
-      </div>
-      <div class="pic"><img src="assets/img/scene-brackish.webp?v=3" alt="苦咸水淡化撬装装置" loading="lazy"><span class="ptag">图：江河海项目现场</span></div>
-    </div>
-    <div class="sol">
-      <div class="txt">
-        <div class="no">场景 05 · 油田与偏远地区</div>
-        <h2>没人值守，也要天天出水</h2>
-        <p>沙尘、温差、断电与无人现场是常态。集装箱式装置做防沙与保温，控制逻辑按无人值守设计，数据回传后远程处置。</p>
-        <div class="chips"><span class="chip">10–500 t/d</span><span class="chip">高盐度适应</span><span class="chip">远程监控</span><span class="chip">定期巡检</span></div>
-        <div class="meta"><span>对应产品：集装箱式苦咸水淡化、便携与应急供水</span></div>
-      </div>
-      <div class="pic"><img src="assets/img/scene-oilfield.webp?v=3" alt="沙漠站点集装箱式淡化站示意" loading="lazy"></div>
-    </div>
-  </div>
-
-  <div class="scen" style="padding:76px 0">
-    <div class="wrap">
-      <div class="sec-head reveal">
-        <div class="l">
-          <div class="kicker">Working Conditions</div>
-          <h2>先看工况，再定配置</h2>
-          <p class="lead">同样的产水量，源水不同、安装位置不同，配置差出一倍。下面是最常见的四类工况，实际项目按水质全分析后出方案。</p>
-        </div>
-        <a class="more" href="#/contact">带工况来询价</a>
-      </div>
-      <table class="reveal">
-        <thead><tr><th>典型工况</th><th>源水</th><th>产水与用途</th><th>推荐工艺</th></tr></thead>
-        <tbody>
-          <tr><td><b>海岛 / 沿海园区</b><span>取水距离远、电力条件有限</span></td><td>海水（TDS 30,000–45,000 mg/L）</td><td>生活与生产用水 50–5,000 t/d</td><td>UF 预处理 → SWRO → 矿化 → 供水</td></tr>
-          <tr><td><b>船舶与海工</b><span>机舱空间紧、连续运行</span></td><td>海水 / 辅机冷却水</td><td>5–50 t/d，饮用水与锅炉补给</td><td>多级过滤 → 高压 RO → 紫外消毒</td></tr>
-          <tr><td><b>工业制造</b><span>产水电阻率与稳定性要求高</span></td><td>市政自来水 / 地下水</td><td>纯水 5–200 t/h，超纯水 18.2 MΩ·cm</td><td>软化 → RO → EDI → 抛光</td></tr>
-          <tr><td><b>油田与偏远地区</b><span>无人值守、沙尘与温差</span></td><td>高盐度苦咸水（TDS 5,000–20,000 mg/L）</td><td>钻井与生活用水 10–500 t/d</td><td>集装箱式 RO → 远程监控 → 定期巡检</td></tr>
-        </tbody>
-      </table>
-      <div class="tip">表内水量与水质为常见区间，具体项目以水质检测报告与现场条件为准。</div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= 视图：产品中心 ================= -->
-<section class="view" data-view="products" hidden>
-  <div class="page-hero ph-products">
-    <div class="wrap">
-      <div class="crumb"><a href="#/home">首页</a> ／ 产品中心</div>
-      <div class="kicker">Products</div>
-      <h1>按工艺配套产品</h1>
-      <p>按水量、源水与安装条件组合成撬装、集装箱或成套厂站：从 2 t/d 的便携机到 5,000 t/d 的成套厂站，同一套设计与制造标准。点选分类筛选，具体参数按项目工况确认。</p>
-    </div>
-  </div>
-  <div class="wrap" style="padding-top:64px;padding-bottom:92px">
-    <div class="filters" id="filters">
-      <button class="on" data-f="all">全部</button>
-      <button data-f="sea">海水淡化</button>
-      <button data-f="brackish">苦咸水</button>
-      <button data-f="pure">纯水 · 超纯水</button>
-      <button data-f="reuse">中水回用</button>
-      <button data-f="mobile">便携 · 应急</button>
-    </div>
-    <div class="pgrid" id="productGrid">
-      <article class="pcard" data-cat="sea">
-        <div class="ph"><img src="assets/img/prod-ship.webp?v=3" alt="船用海水淡化装置整机" loading="lazy"></div>
-        <div class="body"><div class="cat">船用 · 造水机</div><h3>船用海水淡化装置</h3><div class="spec">5–50 t/d ｜ 反渗透式 ｜ 机舱紧凑布置 ｜ 可选船级社认证</div><div class="psrc">图：江河海官网 · <b>JHH-FSHB-40</b></div><div class="foot"><span>饮用水 / 锅炉补给</span><span class="arw">→</span></div></div>
-      </article>
-      <article class="pcard" data-cat="sea">
-        <div class="ph"><img src="assets/img/prod-land.webp?v=3" alt="陆用海水淡化设备" loading="lazy"></div>
-        <div class="body"><div class="cat">陆用 · EPC</div><h3>陆用海水淡化系统</h3><div class="spec">50–5,000 t/d ｜ 一级 / 二级 RO ｜ 含取水与浓水排放</div><div class="psrc">图：江河海官网 · <b>陆用海水淡化设备</b></div><div class="foot"><span>园区 / 市政 / 海岛</span><span class="arw">→</span></div></div>
-      </article>
-      <article class="pcard" data-cat="brackish sea">
-        <div class="ph"><img src="assets/img/prod-container.webp?v=3" alt="集装箱式苦咸水淡化装置" loading="lazy"></div>
-        <div class="body"><div class="cat">集装箱 · 无人值守</div><h3>集装箱式苦咸水淡化装置</h3><div class="spec">10–500 t/d ｜ 免土建 ｜ PLC + 远程监控</div><div class="psrc">图：江河海官网 · <b>苦咸水项目现场</b></div><div class="foot"><span>油田 / 偏远地区</span><span class="arw">→</span></div></div>
-      </article>
-      <article class="pcard" data-cat="sea">
-        <div class="ph"><img src="assets/img/prod-plant.webp?v=3" alt="大型海水淡化系统膜组" loading="lazy"></div>
-        <div class="body"><div class="cat">成套 · 厂站</div><h3>海水淡化厂成套设备</h3><div class="spec">5,000 t/d 以上 ｜ 取水—预处理—RO—供水全流程</div><div class="psrc">图：江河海官网 · <b>大型海水淡化系统</b></div><div class="foot"><span>设计 + 制造 + 调试</span><span class="arw">→</span></div></div>
-      </article>
-      <article class="pcard" data-cat="pure">
-        <div class="ph"><img src="assets/img/prod-upw.webp?v=4" alt="电子级超纯水精处理设备" loading="lazy"></div>
-        <div class="body"><div class="cat">电子级 · UPW</div><h3>电子级超纯水（UPW）系统</h3><div class="spec">抛光混床 + TOC-UV + 终端超滤 ｜ 18.2 MΩ·cm ｜ 半导体 / 面板 / 光伏</div><div class="psrc">图：<b>系统构成示意图</b>，非现场实拍</div><div class="foot"><span>半导体 / 面板 / 光伏</span><span class="arw">→</span></div></div>
-      </article>
-      <article class="pcard" data-cat="pure">
-        <div class="ph"><img src="assets/img/prod-ultrapure.webp?v=3" alt="EDI 超纯水设备" loading="lazy"></div>
-        <div class="body"><div class="cat">纯水 · 超纯水</div><h3>工业纯水与超纯水系统</h3><div class="spec">RO + EDI ｜ 电阻率 18.2 MΩ·cm ｜ 模块化扩容</div><div class="psrc">图：江河海官网 · <b>EDI 超纯水设备</b></div><div class="foot"><span>电子 / 食品 / 医药</span><span class="arw">→</span></div></div>
-      </article>
-      <article class="pcard" data-cat="pure">
-        <div class="ph"><img src="assets/img/prod-boiler.webp?v=3" alt="电厂锅炉补给水除盐设备" loading="lazy"></div>
-        <div class="body"><div class="cat">电力 · 锅炉补给</div><h3>电厂与锅炉补给水系统</h3><div class="spec">一级除盐 + 混床 ｜ 按锅炉压力等级配置</div><div class="psrc">图：<b>系统构成示意图</b>，非现场实拍</div><div class="foot"><span>电厂 / 工业锅炉</span><span class="arw">→</span></div></div>
-      </article>
-      <article class="pcard" data-cat="pure">
-        <div class="ph"><img src="assets/img/prod-pretreat.webp?v=3" alt="软化与多介质过滤装置" loading="lazy"></div>
-        <div class="body"><div class="cat">预处理 · 软化</div><h3>软化与多介质过滤</h3><div class="spec">降低硬度与浊度 ｜ 控制 SDI ｜ RO 前置保护</div><div class="psrc">图：江河海官网 · <b>纯水项目软化段</b></div><div class="foot"><span>全系系统前置</span><span class="arw">→</span></div></div>
-      </article>
-      <article class="pcard" data-cat="pure">
-        <div class="ph"><img src="assets/img/prod-uv.webp?v=3" alt="紫外消毒与矿化装置" loading="lazy"></div>
-        <div class="body"><div class="cat">消毒 · 矿化</div><h3>紫外消毒与矿化装置</h3><div class="spec">饮用水紫外消毒 ｜ 中压紫外 ｜ pH 与矿物质调节</div><div class="psrc">图：江河海官网 · <b>饮用水紫外线消毒装置</b></div><div class="foot"><span>淡化水后处理</span><span class="arw">→</span></div></div>
-      </article>
-      <article class="pcard" data-cat="reuse">
-        <div class="ph"><img src="assets/img/prod-reuse.webp?v=3" alt="中水回用处理装置" loading="lazy"></div>
-        <div class="body"><div class="cat">回用 · 零排放</div><h3>中水回用与零排放系统</h3><div class="spec">电镀 / 洗砂 / 漂染 ｜ 回用率按工艺定 ｜ 浓水再浓缩</div><div class="psrc">图：江河海官网 · <b>中水回用处理装置</b></div><div class="foot"><span>减量 + 达标</span><span class="arw">→</span></div></div>
-      </article>
-      <article class="pcard" data-cat="reuse">
-        <div class="ph"><img src="assets/img/prod-concentrate.webp?v=3" alt="液体浓缩装置" loading="lazy"></div>
-        <div class="body"><div class="cat">浓缩 · 提纯</div><h3>液体浓缩与海水提浓</h3><div class="spec">物料减量 30–70% ｜ 海水浓缩制盐与提溴前置</div><div class="psrc">图：江河海官网 · <b>液体浓缩项目</b></div><div class="foot"><span>食品 / 化工 / 盐业</span><span class="arw">→</span></div></div>
-      </article>
-      <article class="pcard" data-cat="mobile">
-        <div class="ph"><img src="assets/img/prod-portable.webp?v=3" alt="便携式海水淡化系统" loading="lazy"></div>
-        <div class="body"><div class="cat">便携 · 应急</div><h3>便携与应急供水装置</h3><div class="spec">2–10 t/d ｜ 拖车 / 手提 ｜ 到场即用</div><div class="psrc">图：江河海官网 · <b>便携式海水淡化系统</b></div><div class="foot"><span>救援 / 海岛 / 工地</span><span class="arw">→</span></div></div>
-      </article>
-    </div>
-    <div class="service-strip">
-      <div>
-        <h3>设备运维、备件与租赁</h3>
-        <p>膜元件更换、仪表校验、系统翻新与短期租赁；已交付项目可接入远程监控。</p>
-      </div>
-      <a class="btn btn-line btn-sm" href="#/contact">咨询运维服务</a>
-    </div>
-  </div>
-</section>
-
-<!-- ================= 视图：工程案例 ================= -->
-<section class="view" data-view="cases" hidden>
-  <div class="page-hero ph-cases">
-    <div class="wrap">
-      <div class="crumb"><a href="#/home">首页</a> ／ 工程案例</div>
-      <div class="kicker">Cases</div>
-      <h1>全天候工程场景</h1>
-      <p>船用、陆用、苦咸水、工业纯水、超纯水、中水回用、液体浓缩。以下先列集团公开案例，嘉元自有项目持续补充。</p>
-    </div>
-  </div>
-  <div class="wrap" style="padding-top:64px;padding-bottom:92px">
-    <div class="cgrid">
-      <button class="ccard" data-case="c1"><div class="ph"><img src="assets/img/case-polar.webp?v=3" alt="「中山大学极地」号在渤海辽东湾冰区试航" loading="lazy"></div><div class="body"><div class="meta">船用 · 海水淡化</div><h3>「中山大学极地」号破冰船</h3><p>高校首艘破冰船装配「江河海」牌造水机，随船渤海试航。</p><div class="tagline"><span>船用造水机</span><span class="src">图：南方日报 · 侵删</span></div></div></button>
-      <button class="ccard" data-case="c2"><div class="ph"><img src="assets/img/case-tarim.webp?v=3" alt="深地塔科 1 井现场储水与淡化装置" loading="lazy"></div><div class="body"><div class="meta">苦咸水 · 无人值守</div><h3>中石油塔里木 · 深地塔科 1 井</h3><p>高盐度集装箱式苦咸水淡化，远程控制、无人值守全自动运行。</p><div class="tagline"><span>集装箱式 RO</span><span class="src">图：江河海官网</span></div></div></button>
-      <button class="ccard" data-case="c3"><div class="ph"><img src="assets/img/case-fiji.webp?v=3" alt="同型号 JHH-FSHB-15 海水淡化整机" loading="lazy"></div><div class="body"><div class="meta">外贸 · 海岛供水</div><h3>斐济 15 t/d 海水淡化机出口</h3><p>整机出口并完成现场调试，为海岛社区提供生活淡水。</p><div class="tagline"><span>15 t/d</span><span class="src">图：江河海官网</span></div></div></button>
-      <button class="ccard" data-case="c4"><div class="ph"><img src="assets/img/case-pure.webp?v=3" alt="工业纯水系统 EDI 控制段" loading="lazy"></div><div class="body"><div class="meta">工业纯水</div><h3>288 t/d 纯水处理系统</h3><p>成套纯水系统发货并投运，服务工业用户的工艺用水。</p><div class="tagline"><span>288 t/d</span><span class="src">图：江河海官网</span></div></div></button>
-      <button class="ccard" data-case="c5"><div class="ph"><img src="assets/img/case-reuse.webp?v=3" alt="中水回用项目膜组与储罐" loading="lazy"></div><div class="body"><div class="meta">中水回用</div><h3>6,000 t/d 洗砂废水回用系统</h3><p>洗砂废水处理与回用，降低新水取用量与排放量。</p><div class="tagline"><span>6,000 t/d</span><span class="src">图：江河海官网</span></div></div></button>
-      <button class="ccard" data-case="c6"><div class="ph"><img src="assets/img/hero-plant.webp?v=3" alt="沿海园区海水淡化供水场景示意" loading="lazy"></div><div class="body"><div class="meta">陆用 · 园区供水</div><h3>沿海园区海水淡化供水（方案示意）</h3><p>取水—预处理—SWRO—矿化—园区管网，按园区用水曲线配置调蓄。</p><div class="tagline"><span>方案示意</span><span class="src">图：本站示意图</span></div></div></button>
-    </div>
-    <div class="source-note">案例 1–5 的时间、水量与场景引自江河海集团官网公开资讯（发布于 2020-02 至 2023-06），每条可在详情抽屉中跳转原文核对；案例 6 为方案示意，尚未落成。图源：案例 1 为《南方日报》报道配图（中山大学供图），案例 2–5 为集团官网项目图片，案例 6 为本站方案示意图。详见<a href="#/credits" style="color:#0E9C90">图片来源与版权说明</a>。</div>
-  </div>
-</section>
-
-<!-- ================= 视图：技术资质 ================= -->
-<section class="view" data-view="tech" hidden>
-  <div class="page-hero ph-tech">
-    <div class="wrap">
-      <div class="crumb"><a href="#/home">首页</a> ／ 技术资质</div>
-      <div class="kicker">Technology</div>
-      <h1>稳定的水质源自专业的设计</h1>
-      <p>工艺模型、能量回收、集装箱化与远程运维，四件事决定了系统三年后还在不在设计工况上运行。</p>
-    </div>
-  </div>
-  <div class="wrap" style="padding-top:72px;padding-bottom:92px">
-    <div class="two">
-      <div>
-        <div class="kicker">Process Model</div>
-        <h2>SWRO 七段工艺，逐段定指标</h2>
-        <p class="lead">每段都有进出的水质与压力窗口，方案里写清、调试时按表核对。</p>
-        <div class="klist" style="margin-top:24px">
-          <div class="kitem"><div class="no">01</div><div><h3>取水</h3><p>开式取水或沙滩井；控制浊度、藻类与生物附着，取水口流速与反冲周期写入运行手册。</p></div></div>
-          <div class="kitem"><div class="no">02</div><div><h3>预处理</h3><p>混凝 + 多介质过滤，出水 SDI 控制在膜厂家要求以内，压住胶体与悬浮物。</p></div></div>
-          <div class="kitem"><div class="no">03</div><div><h3>超滤 / 微滤</h3><p>UF 作为 RO 前置屏障，定期反洗与化学加强洗，保证出水浊度稳定。</p></div></div>
-          <div class="kitem"><div class="no">04</div><div><h3>高压泵与能量回收</h3><p>高压段配 ERD，回收浓水余压；吨水电耗按项目水量核算并写进方案。</p></div></div>
-          <div class="kitem"><div class="no">05</div><div><h3>反渗透</h3><p>一级 / 二级 RO 按回收率与产水指标配置膜阵列，控制通量与段间压差。</p></div></div>
-          <div class="kitem"><div class="no">06</div><div><h3>后处理</h3><p>矿化、pH 调节与紫外消毒，出水按饮用水或工艺用水标准检测。</p></div></div>
-          <div class="kitem"><div class="no">07</div><div><h3>浓水排放</h3><p>多端口扩散器或蒸发结晶，按环评批复的排放点、稀释比与监测要求执行。</p></div></div>
-        </div>
-      </div>
-      <aside>
-        <div class="side">
-          <h3>专利</h3>
-          <ul>
-            <li><i>◆</i><span>一种利用船舶废热的海水淡化装置</span></li>
-            <li><i>◆</i><span>一种可调整水质酸碱度的矿化过滤装置</span></li>
-            <li><i>◆</i><span>便携式海水净化装置</span></li>
-          </ul>
-          <div class="note">专利信息引自公开工商数据（截至 2026-11），专利号与法律状态待核。</div>
-        </div>
-        <div class="side" style="margin-top:24px">
-          <h3>资质与体系</h3>
-          <ul>
-            <li><i>◇</i><span>ISO 9001 质量管理体系（待核）</span></li>
-            <li><i>◇</i><span>CE 认证（按出口项目配置，待核）</span></li>
-            <li><i>◇</i><span>船级社认证（船用项目可选，待核）</span></li>
-            <li><i>◇</i><span>集团「江河海」广东省专精特新（2026-02 复核通过）</span></li>
-          </ul>
-          <div class="note">标「待核」的项需质量部门提供证书扫描件与有效期，未确认前不对外宣称已取证。</div>
-        </div>
-      </aside>
-    </div>
-    <div style="margin-top:64px">
-      <div class="kicker">Design Focus</div>
-      <h2>把稳定性做进设计里</h2>
-      <p class="lead">海水淡化的难点不在“能不能出淡水”，而在三年、五年后还能不能稳定出水。我们在四个地方下了功夫。</p>
-      <div class="klist" style="margin-top:24px">
-        <div class="kitem"><div class="no">01</div><div><h3>能量回收与吨水电耗</h3><p>高压段配能量回收装置，把浓水余压送回进水侧；按项目水量核算吨水电耗，写进方案而不是只写承诺。</p></div></div>
-        <div class="kitem"><div class="no">02</div><div><h3>集装箱化与免土建</h3><p>撬装与集装箱模块在厂内完成管路、电气与调试，现场只需接管接电，缩短工期也降低现场质量波动。</p></div></div>
-        <div class="kitem"><div class="no">03</div><div><h3>无人值守与远程运维</h3><p>PLC + 远程监控，关键参数上云；异常先报警、再远程处置，减少偏远项目的到场次数。</p></div></div>
-        <div class="kitem"><div class="no">04</div><div><h3>抗污染预处理</h3><p>按源水藻类、油类与浊度设计预处理组合，控制膜通量衰减与清洗周期，延长膜寿命。</p></div></div>
-      </div>
-    </div>
-    <div style="margin-top:56px;display:flex;gap:12px;flex-wrap:wrap">
-      <a class="btn btn-line" href="https://swdtwhps.dpdns.org/3d/" target="_blank" rel="noopener">交互式 3D 工艺演示 ↗</a>
-      <a class="btn btn-primary" href="#/contact">索取工艺说明与参数表</a>
-    </div>
-  </div>
-</section>
-
-<!-- ================= 视图：关于嘉元 ================= -->
-<section class="view" data-view="about" hidden>
-  <div class="page-hero ph-about">
-    <div class="wrap">
-      <div class="crumb"><a href="#/home">首页</a> ／ 关于嘉元</div>
-      <div class="kicker">About</div>
-      <h1>嘉元环境</h1>
-      <p>2019 年成立于浦东临港，承接江河海在华东与海外的设计、制造、施工与运维。</p>
-    </div>
-  </div>
-  <div class="wrap" style="padding-top:72px;padding-bottom:92px">
-    <div class="about-grid">
-      <div>
-        <div class="kicker">Company</div>
-        <h2>全生命周期稳定运行的系统</h2>
-        <p>上海嘉元环境科技有限公司成立于 2019 年 8 月，是珠海市江河海水处理科技股份有限公司（江河海）的子公司，专注海水与苦咸水淡化、电子级水、工业纯水与超纯水、锅炉补给水、中水回用系统的优化、设计、制造、施工与运维。</p>
-        <p>公司位于上海市浦东新区海基六路 218 弄 201306，业务覆盖船舶海工、海岛与沿海园区、电力电子、食品饮料、油田与偏远地区等场景。设备在集团制造基地完成集成与调试，现场由嘉元团队负责安装、调试与售后。</p>
-        <p class="quote">“把水处理当成一项长期运行的服务，而不是一次设备买卖。”</p>
-        <p>因此我们做三件额外的事：方案里写清吨水电耗与清洗周期；交付时给运行手册与备件清单；交付后能远程看到关键参数。</p>
-      </div>
-      <aside>
-        <div class="side">
-          <h3>发展节点</h3>
-          <div class="timeline" style="margin-top:16px">
-            <div><b>2019</b><span>上海嘉元环境科技成立</span><em>落地浦东临港</em></div>
-            <div><b>2020</b><span>15 t/d 海水淡化机出口斐济</span><em>集团项目</em></div>
-            <div><b>2023</b><span>「极地」号破冰船装配造水机；万米深地科探井投运</span><em>集团项目</em></div>
-            <div><b>2026</b><span>集团通过广东省专精特新复核，入围中国水务合作单位</span><em>集团动态</em></div>
-          </div>
-          <div class="note">时间线中的集团项目用于说明技术沿革，嘉元自有项目档案待补。</div>
-        </div>
-        <div class="side" style="margin-top:24px">
-          <h3>集团与基地</h3>
-          <ul>
-            <li><i>◆</i><span>珠海市江河海水处理科技股份有限公司（集团）</span></li>
-            <li><i>◆</i><span>上海 · 浦东临港（嘉元）</span></li>
-            <li><i>◆</i><span>珠海 · 金鼎科技工业园（制造基地）</span></li>
-          </ul>
-          <div class="note"><a href="https://www.waterjhh.com/" target="_blank" rel="noopener" style="color:#0E9C90">访问集团官网 ↗</a></div>
-        </div>
-      </aside>
-    </div>
-  </div>
-</section>
-
-<!-- ================= 视图：新闻 ================= -->
-<section class="view" data-view="news" hidden>
-  <div class="page-hero ph-news">
-    <div class="wrap">
-      <div class="crumb"><a href="#/home">首页</a> ／ 新闻资讯</div>
-      <div class="kicker">News</div>
-      <h1>新闻与动态</h1>
-      <p>公司新闻、项目动态与行业观察。嘉元自有资讯待补，当前先同步集团公开报道。</p>
-    </div>
-  </div>
-  <div class="wrap" style="padding-top:56px;padding-bottom:92px">
-    <div class="nlist">
-      <a class="nrow" href="#/news"><time>2026-02-10</time><span class="tag">公司新闻</span><h3>「江河海」复核通过广东省专精特新中小企业认定</h3><span class="arw">→</span></a>
-      <a class="nrow" href="#/news"><time>2026-02-09</time><span class="tag">公司新闻</span><h3>成功中标中国水务城乡供水领域科技创新合作单位入围项目</h3><span class="arw">→</span></a>
-      <a class="nrow" href="#/news"><time>2023-06-02</time><span class="tag">项目动态</span><h3>掘地三万尺：高盐度集装箱式苦咸水淡化装置服务万米深地科探井</h3><span class="arw">→</span></a>
-      <a class="nrow" href="#/news"><time>2023-01-28</time><span class="tag">项目动态</span><h3>「中山大学极地」号破冰船装配江河海海水淡化装置赴渤海试航</h3><span class="arw">→</span></a>
-      <a class="nrow" href="#/news"><time>2020-02-21</time><span class="tag">外贸</span><h3>外贸出货：发往斐济 15 吨/天海水淡化机一台套</h3><span class="arw">→</span></a>
-      <a class="nrow" href="#/news"><time>2020-02-20</time><span class="tag">项目动态</span><h3>项目发货：288 吨/天纯水处理系统一套</h3><span class="arw">→</span></a>
-    </div>
-    <div class="source-note">以上资讯同步自集团官网公开内容（截至 2026-02），点击暂不跳转详情页；正式上线时接内容管理后台。</div>
-  </div>
-</section>
-
-<!-- ================= 视图：联系 ================= -->
-<section class="view" data-view="contact" hidden>
-  <div class="page-hero ph-contact">
-    <div class="wrap">
-      <div class="crumb"><a href="#/home">首页</a> ／ 联系我们</div>
-      <div class="kicker">Contact</div>
-      <h1>提交工况，<br>48 小时内给初步方案</h1>
-      <p>水量、源水、项目地、用电与安装条件，四项说清即可。复杂项目我们会先约一次电话或现场勘查。</p>
-    </div>
-  </div>
-  <div class="wrap" style="padding-top:64px;padding-bottom:92px">
-    <div class="contact-grid">
-      <div>
-        <h2 style="font-size:24px;margin-bottom:8px">工况与询价</h2>
-        <p class="lead" style="margin-bottom:26px">填好水量与源水类型即可，技术团队 1 个工作日内回一轮判断；信息只用于本项目评估，不对外转交。</p>
-        <form id="inquiry" novalidate>
-          <div class="f2">
-            <div><label for="company">公司名称 *</label><input id="company" name="company" required placeholder="例：某某水务 / 某某船厂"></div>
-            <div><label for="person">联系人 *</label><input id="person" name="person" required placeholder="姓名"></div>
-          </div>
-          <div class="f2">
-            <div><label for="phone">电话 / 微信 *</label><input id="phone" name="phone" required placeholder="手机号"></div>
-            <div><label for="email">邮箱</label><input id="email" name="email" type="email" placeholder="用于接收方案与报价"></div>
-          </div>
-          <div class="f2">
-            <div><label for="place">项目地</label><input id="place" name="place" placeholder="国家 / 城市 / 海岛或船名"></div>
-            <div><label for="capacity">需求水量（t/d）</label><input id="capacity" name="capacity" inputmode="numeric" placeholder="例：300"></div>
-          </div>
-          <div class="f2">
-            <div><label for="source">源水类型</label>
-              <select id="source" name="source">
-                <option>海水</option><option>苦咸水 / 地下水</option><option>市政自来水</option><option>地表水</option><option>废水 / 回用水</option><option>其他</option>
-              </select>
-            </div>
-            <div><label for="use">用途</label>
-              <select id="use" name="use">
-                <option>生活饮用水</option><option>工业工艺用水</option><option>锅炉补给水</option><option>超纯水</option><option>灌溉 / 养殖</option><option>其他</option>
-              </select>
-            </div>
-          </div>
-          <div><label for="note">补充说明</label><textarea id="note" name="note" placeholder="源水水质报告、含盐量、安装空间、用电条件、期望交期等"></textarea></div>
-          <div class="hp" aria-hidden="true"><label for="website">请勿填写</label><input id="website" name="website" tabindex="-1" autocomplete="off" placeholder=""></div>
-          <div class="submit">
-            <button class="btn btn-primary" id="inqBtn" type="submit">提交工况</button>
-            <small id="inqMsg">提交后由技术团队初审；如需保密，可先只填水量与源水类型。</small>
-          </div>
-          <p class="consent">提交即表示你已阅读并同意<a href="#/privacy">《隐私政策》</a>；信息仅用于本次工况评估与联系，不用于营销群发。</p>
-        </form>
-      </div>
-      <aside>
-        <div class="contact-info">
-          <div><div class="k">上海 · 嘉元环境</div><p>上海市浦东新区海基六路 218 弄 201306</p></div>
-          <div><div class="k">联系电话</div><p>+86 13661599170</p></div>
-          <div><div class="k">邮箱</div><p><a href="mailto:markwoo&#64;163&#46;com" style="color:#0E9C90">markwoo&#64;163&#46;com</a><br>工作日 1 个工作日内回复；紧急事项请直接致电</p></div>
-          <div><div class="k">工作时间</div><p>周一至周日 08:00–18:00（北京时间）<br>紧急项目可先加微信留言</p></div>
-          <div><div class="k">微信</div>
-            <div style="display:flex;gap:14px;align-items:flex-start">
-              <img src="assets/img/wechat-qr.png" width="112" height="112" alt="微信二维码，扫码添加嘉元环境" loading="lazy" style="border-radius:4px;flex:0 0 auto">
-              <div style="font-size:12.5px;color:#5A7186;line-height:1.75">扫码添加微信<br>备注「公司 + 项目」<br>可直接发现场照片与水质报告</div>
-            </div>
-          </div>
-          <div><div class="k">集团官网</div><p><a href="https://www.waterjhh.com/" target="_blank" rel="noopener" style="color:#0E9C90">www.waterjhh.com ↗</a></p></div>
-        </div>
-      </aside>
-    </div>
-    <div class="promise">
-      <div><b>48 小时</b><span>收到完整工况后给出初步工艺路线与配置清单</span></div>
-      <div><b>现场勘查</b><span>复杂项目先看取水、安装与排放条件，再定方案</span></div>
-      <div><b>可核对</b><span>方案里写清吨水电耗、回收率与清洗周期，不只写“稳定运行”</span></div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= 视图：隐私政策 ================= -->
-<section class="view" data-view="privacy" hidden>
-  <div class="page-hero">
-    <div class="wrap">
-      <div class="crumb"><a href="#/home">首页</a> ／ 隐私政策</div>
-      <div class="kicker">Privacy Policy</div>
-      <h1>隐私政策</h1>
-      <p>说明本站收集哪些信息、为什么收集、保存多久，以及你可以怎么查、改、删。</p>
-    </div>
-  </div>
-  <div class="wrap" style="padding-top:56px;padding-bottom:96px">
-    <div class="policy">
-      <p class="small">生效日期：2026-11-27　｜　最近更新：2026-11-27　｜　数据控制者：上海嘉元环境科技有限公司</p>
-
-      <h2>一、适用范围</h2>
-      <p>本政策适用于本站（当前域名为临时演示地址，正式域名上线后同步更新本页）通过「提交工况」表单、邮件与电话等渠道获取的个人信息。本站为面向企业客户的产品与技术展示站，不提供用户注册、登录、在线支付功能。</p>
-
-      <h2>二、我们收集哪些信息</h2>
-      <p>仅在你主动填写表单或与我们联系时收集，不主动抓取、不购买第三方数据。</p>
-      <table>
-        <tr><th>类别</th><th>具体内容</th><th>是否必填</th></tr>
-        <tr><td>联系信息</td><td>公司名称、联系人姓名、电话或微信、邮箱</td><td>公司/联系人/电话必填，邮箱选填</td></tr>
-        <tr><td>项目工况</td><td>项目地、需求水量、源水类型、用途、补充说明（水质、安装空间、用电条件等）</td><td>选填</td></tr>
-        <tr><td>技术记录</td><td>提交时间、来源页面、IP 地址（由 Cloudflare 边缘节点提供，用于防滥用与故障排查）</td><td>自动记录</td></tr>
-      </table>
-      <p class="small">请勿在「补充说明」中填写身份证号、银行账号、病历等与工况评估无关的敏感个人信息。</p>
-
-      <h2>三、收集与使用目的</h2>
-      <ul>
-        <li>评估你的工况，判断工艺路线与设备配置是否可行；</li>
-        <li>由技术或销售同事通过你留下的电话、微信、邮箱与你联系，回复方案与报价；</li>
-        <li>防范表单被机器人滥用（蜜罐字段与基础频次限制）；</li>
-        <li>在你明确同意的前提下，才可能向你发送与产品更新相关的信息；未同意的，不做营销群发。</li>
-      </ul>
-      <p>我们不会将你的信息用于自动化决策或用户画像，也不会出售、出租你的个人信息。</p>
-
-      <h2>四、存储与保存期限</h2>
-      <p>本站服务器不建立线索数据库：表单提交后经接口即时转发到公司内部使用的企业即时通讯群组或工作邮箱，此后由公司销售与技术团队在其内部系统中跟进。转发环节不额外留存副本。</p>
-      <p>保存期限按项目跟进需要确定：一般保留至该项目跟进结束；未成交的线索最长保留 24 个月，超期删除或做匿名化处理（仅保留"某地区、某水量"这类统计口径）。法律法规另有留存要求的，从其规定。</p>
-
-      <h2>五、第三方服务与跨境传输</h2>
-      <ul>
-        <li><strong>Cloudflare</strong>：本站托管与 CDN 服务商，会处理访问日志（含 IP、User-Agent），其节点分布全球，日志可能经境外节点中转。</li>
-        <li><strong>GitHub</strong>：本站代码托管平台，仅存放页面文件，不含你提交的表单内容。</li>
-        <li><strong>企业即时通讯 / 邮件服务</strong>：表单转发与后续沟通所使用，具体为公司在用的飞书、企业微信或邮件服务。</li>
-        <li><strong>Resend</strong>（如启用邮件通知）：仅传输邮件正文，不用于其他用途。</li>
-      </ul>
-      <p>因托管与 CDN 节点在境外，访问本站与提交表单可能涉及个人信息出境。我们仅在为完成你的询价请求所必需的范围内处理，并按《个人信息保护法》要求履行告知与取得同意的义务；如你不同意相关处理，可改用电话或邮件直接联系，不影响你获取方案。</p>
-
-      <h2>六、Cookie 与统计</h2>
-      <p>本站不使用 Cookie 做访客追踪，未接入任何第三方统计、广告或再营销脚本。页面内的图片与素材均为本站自有资源，不向第三方请求。</p>
-
-      <h2>七、你的权利</h2>
-      <p>你可以随时要求查阅、更正、补充、删除我们持有的与你相关的信息，或撤回对处理的同意。方式如下：</p>
-      <ul>
-        <li>邮件：<a href="mailto:markwoo&#64;163&#46;com" style="color:#0E9C90">markwoo&#64;163&#46;com</a>（标题请注明"个人信息请求"）</li>
-        <li>电话：+86 13661599170（周一至周日 08:00–18:00，北京时间）</li>
-      </ul>
-      <p>我们在核验你的身份后 15 个工作日内答复。撤回同意不影响撤回前已进行的处理；删除后如需再次询价，请重新提交。</p>
-
-      <h2>八、未成年人</h2>
-      <p>本站面向企业与工程项目采购场景，不主动收集未满 14 周岁儿童的个人信息。如发现误收集，我们将尽快删除。</p>
-
-      <h2>九、安全措施</h2>
-      <p>全站强制 HTTPS；表单接口校验必填项与格式、限制提交频次、设置蜜罐字段拦截机器人；内部仅授权销售与技术同事访问线索；离职人员权限即时回收。</p>
-
-      <h2>十、政策更新与联系方式</h2>
-      <p>本政策更新后将在本页公示并修改"最近更新"日期；涉及处理目的、信息类型或共享对象的实质性变更，会在页面显著位置提示。对本政策有疑问，可通过上方邮箱或电话联系我们，或寄送至：上海市浦东新区海基六路 218 弄 201306，上海嘉元环境科技有限公司。</p>
-      <p class="small">本页为中文版本，如后续提供其他语言版本，以中文版本为准。</p>
-    </div>
-  </div>
-</section>
-
-<!-- ================= 视图：图片来源与版权 ================= -->
-<section class="view" data-view="credits" hidden>
-  <div class="page-hero">
-    <div class="wrap">
-      <div class="crumb"><a href="#/home">首页</a> ／ 图片来源与版权说明</div>
-      <div class="kicker">Sources &amp; Credits</div>
-      <h1>每张图、每条数据，<br>都回到原始出处</h1>
-      <p>本站图片与资料逐项核对到可点击的原始页面。凡非本站自有素材，均在图上或卡片上标注来源；无法确认授权的，一律改为 AI 示意并注明。</p>
-    </div>
-  </div>
-  <div class="wrap" style="padding-top:56px;padding-bottom:96px">
-    <div class="policy">
-      <p class="small">最近核对：2026-11-27　｜　核对范围：全部 29 张页面图片（11 张产品 + 7 张场景/案例现场 + 1 张媒体配图 + 3 张 AI 场景图 + 7 张 AI 页头背景 + 1 张 AI 产品示意图）+ 6 条案例数据 + 5 项资质/专利信息</p>
-
-      <h2>一、图片来源分类</h2>
-      <table>
-        <tr><th>类别</th><th>数量</th><th>出处</th><th>站内标注</th></tr>
-        <tr><td>集团官网产品图</td><td>10 张</td><td>waterjhh.com 产品与服务页</td><td>卡片下注「图：江河海官网 · 型号」</td></tr>
-        <tr><td>集团官网工程案例图</td><td>7 张</td><td>waterjhh.com 工程案例各分类页</td><td>卡片角标「图：江河海项目现场」</td></tr>
-        <tr><td>媒体报道配图</td><td>1 张</td><td>《南方日报》2023-01-28（中山大学供图）</td><td>角标「图：南方日报 · 侵删」</td></tr>
-        <tr><td>AI 生成图</td><td>11 张</td><td>本站用 AI 生成，无外部来源</td><td>页面内不单独标注，均在本页登记</td></tr>
-        <tr><td>自有品牌素材</td><td>字标与图标</td><td>本站按公司标识重绘，无第三方素材</td><td>—</td></tr>
-      </table>
-
-      <h2>二、产品与方案图逐项出处</h2>
-      <table>
-        <tr><th>站内位置</th><th>原始来源</th></tr>
-        <tr><td>产品中心 · 船用海水淡化装置</td><td><a href="https://www.waterjhh.com/displayproduct.html?id=6057388162192704" target="_blank" rel="noopener" style="color:#0E9C90">江河海官网 · JHH-FSHB-40船用海水淡化装置（造水机）</a></td></tr>
-        <tr><td>产品中心 · 陆用海水淡化系统</td><td><a href="https://www.waterjhh.com/displayproduct.html?id=5055335786173760" target="_blank" rel="noopener" style="color:#0E9C90">江河海官网 · 陆用海水淡化设备</a></td></tr>
-        <tr><td>产品中心 · 海水淡化厂成套设备</td><td><a href="https://www.waterjhh.com/displayproduct.html?id=5055332974024000" target="_blank" rel="noopener" style="color:#0E9C90">江河海官网 · 大型海水淡化系统</a></td></tr>
-        <tr><td>产品中心 · 工业纯水与超纯水</td><td><a href="https://www.waterjhh.com/displayproduct.html?id=5055201191335232" target="_blank" rel="noopener" style="color:#0E9C90">江河海官网 · EDI超纯水设备</a></td></tr>
-        <tr><td>产品中心 · 紫外消毒与矿化</td><td><a href="https://www.waterjhh.com/displayproduct.html?id=6057629986739520" target="_blank" rel="noopener" style="color:#0E9C90">江河海官网 · 饮用水紫外线消毒装置</a></td></tr>
-        <tr><td>产品中心 · 中水回用与零排放</td><td><a href="https://www.waterjhh.com/displayproduct.html?id=5055192754361664" target="_blank" rel="noopener" style="color:#0E9C90">江河海官网 · 中水回用处理装置</a></td></tr>
-        <tr><td>产品中心 · 便携与应急供水</td><td><a href="https://www.waterjhh.com/displayproduct.html?id=5055325025260864" target="_blank" rel="noopener" style="color:#0E9C90">江河海官网 · 便携式海水淡化系统</a></td></tr>
-        <tr><td>产品中心 · 集装箱式苦咸水淡化</td><td><a href="https://www.waterjhh.com/page.html?id=36" target="_blank" rel="noopener" style="color:#0E9C90">江河海官网 · 苦咸水淡化项目</a></td></tr>
-        <tr><td>产品中心 · 软化与多介质过滤</td><td><a href="https://www.waterjhh.com/page.html?id=35" target="_blank" rel="noopener" style="color:#0E9C90">江河海官网 · 工业纯水项目</a></td></tr>
-        <tr><td>产品中心 · 液体浓缩与提浓</td><td><a href="https://www.waterjhh.com/page.html?id=33" target="_blank" rel="noopener" style="color:#0E9C90">江河海官网 · 液体浓缩项目</a></td></tr>
-        <tr><td>产品中心 · 电厂与锅炉补给水</td><td>本地 AI 生成（seedream），非实拍</td></tr>
-        <tr><td>工程案例 · 极地号</td><td><a href="https://www.waterjhh.com/displaynews.html?id=5130475868668736" target="_blank" rel="noopener" style="color:#0E9C90">集团官网 2023-01-28 报道</a>；原图为《南方日报》报道配图（中山大学供图）</td></tr>
-        <tr><td>工程案例 · 深地塔科 1 井</td><td><a href="https://www.waterjhh.com/displaynews.html?id=5307348394345280" target="_blank" rel="noopener" style="color:#0E9C90">集团官网 2023-06-02 报道</a></td></tr>
-        <tr><td>工程案例 · 斐济 15 t/d</td><td><a href="https://www.waterjhh.com/displaynews.html?id=5055093205173056" target="_blank" rel="noopener" style="color:#0E9C90">集团官网 2020-02-21 报道</a>；图为同型号整机产品图</td></tr>
-        <tr><td>工程案例 · 288 t/d 纯水</td><td><a href="https://www.waterjhh.com/displaynews.html?id=5055092449002304" target="_blank" rel="noopener" style="color:#0E9C90">集团官网 2020-02-20 报道</a>；配图为工业纯水项目现场</td></tr>
-        <tr><td>工程案例 · 6,000 t/d 洗砂</td><td><a href="https://www.waterjhh.com/displaynews.html?id=5055091766412096" target="_blank" rel="noopener" style="color:#0E9C90">集团官网 2020-02-20 报道</a>；配图为中水回用项目现场</td></tr>
-        <tr><td>解决方案 · 四个场景图</td><td><a href="https://www.waterjhh.com/page.html?id=35" target="_blank" rel="noopener" style="color:#0E9C90">工业纯水项目</a>、<a href="https://www.waterjhh.com/page.html?id=36" target="_blank" rel="noopener" style="color:#0E9C90">苦咸水项目</a>、<a href="https://www.waterjhh.com/page.html?id=38" target="_blank" rel="noopener" style="color:#0E9C90">船用海淡项目</a></td></tr>
-        <tr><td>首屏与场景 02／05</td><td>本地 AI 生成示意图（seedream），不代表真实厂区，页面内不再单独标注</td></tr>
-        <tr><td>产品中心「电子级超纯水」卡片</td><td>本地 AI 生成示意图（seedream），仅示意系统构成，非本公司设备实拍</td></tr>
-      </table>
-
-      <h2>三、资料与数据来源</h2>
-      <table>
-        <tr><th>事项</th><th>来源</th><th>核实状态</th></tr>
-        <tr><td>企业登记信息<br>（成立 2019-08-14、注册资本 208 万元、统一社会信用代码 91310115MA1HAR6782）</td>
-            <td><a href="https://www.gsxt.gov.cn/" target="_blank" rel="noopener" style="color:#0E9C90">国家企业信用信息公示系统</a></td><td>按公示系统口径录入；以营业执照原件为准</td></tr>
-        <tr><td>集团持股 43%</td>
-            <td><a href="https://static.cninfo.com.cn/finalpage/2020-04-27/1207738087.PDF" target="_blank" rel="noopener" style="color:#0E9C90">巨潮资讯网：江河海《对外投资暨关联交易的公告》2020-04-27</a></td><td>已核对公告原文</td></tr>
-        <tr><td>集团「江河海」通过广东省专精特新中小企业复核</td>
-            <td><a href="https://gdii.gd.gov.cn/gkmlpt/content/4/4856/mpost_4856033.html" target="_blank" rel="noopener" style="color:#0E9C90">广东省工业和信息化厅 2026-02-10 通告</a><br>
-            <a href="https://gdii.gd.gov.cn/gkmlpt/content/4/4842/post_4842481.html" target="_blank" rel="noopener" style="color:#0E9C90">2026-01-13 公示名单（序号 325）</a></td><td>已核对官方通告与名单，有效期三年</td></tr>
-        <tr><td>入围中国水务城乡供水科技创新合作单位</td>
-            <td><a href="https://www.chinahho.com/" target="_blank" rel="noopener" style="color:#0E9C90">中国水务投资集团有限公司</a>（检索中国水务官网公开资讯）</td><td><b>待核</b>：公开渠道未见含「江河海」的成交结果公告，正式对外前请以入围通知书为准</td></tr>
-        <tr><td>3 项专利名称</td>
-            <td><a href="https://pss-system.cponline.cnipa.gov.cn/" target="_blank" rel="noopener" style="color:#0E9C90">国家知识产权局专利检索及分析系统</a></td><td><b>待核</b>：名称取自公开工商数据，专利号与法律状态需以证书为准</td></tr>
-        <tr><td>「中山大学极地」号装配造水机</td>
-            <td>《南方日报》2023-01-28 报道（<a href="https://www.waterjhh.com/displaynews.html?id=5130475868668736" target="_blank" rel="noopener" style="color:#0E9C90">集团官网转载</a>）</td><td>已核对报道标题、日期与船名</td></tr>
-        <tr><td>我国首口万米深地科探井开钻</td>
-            <td>新华社 2023-05-30 电讯（<a href="https://www.waterjhh.com/displaynews.html?id=5307348394345280" target="_blank" rel="noopener" style="color:#0E9C90">集团官网转载</a>）</td><td>已核对开钻日期与地点</td></tr>
-        <tr><td>水量、TDS、回收率等参数区间</td><td>行业通用范围，非官方统计</td><td>页面已注明「以水质检测报告与现场条件为准」</td></tr>
-      </table>
-
-      <h2>四、AI 生成内容声明</h2>
-      <p>以下 11 张 AI 图（3 张场景图用在 5 处位置；7 张分别用于解决方案、产品中心、工程案例、技术资质、关于嘉元、新闻资讯、提交工况的页头背景；1 张用于产品中心「电子级超纯水（UPW）系统」卡片）仅用于说明系统构成与场景形态，<b>不代表本公司真实厂区、设备外观或已落成项目</b>：首屏主图「沿海海水淡化厂区」、解决方案场景 02「海岛与沿海园区」、场景 05「油田与偏远地区」、产品中心「电厂与锅炉补给水」、案例 6「沿海园区方案示意」。</p>
-      <p class="small">AI 图不含任何第三方商标、人物肖像或可识别建筑；如后续取得实拍图，将逐张替换并删除对应 AI 图。</p>
-
-      <h2>五、侵权处理（侵删）</h2>
-      <p>本站用于企业业务与技术能力展示，所用集团与媒体图片仅用于介绍本公司业务与技术能力，不作单独售卖或再授权。若权利人对某张图片、某段资料的使用有异议，请按下述方式联系，<b>我们承诺在核实后 24 小时内删除或替换</b>，并同步更新本页清单。</p>
-      <ul>
-        <li>邮箱：<a href="mailto:markwoo&#64;163&#46;com">markwoo&#64;163&#46;com</a>（标题请注明「图片权利」）</li>
-        <li>电话：+86 13661599170（周一至周日 08:00–18:00）</li>
-        <li>邮寄：上海市浦东新区海基六路 218 弄 201306，上海嘉元环境科技有限公司</li>
-      </ul>
-      <p class="small">为便于快速处理，请一并提供：图片所在页面地址、权利人身份或授权证明、期望处理方式（删除／替换／补充署名）。</p>
-
-      <h2>六、第三方链接</h2>
-      <p>本站指向 waterjhh.com、uvc.com.cn（集团「威固」品牌）、cninfo.com.cn、gdii.gd.gov.cn 等外部站点，其内容与可用性由对应站点负责，本站不对第三方页面内容作担保。</p>
-
-      <h2>七、更新记录</h2>
-      <p>2026-11-27：完成首轮全站图文核对，替换 10 张产品图、4 张解决方案场景图与 5 张案例图，新增本页；对 1 项媒体图与 5 项官方信息逐条标注来源。</p>
-      <p>2026-11-27（第二轮）：七个内页页头改为 AI 生成的工程全景背景（共 7 张，均在右下标注「背景为 AI 示意」）；联系页加入微信二维码。</p>
-      <p>2026-11-27（第三轮）：产品中心补充「电子级超纯水（UPW）系统」产品线（AI 示意图，卡片内标注），产品线由 11 条增至 12 条。</p>
-      <p>2026-11-27（第四轮）：七个内页页头背景重新生成差异化版本（机位、光线、季节均与原图不同，不指向任何现有厂区照片）；取消页头「背景为 AI 示意」角标与场景图「AI 示意图」标签，来源统一在第五部分登记。</p>
-      <p class="small">本页随图片或资料变更同步更新；新增外部素材须先在本页登记来源。</p>
-    </div>
-  </div>
-</section>
-
 </main>
 
 <!-- ================= 页脚 ================= -->
@@ -1073,37 +470,37 @@ body.is-home .top-phone{display:none}
       <div>
         <h4>产品线</h4>
         <ul>
-          <li><a href="#/products">船用海水淡化</a></li>
-          <li><a href="#/products">陆用 / 集装箱式</a></li>
-          <li><a href="#/products">纯水与超纯水</a></li>
-          <li><a href="#/products">中水回用与零排放</a></li>
+          <li><a href="/products">船用海水淡化</a></li>
+          <li><a href="/products">陆用 / 集装箱式</a></li>
+          <li><a href="/products">纯水与超纯水</a></li>
+          <li><a href="/products">中水回用与零排放</a></li>
         </ul>
       </div>
       <div>
         <h4>公司</h4>
         <ul>
-          <li><a href="#/about">关于嘉元</a></li>
-          <li><a href="#/tech">技术资质</a></li>
-          <li><a href="#/cases">工程案例</a></li>
-          <li><a href="#/news">新闻资讯</a></li>
+          <li><a href="/about">关于嘉元</a></li>
+          <li><a href="/tech">技术资质</a></li>
+          <li><a href="/cases">工程案例</a></li>
+          <li><a href="/news">新闻资讯</a></li>
         </ul>
       </div>
       <div>
         <h4>联系</h4>
         <p>联系电话：+86 13661599170<br>
         邮箱：<a href="mailto:markwoo&#64;163&#46;com">markwoo&#64;163&#46;com</a><br>
-        <a href="#/contact" style="color:#8FD9D2">提交工况表 →</a><br>
-        <a href="#/privacy">隐私政策</a><br>
-        <a href="#/credits">图片来源与版权</a></p>
+        <a href="/contact" style="color:#8FD9D2">提交工况表 →</a><br>
+        <a href="/privacy">隐私政策</a><br>
+        <a href="/credits">图片来源与版权</a></p>
       </div>
     </div>
     <div class="fhome">
       <div class="fl">
         <img src="assets/img/logo-stack.png" alt="上海嘉元环境科技有限公司">
         <span class="sep">｜</span>
-        <a class="fphone" href="#/contact">电话 +86 13661599170</a>
+        <a class="fphone" href="/contact">电话 +86 13661599170</a>
         <span class="sep m-hide">｜</span>
-        <a class="fmail" href="#/contact">邮箱 markwoo&#64;163&#46;com</a>
+        <a class="fmail" href="/contact">邮箱 markwoo&#64;163&#46;com</a>
       </div>
       <div class="fl">
         <span>© 2026 上海嘉元环境科技</span>
@@ -1111,7 +508,7 @@ body.is-home .top-phone{display:none}
     </div>
     <div class="fbottom">
       <span>© 2026 上海嘉元环境科技有限公司</span>
-      <span><a href="#/privacy">隐私政策</a>　｜　<a href="#/credits">图片来源与版权</a>　｜　<a href="#/contact">联系我们</a>　｜　<a href="https://www.waterjhh.com/" target="_blank" rel="noopener">集团官网 ↗</a></span>
+      <span><a href="/privacy">隐私政策</a>　｜　<a href="/credits">图片来源与版权</a>　｜　<a href="/contact">联系我们</a>　｜　<a href="https://www.waterjhh.com/" target="_blank" rel="noopener">集团官网 ↗</a></span>
     </div>
   </div>
 </footer>
@@ -1159,30 +556,17 @@ body.is-home .top-phone{display:none}
 
   /* 路由 */
   function route(){
-    var hash = (location.hash || '#/home').replace('#/','');
-    var name = hash.split('?')[0] || 'home';
+    var seg = location.pathname.replace(/\/index\.html$/,'/').replace(/\/+$/,'');
+    var name = seg.split('/').pop().replace(/\.html$/,'') || 'home';
     if(!document.querySelector('.view[data-view="'+name+'"]')) name = 'home';
     views.forEach(function(v){ v.hidden = v.getAttribute('data-view') !== name; });
     navLinks.forEach(function(a){ a.classList.toggle('active', a.getAttribute('data-nav') === name); });
     document.body.classList.toggle('is-home', name === 'home');
     window.scrollTo(0,0);
-    document.title = ({
-      home:'上海嘉元环境科技 · 海水淡化与工业纯水系统',
-      solutions:'解决方案 · 嘉元环境',
-      products:'产品中心 · 嘉元环境',
-      cases:'工程案例 · 嘉元环境',
-      tech:'技术资质 · 嘉元环境',
-      about:'关于嘉元 · 嘉元环境',
-      news:'新闻资讯 · 嘉元环境',
-      contact:'联系我们 · 嘉元环境',
-      privacy:'隐私政策 · 嘉元环境',
-      credits:'图片来源与版权 · 嘉元环境'
-    })[name] || '嘉元环境';
     if(drawerNav) drawerNav.style.display = 'none';
     if(burger) burger.setAttribute('aria-expanded','false');
     refreshReveal();
   }
-  window.addEventListener('hashchange', route);
 
   /* 移动端菜单 */
   if(burger){
@@ -1247,7 +631,7 @@ body.is-home .top-phone{display:none}
     if(!c) return;
     var meta = (c.meta || []).map(function(m){ return '<dt>'+m[0]+'</dt><dd>'+m[1]+'</dd>'; }).join('');
     var srclink = c.src ? '<p style="margin:14px 0 0;font-size:12.5px"><a href="'+c.src[1]+'" target="_blank" rel="noopener" style="color:#0E9C90">'+c.src[0]+' ↗</a></p>' : '';
-    drawerBody.innerHTML = '<img src="'+c.img+'" alt="'+c.title+'"><h3>'+c.title+'</h3><p style="color:#5A7186;font-size:14px;line-height:1.85;margin:0">'+c.body+'</p>'+srclink+'<dl>'+meta+'</dl><div style="margin-top:24px"><a class="btn btn-primary btn-sm" href="#/contact" id="drawerCta">按同类工况询价</a><a class="btn btn-line btn-sm" href="#/credits" style="margin-left:8px" id="drawerSrc">看图片来源说明</a></div>';
+    drawerBody.innerHTML = '<img src="'+c.img+'" alt="'+c.title+'"><h3>'+c.title+'</h3><p style="color:#5A7186;font-size:14px;line-height:1.85;margin:0">'+c.body+'</p>'+srclink+'<dl>'+meta+'</dl><div style="margin-top:24px"><a class="btn btn-primary btn-sm" href="/contact" id="drawerCta">按同类工况询价</a><a class="btn btn-line btn-sm" href="/credits" style="margin-left:8px" id="drawerSrc">看图片来源说明</a></div>';
     drawer.classList.add('on'); mask.classList.add('on');
     drawer.setAttribute('aria-hidden','false');
     document.body.style.overflow = 'hidden';

@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>隐私政策 · 嘉元环境</title>
+<meta name="description" content="说明本站收集哪些信息、为什么收集、保存多久，以及查阅、更正、删除的方式。">
+<meta name="theme-color" content="#071A2B">
+<link rel="canonical" href="https://swdtwhps.dpdns.org/privacy">
+<meta property="og:url" content="https://swdtwhps.dpdns.org/privacy">
+<meta property="og:image" content="https://swdtwhps.dpdns.org/assets/img/ph-about.webp">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://swdtwhps.dpdns.org/"},{"@type":"ListItem","position":2,"name":"隐私政策","item":"https://swdtwhps.dpdns.org/privacy"}]}</script>
+<!-- 临时演示域名期间禁止搜索引擎收录；正式域名上线后删除本行与 _headers 中的 X-Robots-Tag、并放开 robots.txt -->
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="googlebot" content="noindex, nofollow, noarchive">
+<link rel="icon" href="assets/img/favicon.ico" sizes="any">
+<link rel="preload" as="image" href="assets/img/ph-about.webp?v=5" fetchpriority="high">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png?v=2">
+<link rel="icon" type="image/png" sizes="64x64" href="assets/img/favicon.png?v=2">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png?v=2">
+<meta property="og:type" content="website">
+<meta property="og:title" content="隐私政策 · 嘉元环境">
+<meta property="og:description" content="说明本站收集哪些信息、为什么收集、保存多久，以及查阅、更正、删除的方式。">
+<style>
+:root{
+  --ink:#071A2B; --navy:#0E2C46; --deep:#0A3346; --paper:#F5F8FA;
+  --line:#E2E9EF; --aqua:#25D0C0; --aqua-d:#0E9C90; --mute:#5A7186; --white:#fff;
+  --sans:"Noto Sans SC","PingFang SC","Microsoft YaHei",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--sans);color:#14242F;background:var(--white);line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+button{font-family:inherit}
+.wrap{width:min(1240px,calc(100% - 48px));margin:0 auto}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ---------- header ---------- */
+.topbar{background:var(--ink);color:#9FB4C4;font-size:12.5px;letter-spacing:.02em}
+.topbar .wrap{display:flex;justify-content:space-between;align-items:center;height:38px;gap:16px}
+.topbar b{color:#DCE7EE;font-weight:500}
+.header{position:sticky;top:0;z-index:80;background:rgba(255,255,255,.93);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:78px;gap:24px}
+.brand{display:flex;align-items:center;gap:12px;flex:0 0 auto}
+.brand img{height:54px;width:auto}
+.brand .tag{font-size:11px;color:var(--mute);letter-spacing:.16em;line-height:1.2;border-left:1px solid var(--line);padding-left:12px}
+.menu{display:flex;align-items:center;gap:2px}
+.menu a{padding:8px 13px;font-size:15px;color:#2B3F50;border-radius:4px;position:relative;white-space:nowrap}
+.menu a:hover{background:#F1F5F8}
+.menu a.active{color:var(--ink);font-weight:600}
+.menu a.active::after{content:"";position:absolute;left:13px;right:13px;bottom:1px;height:2px;background:var(--aqua)}
+.nav .nav-cta{display:flex;align-items:center;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border:1px solid transparent;border-radius:4px;font-size:15px;font-weight:600;cursor:pointer;transition:.2s;line-height:1}
+.btn-primary{background:var(--aqua);color:#062A2B}
+.btn-primary:hover{background:#3EE0D0;transform:translateY(-1px)}
+.btn-ghost{background:transparent;border-color:rgba(255,255,255,.5);color:#fff}
+.btn-ghost:hover{border-color:#fff;background:rgba(255,255,255,.1)}
+.btn-line{border-color:var(--line);color:var(--ink);background:#fff}
+.btn-line:hover{border-color:#BFD1DC}
+.btn-sm{padding:9px 14px;font-size:13.5px}
+.burger{display:none;width:44px;height:44px;border:1px solid var(--line);background:#fff;border-radius:4px;cursor:pointer;align-items:center;justify-content:center;flex-direction:column;gap:5px}
+.burger span{width:20px;height:2px;background:var(--ink);display:block}
+.drawer-nav{display:none}
+
+/* ---------- hero ---------- */
+.hero{position:relative;height:78vh;min-height:560px;max-height:760px;color:#fff;overflow:hidden;background:var(--ink)}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 45%}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,26,43,.55) 0%,rgba(7,26,43,.25) 40%,rgba(7,26,43,.88) 100%)}
+.hero .inner{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:52px}
+.eyebrow{font-size:12px;letter-spacing:.26em;color:#8FD9D2;text-transform:uppercase;margin-bottom:18px}
+.hero h1{margin:0;font-size:clamp(32px,4.6vw,64px);line-height:1.18;font-weight:900;letter-spacing:.01em;max-width:16ch}
+.hero p{margin:18px 0 0;max-width:56ch;color:#CFDCE4;font-size:clamp(15px,1.6vw,18px);line-height:1.8}
+.hero .acts{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap}
+.hero .stats{display:flex;gap:0;margin-top:44px;border-top:1px solid rgba(255,255,255,.22);padding-top:20px;max-width:820px;flex-wrap:wrap}
+.hero .stats div{padding-right:46px;margin-right:46px;border-right:1px solid rgba(255,255,255,.16)}
+.hero .stats div:last-child{border:0}
+.hero .stats b{display:block;font-size:26px;font-weight:800;letter-spacing:.01em}
+.hero .stats span{font-size:12.5px;color:#A9BCC9;letter-spacing:.06em}
+
+/* ---------- common section ---------- */
+section{padding:92px 0}
+section.view{padding:0}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:40px}
+.sec-head .l{max-width:720px}
+.kicker{font-size:12px;letter-spacing:.22em;color:var(--aqua-d);text-transform:uppercase;margin-bottom:12px}
+h2{margin:0;font-size:clamp(26px,3vw,40px);line-height:1.28;font-weight:800;letter-spacing:.01em;color:var(--ink)}
+h2 em{font-style:normal;color:var(--mute);font-weight:500}
+h2 + p{margin-top:16px}
+.lead{color:#40586B;margin:14px 0 0;font-size:15.5px;max-width:64ch}
+.more{font-size:14px;color:var(--ink);border-bottom:1px solid var(--ink);padding-bottom:2px;white-space:nowrap}
+.more:hover{color:var(--aqua-d);border-color:var(--aqua-d)}
+
+/* ---------- value cards ---------- */
+.values{background:var(--paper)}
+.vgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.vcard{background:#fff;padding:30px 26px 26px;min-height:240px;display:flex;flex-direction:column}
+.vcard .no{font-size:12px;letter-spacing:.18em;color:var(--aqua-d);margin-bottom:16px}
+.vcard h3{margin:16px 0 8px;font-size:20px;font-weight:700;color:var(--ink)}
+.vcard p{margin:0;font-size:14px;color:var(--mute);line-height:1.78}
+.vcard a{margin-top:auto;padding-top:16px;font-size:13.5px;color:var(--ink);display:inline-flex;align-items:center;gap:6px}
+.vcard a:hover{color:var(--aqua-d)}
+
+/* ---------- products ---------- */
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.pcard{border:1px solid var(--line);background:#fff;border-radius:4px;overflow:hidden;display:flex;flex-direction:column;transition:.25s}
+.pcard:hover{transform:translateY(-3px);box-shadow:0 14px 34px -18px rgba(11,42,63,.35);border-color:#CFDEE8}
+.pcard .ph{aspect-ratio:4/3;background:var(--paper);overflow:hidden}
+.pcard .ph img{width:100%;height:100%;object-fit:cover;transition:.4s}
+.pcard:hover .ph img{transform:scale(1.03)}
+.pcard .body{padding:20px 20px 22px;display:flex;flex-direction:column;gap:8px;flex:1}
+.pcard .cat{font-size:11.5px;letter-spacing:.12em;color:var(--aqua-d)}
+.pcard h3{margin:0;font-size:17.5px;font-weight:700;color:var(--ink);line-height:1.4}
+.pcard .spec{font-size:13px;color:var(--mute);line-height:1.7}
+.pcard .foot{margin-top:auto;padding-top:14px;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--ink)}
+.pcard .foot .arw{color:var(--aqua-d)}
+
+/* ---------- scenario table ---------- */
+.scen{background:var(--white);color:#14242F}
+.scen h2{color:var(--ink)}
+.scen .lead{color:#40586B}
+table{width:100%;border-collapse:collapse;font-size:14px}
+.scen table th,.scen table td{text-align:left;padding:16px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+.scen table th{font-size:12px;letter-spacing:.12em;color:var(--aqua-d);font-weight:500;white-space:nowrap}
+.scen table thead th{border-bottom:1px solid #CFDEE8}
+.scen table td b{color:var(--ink);font-weight:600}
+.scen table td span{color:var(--mute);display:block;font-size:12.5px;margin-top:3px}
+.scen .tip{margin-top:22px;font-size:12.5px;color:var(--mute)}
+
+/* ---------- process ---------- */
+.steps{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:8px}
+.step{background:#fff;padding:22px 16px 24px}
+.step b{display:block;font-size:11.5px;color:var(--aqua-d);letter-spacing:.1em;margin-bottom:10px}
+.step strong{display:block;font-size:15.5px;color:var(--ink);margin-bottom:6px}
+.step p{margin:0;font-size:12.5px;color:var(--mute);line-height:1.65}
+.steps-note{margin-top:18px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center;font-size:13px;color:var(--mute)}
+
+/* ---------- cases ---------- */
+.case{background:var(--paper)}
+.cgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.ccard{background:#fff;border:1px solid var(--line);border-radius:4px;overflow:hidden;cursor:pointer;text-align:left;padding:0;transition:.25s;display:flex;flex-direction:column}
+.ccard:hover{transform:translateY(-3px);box-shadow:0 14px 34px -18px rgba(11,42,63,.35)}
+.ccard .ph{aspect-ratio:16/10;overflow:hidden;background:var(--paper)}
+.ccard .ph img{width:100%;height:100%;object-fit:cover}
+.ccard .body{padding:18px 20px 20px;display:flex;flex-direction:column;gap:8px;flex:1}
+.ccard .meta{font-size:11.5px;color:var(--aqua-d);letter-spacing:.1em}
+.ccard h3{margin:0;font-size:16.5px;font-weight:700;line-height:1.45;color:var(--ink)}
+.ccard p{margin:0;font-size:13px;color:var(--mute);line-height:1.7}
+.ccard .tagline{margin-top:auto;padding-top:12px;font-size:12px;color:#8095A5;border-top:1px solid var(--line);display:flex;justify-content:space-between}
+.source-note{margin-top:26px;font-size:12px;color:#8095A5}
+
+/* ---------- tech / patent ---------- */
+.two{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:start}
+.klist{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:6px}
+.kitem{background:#fff;padding:22px 22px;display:flex;gap:18px}
+.kitem .no{font-size:12px;color:var(--aqua-d);letter-spacing:.12em;flex:0 0 28px;padding-top:3px}
+.kitem h3{margin:0 0 6px;font-size:16.5px;color:var(--ink)}
+.kitem p{margin:0;font-size:13.5px;color:var(--mute);line-height:1.75}
+.side{background:var(--paper);border:1px solid var(--line);padding:30px 28px}
+.side h3{margin:0 0 16px;font-size:17px;color:var(--ink)}
+.side ul{margin:0;padding:0;list-style:none;display:grid;gap:12px}
+.side li{font-size:13.5px;color:#3C5468;display:flex;gap:10px;line-height:1.6}
+.side li i{color:var(--aqua-d);font-style:normal;flex:0 0 auto}
+.side .note{margin-top:20px;font-size:11.5px;color:#8095A5;line-height:1.7}
+
+/* ---------- news ---------- */
+.news{background:var(--paper)}
+.nlist{border-top:1px solid var(--line)}
+.nrow{display:grid;grid-template-columns:120px 120px 1fr 60px;gap:20px;align-items:center;padding:22px 4px;border-bottom:1px solid var(--line);transition:.2s}
+.nrow:hover{background:#fff;padding-left:14px}
+.nrow time{font-size:13px;color:var(--mute);font-variant-numeric:tabular-nums}
+.nrow .tag{font-size:11.5px;color:var(--aqua-d);letter-spacing:.08em}
+.nrow h3{margin:0;font-size:16px;font-weight:600;color:var(--ink);line-height:1.5}
+.nrow .arw{text-align:right;color:#9DB2C0}
+
+/* ---------- CTA ---------- */
+.cta{background:var(--deep);color:#fff;padding:74px 0}
+.cta .wrap{display:flex;justify-content:space-between;align-items:center;gap:40px;flex-wrap:wrap}
+.cta h2{color:#fff;font-size:clamp(24px,2.6vw,34px)}
+.cta p{margin:10px 0 0;color:#AFC6D3;font-size:14.5px}
+
+/* ---------- footer ---------- */
+footer{background:var(--ink);color:#93A9B8;padding:64px 0 30px;font-size:13.5px}
+.fgrid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1.3fr;gap:40px;padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,.12)}
+.fgrid h4{margin:0 0 16px;font-size:12px;letter-spacing:.16em;color:#C9D9E2;font-weight:500}
+.fgrid p{margin:0;line-height:1.9;color:#93A9B8}
+.fgrid ul{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.fgrid li a:hover{color:#fff}
+.fbrand{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.fbrand img{height:40px;width:auto;background:#fff;padding:10px 12px;border-radius:4px}
+.fbottom{display:flex;justify-content:space-between;gap:20px;padding-top:22px;font-size:12px;color:#6F8797;flex-wrap:wrap}
+
+/* ---------- pages ---------- */
+.page-hero{position:relative;overflow:hidden;background:var(--ink) center/cover no-repeat;color:#fff;padding:96px 0 64px}
+.page-hero::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(7,26,43,.88) 0%,rgba(7,26,43,.64) 45%,rgba(7,26,43,.96) 100%)}
+.page-hero .wrap{position:relative;z-index:2}
+.ph-solutions{background-image:url(assets/img/ph-solutions.webp?v=5)}
+.ph-products{background-image:url(assets/img/ph-products.webp?v=5)}
+.ph-cases{background-image:url(assets/img/ph-cases.webp?v=5)}
+.ph-tech{background-image:url(assets/img/ph-tech.webp?v=5)}
+.ph-about{background-image:url(assets/img/ph-about.webp?v=5)}
+.ph-news{background-image:url(assets/img/ph-news.webp?v=5)}
+.ph-contact{background-image:url(assets/img/ph-contact.webp?v=5)}
+.page-hero .kicker{color:#8FD9D2}
+.page-hero h1{margin:0;font-size:clamp(30px,3.8vw,50px);font-weight:900;line-height:1.24}
+.page-hero p{margin:16px 0 0;max-width:62ch;color:#B7CCD8;font-size:15.5px}
+.crumb{font-size:12px;color:#7E97A6;letter-spacing:.06em;margin-bottom:22px}
+.crumb a:hover{color:#fff}
+
+/* solutions */
+.sol{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line);border-bottom:0}
+.sol .txt{padding:40px 40px 42px;display:flex;flex-direction:column;gap:14px}
+.sol .pic{background:var(--paper);min-height:320px;overflow:hidden}
+.sol .pic img{width:100%;height:100%;object-fit:cover}
+.sol .no{font-size:12px;letter-spacing:.16em;color:var(--aqua-d)}
+.sol h2{font-size:26px}
+.sol p{margin:0;font-size:14px;color:var(--mute);line-height:1.8}
+.sol .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.chip{font-size:12.5px;padding:5px 10px;border:1px solid var(--line);border-radius:3px;color:#3C5468;background:#fff}
+.sol .meta{display:flex;gap:26px;margin-top:auto;padding-top:16px;font-size:12.5px;color:#8095A5;flex-wrap:wrap}
+.sol.reverse .txt{order:2}
+.sol:last-child{border-bottom:1px solid var(--line)}
+
+/* products filter */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:32px}
+.filters button{background:#fff;border:1px solid var(--line);padding:9px 16px;border-radius:3px;font-size:13.5px;color:#3C5468;cursor:pointer;transition:.2s}
+.filters button:hover{border-color:#BFD1DC}
+.filters button.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.service-strip{margin-top:40px;background:var(--paper);border:1px solid var(--line);padding:30px 32px;display:flex;justify-content:space-between;gap:24px;align-items:center;flex-wrap:wrap}
+.service-strip h3{margin:0;font-size:18px;color:var(--ink)}
+.service-strip p{margin:6px 0 0;font-size:13.5px;color:var(--mute)}
+
+/* about */
+.about-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:start}
+.about-grid p{font-size:15px;color:#33495B;line-height:1.95;margin:0 0 16px}
+.about-grid .quote{border-left:3px solid var(--aqua);padding:4px 0 4px 20px;color:var(--ink);font-size:17px;line-height:1.8;margin:26px 0}
+.timeline{border-left:1px solid var(--line);padding-left:26px;margin-top:8px}
+.timeline div{position:relative;padding-bottom:26px}
+.timeline div::before{content:"";position:absolute;left:-31px;top:8px;width:9px;height:9px;border-radius:50%;background:var(--aqua);box-shadow:0 0 0 4px #fff inset}
+.timeline b{display:block;font-size:13px;color:var(--aqua-d);letter-spacing:.1em;margin-bottom:4px}
+.timeline span{font-size:14.5px;color:var(--ink)}
+.timeline em{display:block;font-style:normal;font-size:12.5px;color:var(--mute);margin-top:3px}
+
+/* contact */
+.contact-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:start}form{display:grid;gap:16px}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+label{font-size:12.5px;color:#5A7186;letter-spacing:.06em;display:block;margin-bottom:6px}
+input,select,textarea{width:100%;padding:11px 12px;border:1px solid #D7E1E9;border-radius:3px;font-size:14px;font-family:inherit;color:var(--ink);background:#fff;transition:.15s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--aqua-d);box-shadow:0 0 0 3px rgba(37,208,192,.18)}
+textarea{min-height:96px;resize:vertical}
+form .submit{display:flex;align-items:center;gap:16px;margin-top:6px;flex-wrap:wrap}
+form .submit small{color:#8095A5;font-size:12px;line-height:1.6}
+form .submit small.err{color:#C0392B}
+form .submit small.ok{color:#0E7C46}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.contact-info{background:var(--paper);border:1px solid var(--line);padding:32px 30px;display:grid;gap:22px}
+.contact-info h3{margin:0;font-size:16px;color:var(--ink)}
+.contact-info div p{margin:4px 0 0;font-size:13.5px;color:#3C5468;line-height:1.8}
+.contact-info .k{font-size:11.5px;letter-spacing:.14em;color:var(--aqua-d)}
+.promise{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:56px}
+.promise div{background:#fff;padding:24px}
+.promise b{display:block;font-size:15px;color:var(--ink);margin-bottom:6px}
+.promise span{font-size:13px;color:var(--mute);line-height:1.7}
+
+/* drawer & toast */
+.mask{position:fixed;inset:0;background:rgba(7,26,43,.55);opacity:0;pointer-events:none;transition:.25s;z-index:120;backdrop-filter:blur(2px)}
+.mask.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;height:100%;width:min(560px,92vw);background:#fff;z-index:130;transform:translateX(100%);transition:transform .3s cubic-bezier(.22,.7,.3,1);display:flex;flex-direction:column;box-shadow:-20px 0 60px rgba(7,26,43,.25)}
+.drawer.on{transform:none}
+.drawer .hd{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:1px solid var(--line)}
+.drawer .hd b{font-size:13px;letter-spacing:.14em;color:var(--aqua-d)}
+.drawer .hd button{border:0;background:#F1F5F8;width:36px;height:36px;border-radius:3px;cursor:pointer;font-size:18px;line-height:1;color:var(--ink)}
+.drawer .bd{padding:26px 24px 40px;overflow:auto}
+.drawer .bd img{width:100%;border-radius:3px;margin-bottom:22px}
+.drawer .bd h3{margin:0 0 12px;font-size:22px;line-height:1.4;color:var(--ink)}
+.drawer .bd dl{display:grid;grid-template-columns:96px 1fr;gap:10px 16px;margin:20px 0 0;font-size:13.5px;border-top:1px solid var(--line);padding-top:20px}
+.drawer .bd dt{color:#8095A5}
+.drawer .bd dd{margin:0;color:#25394A}
+.toast{position:fixed;left:50%;bottom:34px;transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:13px 22px;border-radius:4px;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:150;max-width:min(560px,90vw);text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in{opacity:1;transform:none}
+
+/* ---------- responsive ---------- */
+@media (max-width:1100px){
+  .vgrid{grid-template-columns:repeat(2,1fr)}
+  .pgrid,.cgrid{grid-template-columns:repeat(2,1fr)}
+  .two,.about-grid,.contact-grid{grid-template-columns:1fr;gap:36px}
+  .steps{grid-template-columns:repeat(4,1fr)}
+  .sol{grid-template-columns:1fr}
+  .sol .pic{min-height:240px;order:1}
+  .sol.reverse .txt{order:0}
+  .fgrid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:820px){
+  .topbar{display:none}
+  .menu{display:none}
+  .nav{height:66px}
+  .burger{display:flex}
+  .nav .nav-cta .btn{display:none}
+  .brand img{height:44px}
+  .brand .tag{display:none}
+  section{padding:64px 0}
+  .hero{height:auto;min-height:0;max-height:none}
+  .hero .inner{height:auto;padding:112px 0 44px;justify-content:flex-start}
+  .hero::after{background:linear-gradient(180deg,rgba(7,26,43,.35) 0%,rgba(7,26,43,.35) 34%,rgba(7,26,43,.95) 100%)}
+  .hero .stats{display:grid;grid-template-columns:1fr 1fr;gap:18px 0;margin-top:34px}
+  .hero .stats div{padding:0;margin:0;border:0}
+  .hero .stats b{font-size:24px}
+  .pgrid,.cgrid,.vgrid{grid-template-columns:1fr}
+  .steps{grid-template-columns:repeat(2,1fr)}
+  .nrow{grid-template-columns:1fr;gap:6px;padding:18px 0}
+  .nrow .arw{display:none}
+  .f2{grid-template-columns:1fr}
+  .promise{grid-template-columns:1fr}
+  .drawer-nav{display:none;position:fixed;inset:66px 0 auto 0;background:#fff;border-bottom:1px solid var(--line);z-index:90;padding:10px 0 18px;box-shadow:0 18px 40px -20px rgba(7,26,43,.3)}
+  .drawer-nav a{display:block;padding:14px 24px;font-size:16px;border-bottom:1px solid #F1F5F8}
+}
+@media (max-width:480px){
+  .hero h1{font-size:30px}
+  .hero .acts{flex-direction:column;align-items:stretch}
+  .hero .acts .btn{justify-content:center}
+  .sec-head{flex-direction:column;align-items:flex-start;gap:12px}
+  .steps{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important;scroll-behavior:auto}
+  .reveal{opacity:1;transform:none}
+}
+
+/* policy */
+.policy{max-width:860px}
+.policy h2{font-size:19px;margin:36px 0 10px;color:var(--ink)}
+.policy p,.policy li{font-size:14.5px;color:#3C5468;line-height:1.95}
+.policy p{margin:10px 0 0}
+.policy ul{padding-left:20px;margin:10px 0 0;display:grid;gap:8px}
+.policy table{width:100%;border-collapse:collapse;margin:14px 0 0;font-size:13.5px}
+.policy th,.policy td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top;color:#3C5468;line-height:1.8}
+.policy th{background:var(--paper);color:var(--ink);font-weight:600;white-space:nowrap}
+.policy .small{font-size:12.5px;color:var(--mute);line-height:1.85}
+.policy a{color:#0E9C90}
+.consent{font-size:12px;color:#8095A5;margin:0}
+.consent a{color:#0E9C90}
+
+/* 图源标注 */
+.psrc{font-size:11.5px;color:#8A9DAC;line-height:1.55;letter-spacing:.02em}
+.psrc b{font-weight:500;color:#7C93A3}
+.sol .pic{position:relative}
+.pic .ptag{position:absolute;right:10px;bottom:10px;font-size:11px;padding:3px 8px;background:rgba(7,26,43,.72);color:#E4EEF4;border-radius:2px;letter-spacing:.03em}
+.ccard .tagline .src{color:#7C93A3}
+
+/* ---------- 首页：整屏呈现，不出现滚动 ---------- */
+body.is-home{height:100vh;height:100dvh;overflow:hidden;display:flex;flex-direction:column}
+body.is-home main{flex:1 1 auto;min-height:0;display:flex}
+body.is-home .view[data-view="home"]{flex:1 1 auto;min-height:0;display:flex;width:100%}
+body.is-home .hero{flex:1 1 auto;height:auto;min-height:0;max-height:none;width:100%}
+body.is-home .hero .inner{height:100%;justify-content:center;padding:clamp(14px,3.4vh,40px) 0}
+body.is-home .eyebrow{margin-bottom:clamp(8px,1.7vh,18px)}
+body.is-home .hero h1{font-size:clamp(28px,6.2vh,62px)}
+body.is-home .hero p{margin-top:clamp(8px,1.8vh,18px);font-size:clamp(13.5px,1.55vh,17px);max-width:54ch}
+body.is-home .hero .acts{margin-top:clamp(12px,2.5vh,28px)}
+body.is-home .hero .stats{margin-top:clamp(14px,3.2vh,42px);padding-top:clamp(10px,1.9vh,20px)}
+body.is-home .hero .stats b{font-size:clamp(19px,2.5vh,26px)}
+body.is-home .hero .stats span{font-size:clamp(11px,1.35vh,12.5px)}
+body.is-home footer{padding:0;flex:0 0 auto}
+body.is-home .fgrid,body.is-home .fbottom{display:none}
+body.is-home .fhome{display:flex}
+.fhome{display:none;align-items:center;justify-content:space-between;gap:18px;height:56px;font-size:12.5px;color:#93A9B8}
+.fhome .fl{display:flex;align-items:center;gap:14px;min-width:0}
+.fhome img{height:26px;width:auto;background:#fff;padding:4px 8px;border-radius:3px}
+.fhome .sep{color:#3E5A6E}
+.fhome a{color:#8FD9D2}
+.fhome a:hover{color:#fff}
+.fhome span,.fhome a{white-space:nowrap}
+body.is-home .top-phone{display:none}
+@media (max-width:560px){
+  .fphone,.m-hide{display:none}
+  body.is-home .fhome{font-size:11px;letter-spacing:0}
+  body.is-home .fhome .sep{display:none}
+}
+/* 极端矮窗口（<600px 高）退回可滚动，避免内容被裁 */
+@media (max-height:600px){
+  body.is-home{overflow:auto}
+  body.is-home .view[data-view="home"]{min-height:520px}
+}
+@media (max-width:820px){
+  body.is-home .fhome{height:50px;font-size:11.5px;gap:10px;justify-content:center;flex-wrap:wrap}
+@media(max-width:560px){.fhome .fl:last-child span:last-child{display:none}.fmail{font-size:11px}}
+  body.is-home .fhome img{height:22px}
+  .m-hide{display:none}
+  body.is-home .hero .inner{padding:clamp(10px,2.6vh,32px) 0}
+  body.is-home .hero h1{font-size:clamp(26px,4.6vh,38px)}
+  body.is-home .hero .stats{gap:clamp(10px,1.8vh,18px) 0}
+}
+</style>
+</head>
+<body>
+<script>document.body.className=((location.pathname==='/'||/\/index\.html$/.test(location.pathname))?'is-home':'');if(location.hash&&location.hash.indexOf('#/')===0){var n=location.hash.slice(2).split('?')[0]||'home';var ok=['home','solutions','products','cases','tech','about','news','contact','privacy','credits'];if(ok.indexOf(n)>-1){location.replace(n==='home'?'/':'/'+n);}}</script>
+
+<!-- ================= 顶部 ================= -->
+<div class="topbar">
+  <div class="wrap">
+    <span>上海嘉元环境科技有限公司 · 海水淡化 / 电子级水 / 工业纯水 / 中水回用</span>
+    <span><span class="top-phone">联系电话 <b>+86 13661599170</b> ｜ </span>工作时间 <b>周一至周日 08:00–18:00</b></span>
+  </div>
+</div>
+
+<header class="header">
+  <div class="wrap nav">
+    <a class="brand" href="/" aria-label="嘉元环境首页">
+      <img src="assets/img/logo-stack.png" alt="嘉元环境 JIAYUAN ENV">
+    </a>
+    <nav class="menu" aria-label="主导航">
+      <a href="/" data-nav="home">首页</a>
+      <a href="/solutions" data-nav="solutions">解决方案</a>
+      <a href="/products" data-nav="products">产品中心</a>
+      <a href="/cases" data-nav="cases">工程案例</a>
+      <a href="/tech" data-nav="tech">技术资质</a>
+      <a href="/about" data-nav="about">关于嘉元</a>
+      <a href="/news" data-nav="news">新闻资讯</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-primary btn-sm" href="/contact">提交工况</a>
+      <button class="burger" id="burger" aria-label="打开菜单" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="drawer-nav" id="drawerNav">
+    <a href="/solutions">解决方案</a>
+    <a href="/products">产品中心</a>
+    <a href="/cases">工程案例</a>
+    <a href="/tech">技术资质</a>
+    <a href="/about">关于嘉元</a>
+    <a href="/news">新闻资讯</a>
+    <a href="/contact">提交工况</a>
+  </div>
+</header>
+
+<main id="main">
+<section class="view" data-view="privacy">
+  <div class="page-hero">
+    <div class="wrap">
+      <div class="crumb"><a href="/">首页</a> ／ 隐私政策</div>
+      <div class="kicker">Privacy Policy</div>
+      <h1>隐私政策</h1>
+      <p>说明本站收集哪些信息、为什么收集、保存多久，以及你可以怎么查、改、删。</p>
+    </div>
+  </div>
+  <div class="wrap" style="padding-top:56px;padding-bottom:96px">
+    <div class="policy">
+      <p class="small">生效日期：2026-11-27　｜　最近更新：2026-11-27　｜　数据控制者：上海嘉元环境科技有限公司</p>
+
+      <h2>一、适用范围</h2>
+      <p>本政策适用于本站（当前域名为临时演示地址，正式域名上线后同步更新本页）通过「提交工况」表单、邮件与电话等渠道获取的个人信息。本站为面向企业客户的产品与技术展示站，不提供用户注册、登录、在线支付功能。</p>
+
+      <h2>二、我们收集哪些信息</h2>
+      <p>仅在你主动填写表单或与我们联系时收集，不主动抓取、不购买第三方数据。</p>
+      <table>
+        <tr><th>类别</th><th>具体内容</th><th>是否必填</th></tr>
+        <tr><td>联系信息</td><td>公司名称、联系人姓名、电话或微信、邮箱</td><td>公司/联系人/电话必填，邮箱选填</td></tr>
+        <tr><td>项目工况</td><td>项目地、需求水量、源水类型、用途、补充说明（水质、安装空间、用电条件等）</td><td>选填</td></tr>
+        <tr><td>技术记录</td><td>提交时间、来源页面、IP 地址（由 Cloudflare 边缘节点提供，用于防滥用与故障排查）</td><td>自动记录</td></tr>
+      </table>
+      <p class="small">请勿在「补充说明」中填写身份证号、银行账号、病历等与工况评估无关的敏感个人信息。</p>
+
+      <h2>三、收集与使用目的</h2>
+      <ul>
+        <li>评估你的工况，判断工艺路线与设备配置是否可行；</li>
+        <li>由技术或销售同事通过你留下的电话、微信、邮箱与你联系，回复方案与报价；</li>
+        <li>防范表单被机器人滥用（蜜罐字段与基础频次限制）；</li>
+        <li>在你明确同意的前提下，才可能向你发送与产品更新相关的信息；未同意的，不做营销群发。</li>
+      </ul>
+      <p>我们不会将你的信息用于自动化决策或用户画像，也不会出售、出租你的个人信息。</p>
+
+      <h2>四、存储与保存期限</h2>
+      <p>本站服务器不建立线索数据库：表单提交后经接口即时转发到公司内部使用的企业即时通讯群组或工作邮箱，此后由公司销售与技术团队在其内部系统中跟进。转发环节不额外留存副本。</p>
+      <p>保存期限按项目跟进需要确定：一般保留至该项目跟进结束；未成交的线索最长保留 24 个月，超期删除或做匿名化处理（仅保留"某地区、某水量"这类统计口径）。法律法规另有留存要求的，从其规定。</p>
+
+      <h2>五、第三方服务与跨境传输</h2>
+      <ul>
+        <li><strong>Cloudflare</strong>：本站托管与 CDN 服务商，会处理访问日志（含 IP、User-Agent），其节点分布全球，日志可能经境外节点中转。</li>
+        <li><strong>GitHub</strong>：本站代码托管平台，仅存放页面文件，不含你提交的表单内容。</li>
+        <li><strong>企业即时通讯 / 邮件服务</strong>：表单转发与后续沟通所使用，具体为公司在用的飞书、企业微信或邮件服务。</li>
+        <li><strong>Resend</strong>（如启用邮件通知）：仅传输邮件正文，不用于其他用途。</li>
+      </ul>
+      <p>因托管与 CDN 节点在境外，访问本站与提交表单可能涉及个人信息出境。我们仅在为完成你的询价请求所必需的范围内处理，并按《个人信息保护法》要求履行告知与取得同意的义务；如你不同意相关处理，可改用电话或邮件直接联系，不影响你获取方案。</p>
+
+      <h2>六、Cookie 与统计</h2>
+      <p>本站不使用 Cookie 做访客追踪，未接入任何第三方统计、广告或再营销脚本。页面内的图片与素材均为本站自有资源，不向第三方请求。</p>
+
+      <h2>七、你的权利</h2>
+      <p>你可以随时要求查阅、更正、补充、删除我们持有的与你相关的信息，或撤回对处理的同意。方式如下：</p>
+      <ul>
+        <li>邮件：<a href="mailto:markwoo&#64;163&#46;com" style="color:#0E9C90">markwoo&#64;163&#46;com</a>（标题请注明"个人信息请求"）</li>
+        <li>电话：+86 13661599170（周一至周日 08:00–18:00，北京时间）</li>
+      </ul>
+      <p>我们在核验你的身份后 15 个工作日内答复。撤回同意不影响撤回前已进行的处理；删除后如需再次询价，请重新提交。</p>
+
+      <h2>八、未成年人</h2>
+      <p>本站面向企业与工程项目采购场景，不主动收集未满 14 周岁儿童的个人信息。如发现误收集，我们将尽快删除。</p>
+
+      <h2>九、安全措施</h2>
+      <p>全站强制 HTTPS；表单接口校验必填项与格式、限制提交频次、设置蜜罐字段拦截机器人；内部仅授权销售与技术同事访问线索；离职人员权限即时回收。</p>
+
+      <h2>十、政策更新与联系方式</h2>
+      <p>本政策更新后将在本页公示并修改"最近更新"日期；涉及处理目的、信息类型或共享对象的实质性变更，会在页面显著位置提示。对本政策有疑问，可通过上方邮箱或电话联系我们，或寄送至：上海市浦东新区海基六路 218 弄 201306，上海嘉元环境科技有限公司。</p>
+      <p class="small">本页为中文版本，如后续提供其他语言版本，以中文版本为准。</p>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ================= 页脚 ================= -->
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <div class="fbrand"><img src="assets/img/logo-stack.png" alt="上海嘉元环境科技有限公司"></div>
+        <p>海水与苦咸水淡化、电子级水、工业纯水与超纯水、锅炉补给水、中水回用系统的优化、设计、制造、施工与运维。</p>
+        <p style="margin-top:14px;color:#6F8797">上海市浦东新区海基六路 218 弄 201306</p>
+      </div>
+      <div>
+        <h4>产品线</h4>
+        <ul>
+          <li><a href="/products">船用海水淡化</a></li>
+          <li><a href="/products">陆用 / 集装箱式</a></li>
+          <li><a href="/products">纯水与超纯水</a></li>
+          <li><a href="/products">中水回用与零排放</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>公司</h4>
+        <ul>
+          <li><a href="/about">关于嘉元</a></li>
+          <li><a href="/tech">技术资质</a></li>
+          <li><a href="/cases">工程案例</a></li>
+          <li><a href="/news">新闻资讯</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>联系</h4>
+        <p>联系电话：+86 13661599170<br>
+        邮箱：<a href="mailto:markwoo&#64;163&#46;com">markwoo&#64;163&#46;com</a><br>
+        <a href="/contact" style="color:#8FD9D2">提交工况表 →</a><br>
+        <a href="/privacy">隐私政策</a><br>
+        <a href="/credits">图片来源与版权</a></p>
+      </div>
+    </div>
+    <div class="fhome">
+      <div class="fl">
+        <img src="assets/img/logo-stack.png" alt="上海嘉元环境科技有限公司">
+        <span class="sep">｜</span>
+        <a class="fphone" href="/contact">电话 +86 13661599170</a>
+        <span class="sep m-hide">｜</span>
+        <a class="fmail" href="/contact">邮箱 markwoo&#64;163&#46;com</a>
+      </div>
+      <div class="fl">
+        <span>© 2026 上海嘉元环境科技</span>
+      </div>
+    </div>
+    <div class="fbottom">
+      <span>© 2026 上海嘉元环境科技有限公司</span>
+      <span><a href="/privacy">隐私政策</a>　｜　<a href="/credits">图片来源与版权</a>　｜　<a href="/contact">联系我们</a>　｜　<a href="https://www.waterjhh.com/" target="_blank" rel="noopener">集团官网 ↗</a></span>
+    </div>
+  </div>
+</footer>
+
+<!-- ================= 抽屉 / 提示 ================= -->
+<div class="mask" id="mask"></div>
+<aside class="drawer" id="drawer" aria-hidden="true" aria-label="案例详情">
+  <div class="hd"><b>CASE DETAIL</b><button id="drawerClose" aria-label="关闭">×</button></div>
+  <div class="bd" id="drawerBody"></div>
+</aside>
+<div class="toast" id="toast"></div>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"Organization",
+  "name":"上海嘉元环境科技有限公司",
+  "alternateName":"Jiayuan Environment",
+  "description":"海水与苦咸水淡化、电子级水、工业纯水与超纯水、锅炉补给水、中水回用系统的优化、设计、制造、施工与运维",
+  "address":{"@type":"PostalAddress","addressLocality":"上海市","addressRegion":"浦东新区","streetAddress":"海基六路218弄","addressCountry":"CN"},
+  "telephone":"+8613661599170",
+  "parentOrganization":{"@type":"Organization","name":"珠海市江河海水处理科技股份有限公司","url":"https://www.waterjhh.com/"}
+}
+</script>
+
+<script>
+(function(){
+  "use strict";
+  var views = Array.prototype.slice.call(document.querySelectorAll('.view'));
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('[data-nav]'));
+  var drawerNav = document.getElementById('drawerNav');
+  var burger = document.getElementById('burger');
+  var drawer = document.getElementById('drawer');
+  var drawerBody = document.getElementById('drawerBody');
+  var mask = document.getElementById('mask');
+  var toastEl = document.getElementById('toast');
+  var toastTimer = null;
+
+  function toast(msg){
+    toastEl.textContent = msg;
+    toastEl.classList.add('on');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toastEl.classList.remove('on'); }, 3200);
+  }
+
+  /* 路由 */
+  function route(){
+    var seg = location.pathname.replace(/\/index\.html$/,'/').replace(/\/+$/,'');
+    var name = seg.split('/').pop().replace(/\.html$/,'') || 'home';
+    if(!document.querySelector('.view[data-view="'+name+'"]')) name = 'home';
+    views.forEach(function(v){ v.hidden = v.getAttribute('data-view') !== name; });
+    navLinks.forEach(function(a){ a.classList.toggle('active', a.getAttribute('data-nav') === name); });
+    document.body.classList.toggle('is-home', name === 'home');
+    window.scrollTo(0,0);
+    if(drawerNav) drawerNav.style.display = 'none';
+    if(burger) burger.setAttribute('aria-expanded','false');
+    refreshReveal();
+  }
+
+  /* 移动端菜单 */
+  if(burger){
+    burger.addEventListener('click', function(){
+      var open = drawerNav.style.display === 'block';
+      drawerNav.style.display = open ? 'none' : 'block';
+      burger.setAttribute('aria-expanded', open ? 'false' : 'true');
+    });
+  }
+
+  /* 产品筛选 */
+  var filters = document.getElementById('filters');
+  if(filters){
+    filters.addEventListener('click', function(e){
+      var btn = e.target.closest('button[data-f]');
+      if(!btn) return;
+      Array.prototype.forEach.call(filters.querySelectorAll('button'), function(b){ b.classList.remove('on'); });
+      btn.classList.add('on');
+      var f = btn.getAttribute('data-f');
+      Array.prototype.forEach.call(document.querySelectorAll('#productGrid .pcard'), function(card){
+        var cat = card.getAttribute('data-cat') || '';
+        card.style.display = (f === 'all' || cat.indexOf(f) > -1) ? '' : 'none';
+      });
+    });
+  }
+
+  /* 案例数据 */
+  var CASES = {
+    c1:{ tag:'船用 · 海水淡化', title:'「中山大学极地」号破冰船',
+      img:'assets/img/case-polar.webp?v=3',
+      body:'我国高校首艘破冰船「中山大学极地」号装配「江河海」牌海水淡化装置，2023 年 1 月 17 日离港、赴渤海辽东湾执行冰区试航，同期报道见《南方日报》。船用装置在机舱空间受限条件下布置，连续运行、维护窗口短，对设备紧凑度与稳定性要求高。',
+      meta:[['场景','船舶机舱，连续运行'],['装置','船用反渗透造水机'],['产水','生活淡水与锅炉补给'],['来源','集团官网 2023-01-28'],['图源','南方日报／中山大学供图，侵删']],
+      src:['查看集团原报道','https://www.waterjhh.com/displaynews.html?id=5130475868668736'] },
+    c2:{ tag:'苦咸水 · 无人值守', title:'中石油塔里木 · 深地塔科 1 井',
+      img:'assets/img/case-tarim.webp?v=3',
+      body:'2023 年 5 月 30 日，我国首口万米深地科探井在新疆塔里木盆地开钻。江河海的高盐度集装箱式苦咸水淡化装置随项目启动制水，采用远程控制、无人值守全自动运行；现场为沙漠环境，沙尘、温差与供电波动是主要挑战。',
+      meta:[['场景','沙漠油田，无人值守'],['装置','集装箱式苦咸水淡化'],['控制','远程监控 + 全自动运行'],['来源','集团官网 2023-06-02'],['图源','江河海项目现场']],
+      src:['查看集团原报道','https://www.waterjhh.com/displaynews.html?id=5307348394345280'] },
+    c3:{ tag:'外贸 · 海岛供水', title:'斐济 15 t/d 海水淡化机出口',
+      img:'assets/img/case-fiji.webp?v=3',
+      body:'2020 年 2 月 11 日，斐济客户预订的 15 t/d 海水淡化机发货，整机出口后完成现场调试，为海岛社区提供生活淡水。小水量整机的运输、安装与操作简化，是外贸项目的主要诉求；配图为同型号 JHH-FSHB-15 整机。',
+      meta:[['场景','海岛社区供水'],['装置','15 t/d 海水淡化机'],['交付','整机出口 + 现场调试'],['来源','集团官网 2020-02-21'],['图源','江河海官网（同型号整机）']],
+      src:['查看集团原报道','https://www.waterjhh.com/displaynews.html?id=5055093205173056'] },
+    c4:{ tag:'工业纯水', title:'288 t/d 纯水处理系统',
+      img:'assets/img/case-pure.webp?v=3',
+      body:'2020 年 1 月 14 日，深圳客户的一套 288 t/d EDI 超纯水处理系统出货，用于电镀行业的超纯水制备，经技术人员到场调试后运行状况良好。系统按产水指标反推配置，包含预处理、RO 与 EDI 精处理。',
+      meta:[['场景','电镀行业超纯水'],['水量','288 t/d'],['工艺','预处理 + RO + EDI'],['来源','集团官网 2020-02-20'],['图源','江河海工业纯水项目现场']],
+      src:['查看集团原报道','https://www.waterjhh.com/displaynews.html?id=5055092449002304'] },
+    c5:{ tag:'中水回用', title:'6,000 t/d 洗砂废水回用系统',
+      img:'assets/img/case-reuse.webp?v=3',
+      body:'惠州 6,000 t/d 洗沙废水处理项目设备于 2020 年 2 月出货，含 4.5 吨膜壳组合机架等大型部件，随后由专业团队到场安装调试。高悬浮物工况下，预处理与污泥处置是稳定运行的关键。',
+      meta:[['场景','洗砂废水'],['水量','6,000 t/d'],['目标','回用 + 减量排放'],['来源','集团官网 2020-02-20'],['图源','江河海中水回用项目现场']],
+      src:['查看集团原报道','https://www.waterjhh.com/displaynews.html?id=5055091766412096'] },
+    c6:{ tag:'陆用 · 园区供水', title:'沿海园区海水淡化供水（方案示意）',
+      img:'assets/img/hero-plant.webp?v=3',
+      body:'取水—预处理—SWRO—矿化—园区管网的典型配置，按园区用水曲线设置清水池调蓄。此条为方案示意，尚未落成，用于说明系统构成；配图为本站示意图，非项目实拍。',
+      meta:[['状态','方案示意，未落成'],['场景','沿海工业园区'],['工艺','SWRO + 矿化 + 调蓄'],['说明','配图为示意图，非项目实拍']] }
+  };
+
+  function openCase(id){
+    var c = CASES[id];
+    if(!c) return;
+    var meta = (c.meta || []).map(function(m){ return '<dt>'+m[0]+'</dt><dd>'+m[1]+'</dd>'; }).join('');
+    var srclink = c.src ? '<p style="margin:14px 0 0;font-size:12.5px"><a href="'+c.src[1]+'" target="_blank" rel="noopener" style="color:#0E9C90">'+c.src[0]+' ↗</a></p>' : '';
+    drawerBody.innerHTML = '<img src="'+c.img+'" alt="'+c.title+'"><h3>'+c.title+'</h3><p style="color:#5A7186;font-size:14px;line-height:1.85;margin:0">'+c.body+'</p>'+srclink+'<dl>'+meta+'</dl><div style="margin-top:24px"><a class="btn btn-primary btn-sm" href="/contact" id="drawerCta">按同类工况询价</a><a class="btn btn-line btn-sm" href="/credits" style="margin-left:8px" id="drawerSrc">看图片来源说明</a></div>';
+    drawer.classList.add('on'); mask.classList.add('on');
+    drawer.setAttribute('aria-hidden','false');
+    document.body.style.overflow = 'hidden';
+    var cta = document.getElementById('drawerCta');
+    if(cta) cta.addEventListener('click', closeCase);
+  }
+  function closeCase(){
+    drawer.classList.remove('on'); mask.classList.remove('on');
+    drawer.setAttribute('aria-hidden','true');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('click', function(e){
+    var card = e.target.closest('[data-case]');
+    if(card){ openCase(card.getAttribute('data-case')); }
+  });
+  document.getElementById('mask').addEventListener('click', closeCase);
+  document.getElementById('drawerClose').addEventListener('click', closeCase);
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeCase(); });
+
+  /* 表单：POST /api/inquiry（Pages Functions 转发到群机器人 / 邮箱） */
+  var form = document.getElementById('inquiry');
+  if(form){
+    var inqBtn = document.getElementById('inqBtn');
+    var inqMsg = document.getElementById('inqMsg');
+    var inqDefault = inqMsg ? inqMsg.textContent : '';
+    function say(text, cls){ if(inqMsg){ inqMsg.textContent = text; inqMsg.className = cls || ''; } }
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      var d = {
+        company: form.company.value.trim(),
+        person: form.person.value.trim(),
+        phone: form.phone.value.trim(),
+        email: form.email.value.trim(),
+        place: form.place.value.trim(),
+        capacity: form.capacity.value.trim(),
+        source: form.source.value,
+        use: form.use.value,
+        note: form.note.value.trim(),
+        website: form.website ? form.website.value : '',
+        ref: location.href,
+        ts: new Date().toISOString()
+      };
+      if(!d.company || !d.person || !d.phone){
+        say('请先填写公司名称、联系人和电话', 'err');
+        toast('请先填写公司名称、联系人和电话');
+        return;
+      }
+      if(d.phone.replace(/\D/g,'').length < 7){
+        say('电话看起来不完整，请再核对一次', 'err');
+        return;
+      }
+      var label = inqBtn.textContent;
+      inqBtn.disabled = true;
+      inqBtn.textContent = '提交中…';
+      say('正在提交…', '');
+      fetch('/api/inquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(d)
+      })
+        .then(function(r){ return r.json().catch(function(){ return { ok:false, error:'bad_response' }; }); })
+        .then(function(res){
+          inqBtn.disabled = false;
+          inqBtn.textContent = label;
+          if(res && res.ok){
+            say('已收到。技术团队会通过电话或微信回你，1 个工作日内给首轮判断。', 'ok');
+            toast('工况已提交');
+            form.reset();
+          } else if(res && res.error === 'not_configured'){
+            say('提交通道还在配置，请直接致电 +86 13661599170 或发邮件到 markwoo@163.com', 'err');
+          } else if(res && res.error === 'rate_limited'){
+            say('提交有点频繁，请 10 分钟后再试，或直接致电 +86 13661599170', 'err');
+          } else {
+            say('没提交成功，请重试一次，或致电 +86 13661599170', 'err');
+          }
+        })
+        .catch(function(){
+          inqBtn.disabled = false;
+          inqBtn.textContent = label;
+          say('网络好像不通，请致电 +86 13661599170 或稍后再试', 'err');
+        });
+    });
+  }
+
+  /* 滚动显隐 */
+  var revealEls = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+  var io = null;
+  if('IntersectionObserver' in window){
+    io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, {threshold:.12});
+  }
+  function refreshReveal(){
+    revealEls.forEach(function(el){
+      if(el.closest('.view[hidden]')) return;
+      if(io){ io.observe(el); } else { el.classList.add('in'); }
+    });
+  }
+
+  route();
+})();
+</script>
+</body>
+</html>
