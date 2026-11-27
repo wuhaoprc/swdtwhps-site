@@ -111,15 +111,16 @@ h2 + p{margin-top:16px}
 .pcard .foot .arw{color:var(--aqua-d)}
 
 /* ---------- scenario table ---------- */
-.scen{background:var(--ink);color:#DCE7EE}
-.scen h2{color:#fff}
-.scen .lead{color:#A9BECB}
+.scen{background:var(--white);color:#14242F}
+.scen h2{color:var(--ink)}
+.scen .lead{color:#40586B}
 table{width:100%;border-collapse:collapse;font-size:14px}
-.scen table th,.scen table td{text-align:left;padding:16px 14px;border-bottom:1px solid rgba(255,255,255,.13);vertical-align:top}
-.scen table th{font-size:12px;letter-spacing:.12em;color:#8FD9D2;font-weight:500;white-space:nowrap}
-.scen table td b{color:#fff;font-weight:600}
-.scen table td span{color:#9FB6C4;display:block;font-size:12.5px;margin-top:3px}
-.scen .tip{margin-top:22px;font-size:12.5px;color:#7E97A6}
+.scen table th,.scen table td{text-align:left;padding:16px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+.scen table th{font-size:12px;letter-spacing:.12em;color:var(--aqua-d);font-weight:500;white-space:nowrap}
+.scen table thead th{border-bottom:1px solid #CFDEE8}
+.scen table td b{color:var(--ink);font-weight:600}
+.scen table td span{color:var(--mute);display:block;font-size:12.5px;margin-top:3px}
+.scen .tip{margin-top:22px;font-size:12.5px;color:var(--mute)}
 
 /* ---------- process ---------- */
 .steps{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:8px}
@@ -559,10 +560,10 @@ body.is-home .top-phone{display:none}
       <div class="sec-head reveal">
         <div class="l">
           <div class="kicker">Working Conditions</div>
-          <h2 style="color:#fff">先看工况，再定配置</h2>
+          <h2>先看工况，再定配置</h2>
           <p class="lead">同样的产水量，源水不同、安装位置不同，配置差出一倍。下面是最常见的四类工况，实际项目按水质全分析后出方案。</p>
         </div>
-        <a class="more" href="#/contact" style="color:#fff;border-color:#fff">带工况来询价</a>
+        <a class="more" href="#/contact">带工况来询价</a>
       </div>
       <table class="reveal">
         <thead><tr><th>典型工况</th><th>源水</th><th>产水与用途</th><th>推荐工艺</th></tr></thead>
